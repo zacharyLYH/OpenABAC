@@ -6,13 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
     "lint": "next lint --fix && prettier --write .",
+    "db:up": "docker-compose up -d planetscale-sim",
+    "db:down": "docker-compose down"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.302.0",
+    "mysql2": "^3.6.5",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",

@@ -1,0 +1,18 @@
+version: '1'
+services:
+  planetscale-sim:
+    image: mysql:8.0.23
+    container_name: mysql-8-db
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: openabac
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: password1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
