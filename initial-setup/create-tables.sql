@@ -66,7 +66,7 @@ CREATE TABLE ActionContext (
 CREATE TABLE Context (
     id CHAR(36) NOT NULL,
     contextDescription VARCHAR(255),
-    operator ENUM('<', '<=', '==', '>', '>=', 'IN', 'BETWEEN', '!=') NOT NULL,
+    operator VARCHAR(255) NOT NULL,
     entity VARCHAR(255) NOT NULL,
     textValue TEXT,
     timeValue1 DATETIME,
