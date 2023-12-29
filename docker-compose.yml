@@ -1,8 +1,9 @@
-version: '1'
+version: '1.1'
+
 services:
-  planetscale-sim:
+  openabac-dev:
     image: mysql:8.0.23
-    container_name: mysql-8-db
+    container_name: openabac-dev-container
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
     environment:
       MYSQL_ROOT_PASSWORD: root_password
@@ -12,7 +13,19 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql-dev-data:/var/lib/mysql
+
+  openabac-test:
+    image: mysql:8.0.23
+    container_name: openabac-test-container
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: openabac
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: password1
+    ports:
+      - "3306:3306"
 
 volumes:
-  mysql-data:
+  mysql-dev-data:

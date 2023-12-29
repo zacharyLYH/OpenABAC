@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --fix && prettier --write .",
-    "db:up": "docker-compose up -d planetscale-sim",
+    "dev:up": "docker-compose up -d openabac-dev",
+    "test:up": "docker-compose up -d openabac-test",
     "db:down": "docker-compose down"
   },
   "dependencies": {
