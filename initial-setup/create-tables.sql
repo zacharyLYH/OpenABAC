@@ -37,7 +37,7 @@ CREATE TABLE UserPolicy (
     modifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    INDEX (abacId),
+    INDEX (abacId)
 );
 
 -- PolicyAction Table
@@ -83,7 +83,7 @@ CREATE TABLE IncompatiblePolicyToPolicy (
     policyId2 CHAR(36) NOT NULL,
     modifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
 
 -- IncompatibleActionToAction Table
@@ -93,5 +93,5 @@ CREATE TABLE IncompatibleActionToAction (
     actionId2 CHAR(36) NOT NULL,
     modifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
