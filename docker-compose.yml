@@ -1,31 +1,31 @@
 version: '1.1'
 
 services:
-  openabac-dev:
-    image: mysql:8.0.23
-    container_name: openabac-dev-container
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: openabac
-      MYSQL_USER: user1
-      MYSQL_PASSWORD: password1
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-dev-data:/var/lib/mysql
+    openabac-dev:
+        image: mysql
+        container_name: openabac-dev-container
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+        environment:
+            MYSQL_ROOT_PASSWORD: root_password
+            MYSQL_DATABASE: openabac
+            MYSQL_USER: user1
+            MYSQL_PASSWORD: password1
+        ports:
+            - '3306:3306'
+        volumes:
+            - mysql-dev-data:/var/lib/mysql
 
-  openabac-test:
-    image: mysql:8.0.23
-    container_name: openabac-test-container
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: openabac
-      MYSQL_USER: user1
-      MYSQL_PASSWORD: password1
-    ports:
-      - "3306:3306"
+    openabac-test:
+        image: mysql:8.0.23
+        container_name: openabac-test-container
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+        environment:
+            MYSQL_ROOT_PASSWORD: root_password
+            MYSQL_DATABASE: openabac
+            MYSQL_USER: user1
+            MYSQL_PASSWORD: password1
+        ports:
+            - '3306:3306'
 
 volumes:
-  mysql-dev-data:
+    mysql-dev-data:
