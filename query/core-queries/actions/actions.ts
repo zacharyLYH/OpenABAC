@@ -35,3 +35,17 @@ Context c ON ac.contextId = c.id
 WHERE
 u.applicationUserId = ?;
 `;
+
+export const DELETE_ACTIONS_GIVEN_ID = `
+DELETE FROM Action WHERE id = ?;
+`;
+
+export const CREATE_ACTIONS = `
+INSERT INTO Action (id, actionName, actionDescription) VALUES (UUID(), ?, ?);
+`;
+
+export const IS_ACTIONNAME_UNIQUE = `
+SELECT COUNT(*) AS count
+FROM Action
+WHERE actionName = ?;
+`;
