@@ -1,35 +1,35 @@
-export const GET_USER_GIVEN_APPLICATIONID = `
+export const GET_USER_GIVEN_APPLICATIONUSERID = `
 SELECT id, jsonCol
-WHERE applicationId = ?;
+WHERE applicationUserId = ?;
 `;
 
 export const GET_USER_GIVEN_ID = `
-SELECT applicationId, jsonCol
+SELECT applicationUserId, jsonCol
 WHERE id = ?;
 `;
 
-export const IS_USER_APPLICATIONID_UNIQUE = `
+export const IS_USER_APPLICATIONUSERID_UNIQUE = `
 SELECT COUNT(*) AS count
 FROM User
-WHERE applicationId = ?;
+WHERE applicationUserId = ?;
 `;
 
 export const CREATE_USER = `
-INSERT INTO User (id, applicationId, jsonCol) VALUES (UUID(), ?, ?);
+INSERT INTO User (id, applicationUserId, jsonCol) VALUES (UUID(), ?, ?);
 `;
 
-export const DELETE_USER_GIVEN_APPLICATIONID = `
-DELETE FROM User WHERE applicationId = ?;
+export const DELETE_USER_GIVEN_APPLICATIONUSERID = `
+DELETE FROM User WHERE applicationUserId = ?;
 `;
 
 export const UPDATE_USER_GIVEN_ID = `
 UPDATE User
-SET jsonCol = ?, applicationId = ?
+SET jsonCol = ?, applicationUserId = ?
 WHERE id = ?;
 `;
 
-export const UPDATE_USER_GIVEN_APPLICATIONID = `
+export const UPDATE_USER_GIVEN_APPLICATIONUSERID = `
 UPDATE User
 SET jsonCol = ?
-WHERE applicationId = ?;
+WHERE applicationUserId = ?;
 `;
