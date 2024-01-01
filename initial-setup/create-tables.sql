@@ -27,6 +27,7 @@ CREATE TABLE User (
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     INDEX (applicationUserId)
+    UNIQUE (applicationUserId)
 );
 
 -- UserPolicy Table
