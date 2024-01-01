@@ -4,3 +4,8 @@ export interface Query {
 }
 
 export type TransactionQueries = Query[];
+
+export interface User {
+    jsonCol: any;
+    applicationUserId: string;
+}
