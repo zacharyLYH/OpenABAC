@@ -3,6 +3,8 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table"
 import { CopyButton } from "../copy-button";
+import { GetPoliciesButton } from "./user-column/user-column-actions";
+import { User } from "@/lib/interface";
 
 export function selectColumn<T>(): ColumnDef<T>[] {
     return [
@@ -36,6 +38,15 @@ export function copyColumn<T>(): ColumnDef<T>[] {
         {
             id: "copy",
             cell: ({ row }) => <CopyButton data={row.original} />,
+        },
+    ];
+}
+
+export function getPolicies<T extends User>(): ColumnDef<T>[] {
+    return [
+        {
+            id: "policies",
+            cell: ({ row }) => <GetPoliciesButton applicationUserId={row.original.id} />,
         },
     ];
 }
