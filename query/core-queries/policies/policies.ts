@@ -30,3 +30,8 @@ DELETE FROM Policy WHERE id = ?;
 export const CREATE_POLICIES = `
 INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), ?, ?, ?);
 `;
+
+export const GET_NUMBER_OF_POLICIES = `
+SELECT COUNT(*) AS count
+FROM Policy;
+`

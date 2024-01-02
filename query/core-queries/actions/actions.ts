@@ -49,3 +49,8 @@ SELECT COUNT(*) AS count
 FROM Action
 WHERE actionName = ?;
 `;
+
+export const GET_NUMBER_OF_ACTIONS = `
+SELECT COUNT(*) AS count
+FROM Action;
+`
