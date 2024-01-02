@@ -12,6 +12,7 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import { Check, Container, FileWarningIcon, Move, Scroll, User } from "lucide-react"
+import ViewUserTab from "./_tab-options/user-tab"
 
 function TabSectionCard({ title, value, description, icon }: { title: string, value: string, description?: string, icon?: JSX.Element }) {
     return (
@@ -38,14 +39,17 @@ export default async function HomePage() {
         <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
                 <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="analytics" disabled>
-                    Analytics
+                <TabsTrigger value="actions">
+                    Actions
                 </TabsTrigger>
-                <TabsTrigger value="reports" disabled>
-                    Reports
+                <TabsTrigger value="user">
+                    Users
                 </TabsTrigger>
-                <TabsTrigger value="notifications" disabled>
-                    Notifications
+                <TabsTrigger value="policies">
+                    Policies
+                </TabsTrigger>
+                <TabsTrigger value="context">
+                    Contexts
                 </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
@@ -57,6 +61,9 @@ export default async function HomePage() {
                     <TabSectionCard title="#Successful Authorizations" value="+573" description="+201 since last hour" icon={<Check className="h-5 w-5" />} />
                     <TabSectionCard title="#Failed Authorizations" value="+573" description="+201 since last hour" icon={<FileWarningIcon className="h-5 w-5" />} />
                 </div>
+            </TabsContent>
+            <TabsContent value="user">
+                <ViewUserTab />
             </TabsContent>
         </Tabs>
     </div>
