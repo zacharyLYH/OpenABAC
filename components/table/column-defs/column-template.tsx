@@ -3,7 +3,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table"
 import { CopyButton } from "../copy-button";
-import { GetPoliciesButton } from "./user-column/user-column-actions";
+import { GetPoliciesButton } from "./user-column/show-user-policy-button";
 import { User } from "@/lib/interface";
 
 export function selectColumn<T>(): ColumnDef<T>[] {
