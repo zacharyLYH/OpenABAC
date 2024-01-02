@@ -6,7 +6,15 @@ import { DataTableColumnHeader } from "../../column-header";
 import { copyColumn, getPolicies, selectColumn } from "../column-template";
 
 const renderJsonCell = (cell: any) => {
-    return <pre>{JSON.stringify(cell.getValue(), null, 2)}</pre>;
+    const jsonStr = JSON.stringify(cell.getValue(), null, 2);
+    const lines = jsonStr.split('\n');
+    const maxLines = 5;
+
+    const displayedText = lines.length > maxLines
+        ? lines.slice(0, maxLines - 1).join('\n') + '\n...'
+        : jsonStr;
+
+    return <pre>{displayedText}</pre>;
 };
 
 

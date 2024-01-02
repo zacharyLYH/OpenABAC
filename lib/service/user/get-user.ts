@@ -44,5 +44,17 @@ export const getUser = async () => {
             modifiedDate: new Date(),
             createdDate: new Date('2023-01-05')
         },
+        {
+            jsonCol: {
+                name: "Mike Wazowski",
+                age: 29,
+                occupation: "Doctor",
+                gender: "Not applicable"
+            },
+            applicationUserId: "012349",
+            id: "005",
+            modifiedDate: new Date(),
+            createdDate: new Date('2023-01-05')
+        },
     ]
 }
