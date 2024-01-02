@@ -5,6 +5,11 @@ import { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "../column-header";
 import { copyColumn, selectColumn } from "./column-template";
 
+const renderJsonCell = (cell: any) => {
+    return <pre>{JSON.stringify(cell.getValue(), null, 2)}</pre>;
+};
+
+
 export const userColumn: ColumnDef<User>[] = [
     ...selectColumn<User>(),
     {
@@ -17,7 +22,8 @@ export const userColumn: ColumnDef<User>[] = [
         accessorKey: "jsonCol",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="JSON Column" />
-        )
+        ),
+        cell: renderJsonCell
     },
     {
         accessorKey: "modifiedDate",
