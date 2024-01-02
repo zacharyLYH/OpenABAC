@@ -97,3 +97,12 @@ CREATE TABLE IncompatibleActionToAction (
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE Statistics {
+    id CHAR(36) NOT NULL,
+    statisticName VARCHAR(255)
+    statisticNumberValue INT
+    statisticVarCharValue VARCHAR(255)
+    statisticBooleanValue BOOLEAN 
+    PRIMARY KEY (id)
+}
