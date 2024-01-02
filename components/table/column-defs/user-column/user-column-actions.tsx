@@ -33,7 +33,7 @@ export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({ applicatio
 
     return (
         <>
-            {modalOpen && data !== null && <DataModal title="Policies" isOpen={modalOpen} onClose={handleCloseModal} children={<DataTable data={data} columns={policyColumn} />} />}
+            {modalOpen && data !== null && <DataModal title="Policies" isOpen={modalOpen} onClose={handleCloseModal} children={<DataTable data={data} columns={policyColumn} showColumnVisibilityDropdown={false} searchColumnName="policyName" />} />}
             <Button size="sm" variant="secondary" onClick={() => setModalOpen(!modalOpen)}>
                 Policies
             </Button>
