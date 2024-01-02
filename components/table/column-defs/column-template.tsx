@@ -1,7 +1,6 @@
 "use client"
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { User } from "@/lib/interface"
 import { ColumnDef } from "@tanstack/react-table"
 import { CopyButton } from "../copy-button";
 
