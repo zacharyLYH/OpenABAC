@@ -1,4 +1,4 @@
-export const GET_POLICIES_PROVIDED_APPLICATIONUSERID = `
+export const GET_ALLOW_OR_DISALLOW_POLICIES_PROVIDED_APPLICATIONUSERID = `
 SELECT 
 p.policyName, p.policyDescription
 FROM
@@ -8,7 +8,7 @@ UserPolicy up ON u.id = up.abacId
     JOIN
 Policy p ON up.policyId = p.id
 WHERE
-u.applicationUserId = ?;
+u.applicationUserId = ?, p.allow = ?;
 `;
 
 export const IS_POLICYNAME_UNIQUE = `
@@ -28,5 +28,5 @@ DELETE FROM Policy WHERE id = ?;
 `;
 
 export const CREATE_POLICIES = `
-INSERT INTO Policy (id, policyName, policyDescription) VALUES (UUID(), ?, ?);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), ?, ?, ?);
 `;

@@ -1,4 +1,4 @@
-export const GET_ACTIONS_PROVIDED_APPLICATIONUSERID = `
+export const GET_ALLOWED_OR_DISALLOWED_ACTIONS_PROVIDED_APPLICATIONUSERID = `
 SELECT 
 a.actionName, a.actionDescription
 FROM
@@ -12,10 +12,10 @@ PolicyAction pa ON p.id = pa.policyId
     JOIN
 Action a ON pa.actionId = a.id
 WHERE
-u.applicationUserId = ?;
+u.applicationUserId = ?, p.allow = ?;
 `;
 
-export const GET_ACTIONS_WITH_CONTEXT_PROVIDED_APPLICATIONUSERID = `
+export const GET_ALLOWED_OR_DISALLOWED_ACTIONS_WITH_CONTEXT_PROVIDED_APPLICATIONUSERID = `
 SELECT 
 a.actionName, a.actionDescription, c.contextDescription, c.operator, c.entity, c.textValue, c.timeValue1, c.timeValue2
 FROM
@@ -33,7 +33,7 @@ ActionContext ac ON a.id = ac.actionId
     JOIN
 Context c ON ac.contextId = c.id
 WHERE
-u.applicationUserId = ?;
+u.applicationUserId = ?, p.allow = ?;
 `;
 
 export const DELETE_ACTIONS_GIVEN_ID = `
