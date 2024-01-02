@@ -1,7 +1,7 @@
 import {
     ArrowDownIcon,
     ArrowUpIcon,
-    SortAscIcon,
+    ArrowDownUp,
     EyeOff,
 } from "lucide-react"
 import { Column } from "@tanstack/react-table"
@@ -46,7 +46,7 @@ export function DataTableColumnHeader<TData, TValue>({
                         ) : column.getIsSorted() === "asc" ? (
                             <ArrowUpIcon className="ml-2 h-4 w-4" />
                         ) : (
-                            <SortAscIcon className="ml-2 h-4 w-4" />
+                            <ArrowDownUp className="ml-2 h-4 w-4" />
                         )}
                     </Button>
                 </DropdownMenuTrigger>
