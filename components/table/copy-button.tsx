@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { objectToString } from "./helper";
+import { toast } from "sonner"
 
 interface CellActionInterface {
     data: any
@@ -11,7 +12,7 @@ interface CellActionInterface {
 export const CopyButton: React.FC<CellActionInterface> = ({ data }) => {
     const onCopy = (copyable: string) => {
         navigator.clipboard.writeText(copyable);
-        // toast.success("Billboard id copied to clipboard");
+        toast("Copied successfully!")
     };
 
     return (
