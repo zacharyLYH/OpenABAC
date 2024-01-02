@@ -2,8 +2,8 @@
 
 import { User } from "@/lib/interface"
 import { ColumnDef } from "@tanstack/react-table"
-import { DataTableColumnHeader } from "../column-header";
-import { copyColumn, selectColumn } from "./column-template";
+import { DataTableColumnHeader } from "../../column-header";
+import { copyColumn, getPolicies, selectColumn } from "../column-template";
 
 const renderJsonCell = (cell: any) => {
     return <pre>{JSON.stringify(cell.getValue(), null, 2)}</pre>;
@@ -37,5 +37,6 @@ export const userColumn: ColumnDef<User>[] = [
             <DataTableColumnHeader column={column} title="Created Date" />
         )
     },
+    ...getPolicies<User>(),
     ...copyColumn<User>()
 ];

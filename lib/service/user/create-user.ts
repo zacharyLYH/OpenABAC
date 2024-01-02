@@ -1,6 +1,6 @@
 import { CREATE_USER } from '@/query/core-queries/user/user';
-import { Query, User } from '../interface';
-import { db } from '../database';
+import { Query, User } from '../../interface';
+import { db } from '../../database';
 
 export async function createUser({ jsonCol, applicationUserId }: User) {
     try {
