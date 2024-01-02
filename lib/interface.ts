@@ -12,3 +12,12 @@ export interface User {
     modifiedDate: Date;
     createdDate: Date;
 }
+
+export interface Policy {
+    id: string;
+    policyName: string;
+    policyDescription: string;
+    modifiedDate: Date;
+    createdDate: Date;
+    allow: boolean;
+}
