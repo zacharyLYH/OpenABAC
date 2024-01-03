@@ -23,7 +23,7 @@ export interface Policy {
     policyDescription: string;
     modifiedDate: Date;
     createdDate: Date;
-    allow: boolean;
+    allow: boolean | string;
 }
 
 export interface Action {
