@@ -33,3 +33,8 @@ UPDATE User
 SET jsonCol = ?
 WHERE applicationUserId = ?;
 `;
+
+export const GET_ALL_USERS = `
+SELECT *
+FROM User
+`;
