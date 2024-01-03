@@ -35,6 +35,6 @@ WHERE applicationUserId = ?;
 `;
 
 export const GET_ALL_USERS = `
-SELECT *
+SELECT id, applicationUserId, jsonCol, modifiedDate
 FROM User
 `;

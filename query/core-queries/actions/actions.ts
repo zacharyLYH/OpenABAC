@@ -56,6 +56,6 @@ FROM Action;
 `;
 
 export const GET_ALL_ACTIONS = `
-SELECT *
+SELECT id, actionName, actionDescription, modifiedDate
 FROM Action;
 `;
