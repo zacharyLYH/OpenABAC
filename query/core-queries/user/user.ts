@@ -38,3 +38,8 @@ export const GET_ALL_USERS = `
 SELECT id, applicationUserId, jsonCol, modifiedDate
 FROM User
 `;
+
+export const GET_NUMBER_OF_USERS = `
+SELECT COUNT(*) AS count
+FROM User;
+`;

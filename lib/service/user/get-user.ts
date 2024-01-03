@@ -1,6 +1,9 @@
 import { db } from '@/lib/database';
-import { Query, User } from '@/lib/interface';
-import { GET_ALL_USERS } from '@/query/core-queries/user/user';
+import { Count, Query, User } from '@/lib/interface';
+import {
+    GET_ALL_USERS,
+    GET_NUMBER_OF_USERS,
+} from '@/query/core-queries/user/user';
 
 export const getAllUsers = async () => {
     if (process.env.IS_PRODUCTION === 'false') {
@@ -12,6 +15,18 @@ export const getAllUsers = async () => {
         };
         results = await db.query<User[]>(query);
         return results;
+    }
+};
+
+export const getUserCount = async () => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.length;
+    } else {
+        const query: Query = {
+            sql: GET_NUMBER_OF_USERS,
+        };
+        const results = await db.query<Count[]>(query);
+        return results[0].count;
     }
 };
 
