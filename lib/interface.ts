@@ -5,6 +5,10 @@ export interface Query {
 
 export type TransactionQueries = Query[];
 
+export interface Count {
+    count: number;
+}
+
 export interface User {
     jsonCol: any;
     applicationUserId: string;
