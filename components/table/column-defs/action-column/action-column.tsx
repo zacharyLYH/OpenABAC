@@ -19,5 +19,11 @@ export const actionColumn: ColumnDef<Action>[] = [
             <DataTableColumnHeader column={column} title="Action Description" />
         ),
     },
+    {
+        accessorKey: 'modifiedDate',
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Modified Date" />
+        ),
+    },
     ...copyColumn<Action>(),
 ];
