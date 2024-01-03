@@ -21,3 +21,11 @@ export interface Policy {
     createdDate: Date;
     allow: boolean;
 }
+
+export interface Action {
+    id: string;
+    actionName: string;
+    actionDescription: string;
+    modifiedDate: Date;
+    createdDate: Date;
+}

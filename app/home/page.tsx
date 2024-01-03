@@ -17,6 +17,7 @@ import {
 import ViewUserTab from './_tab-options/user-tab';
 import { Suspense } from 'react';
 import { TableSuspenseSkeleton } from '@/components/table-suspense';
+import ViewActionsTab from './_tab-options/actions-tab';
 
 function TabSectionCard({
     title,
@@ -98,6 +99,11 @@ export default async function HomePage() {
                 <TabsContent value="user">
                     <Suspense fallback={<TableSuspenseSkeleton />}>
                         <ViewUserTab />
+                    </Suspense>
+                </TabsContent>
+                <TabsContent value="actions">
+                    <Suspense fallback={<TableSuspenseSkeleton />}>
+                        <ViewActionsTab />
                     </Suspense>
                 </TabsContent>
             </Tabs>
