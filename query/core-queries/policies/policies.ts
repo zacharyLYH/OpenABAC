@@ -34,4 +34,17 @@ INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), ?,
 export const GET_NUMBER_OF_POLICIES = `
 SELECT COUNT(*) AS count
 FROM Policy;
-`
+`;
+
+export const GET_ALL_POLICIES = `
+SELECT 
+    id, 
+    policyName, 
+    policyDescription, 
+    CASE 
+        WHEN allow THEN 'Allow List' 
+        ELSE 'Deny List' 
+    END AS allow
+FROM Policy;
+
+`;
