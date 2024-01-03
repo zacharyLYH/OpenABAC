@@ -1,11 +1,16 @@
-import mysql, { Connection, RowDataPacket, ResultSetHeader, ProcedureCallPacket } from 'mysql2/promise';
+import mysql, {
+    Connection,
+    RowDataPacket,
+    ResultSetHeader,
+    ProcedureCallPacket,
+} from 'mysql2/promise';
 import { TransactionQueries, Query } from './interface';
 
 class Database {
     private static instance: Database;
     private connection: Connection | null = null;
 
-    private constructor() { }
+    private constructor() {}
 
     public static getInstance(): Database {
         if (!Database.instance) {
@@ -17,13 +22,13 @@ class Database {
     public async getConnection(): Promise<Connection> {
         if (this.connection === null) {
             try {
-                if (process.env.IS_PRODUCTION === 'false') {
+                if (process.env.USE_PRODUCTION_DB === 'false') {
                     this.connection = await mysql.createConnection({
                         host: process.env.DATABASE_HOST_DEV,
                         user: process.env.DATABASE_USER_DEV,
                         password: process.env.DATABASE_PASSWORD_DEV,
                         database: process.env.DATABASE_NAME_DEV,
-                        port: parseInt(process.env.DATABASE_PORT_DEV || '3306')
+                        port: parseInt(process.env.DATABASE_PORT_DEV || '3306'),
                     });
                 } else {
                     this.connection = await mysql.createConnection({
@@ -31,7 +36,7 @@ class Database {
                         user: process.env.DATABASE_USER,
                         password: process.env.DATABASE_PASSWORD,
                         database: process.env.DATABASE_NAME,
-                        port: parseInt(process.env.DATABASE_PORT || '3306')
+                        port: parseInt(process.env.DATABASE_PORT || '3306'),
                     });
                 }
             } catch (error) {
@@ -44,16 +49,30 @@ class Database {
 
     public async query<T>(query: Query): Promise<T> {
         const connection = await this.getConnection();
-        const [results] = await connection.execute<ResultSetHeader | RowDataPacket[] | RowDataPacket[][] | ResultSetHeader[] | ProcedureCallPacket>(query.sql, query.params);
+        const [results] = await connection.execute<
+            | ResultSetHeader
+            | RowDataPacket[]
+            | RowDataPacket[][]
+            | ResultSetHeader[]
+            | ProcedureCallPacket
+        >(query.sql, query.params);
         return results as T;
     }
 
-    public async executeTransaction(queries: TransactionQueries): Promise<void> {
+    public async executeTransaction(
+        queries: TransactionQueries,
+    ): Promise<void> {
         const connection = await this.getConnection();
         try {
             await connection.beginTransaction();
             for (const query of queries) {
-                await connection.execute<ResultSetHeader | RowDataPacket[] | RowDataPacket[][] | ResultSetHeader[] | ProcedureCallPacket>(query.sql, query.params);
+                await connection.execute<
+                    | ResultSetHeader
+                    | RowDataPacket[]
+                    | RowDataPacket[][]
+                    | ResultSetHeader[]
+                    | ProcedureCallPacket
+                >(query.sql, query.params);
             }
             await connection.commit();
         } catch (error) {
