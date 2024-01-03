@@ -41,6 +41,7 @@ SELECT
     id, 
     policyName, 
     policyDescription, 
+    modifiedDate,
     CASE 
         WHEN allow THEN 'Allow List' 
         ELSE 'Deny List' 
