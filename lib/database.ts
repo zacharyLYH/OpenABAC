@@ -56,7 +56,8 @@ class Database {
             | ResultSetHeader[]
             | ProcedureCallPacket
         >(query.sql, query.params);
-        return results as T;
+        const plainResults = JSON.parse(JSON.stringify(results));
+        return plainResults as T;
     }
 
     public async executeTransaction(
