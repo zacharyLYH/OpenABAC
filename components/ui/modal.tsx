@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
     Dialog,
@@ -6,8 +6,9 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
-import { useEffect, useRef } from "react";
+} from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
+import { useEffect, useRef } from 'react';
 
 interface ModalProps {
     title: string;
@@ -15,6 +16,7 @@ interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
     children?: React.ReactNode;
+    contentClassName?: string;
 }
 
 export const DataModal: React.FC<ModalProps> = ({
@@ -23,6 +25,7 @@ export const DataModal: React.FC<ModalProps> = ({
     isOpen,
     onClose,
     children,
+    contentClassName,
 }) => {
     const onChange = (open: boolean) => {
         if (!open) {
@@ -38,14 +41,14 @@ export const DataModal: React.FC<ModalProps> = ({
         };
 
         if (isOpen && contentRef.current) {
-            contentRef.current.addEventListener("keydown", handleKeyDown);
+            contentRef.current.addEventListener('keydown', handleKeyDown);
         }
 
         return () => {
             if (contentRef.current) {
                 contentRef.current.removeEventListener(
-                    "keydown",
-                    handleKeyDown
+                    'keydown',
+                    handleKeyDown,
                 );
             }
         };
@@ -55,7 +58,7 @@ export const DataModal: React.FC<ModalProps> = ({
         <Dialog open={isOpen} onOpenChange={onChange} modal>
             <DialogContent
                 ref={contentRef}
-                className="overflow-auto max-h-screen"
+                className={cn('overflow-auto max-h-screen', contentClassName)}
             >
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
