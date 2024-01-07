@@ -33,3 +33,15 @@ export interface Action {
     modifiedDate: Date;
     createdDate: Date;
 }
+
+export interface Context {
+    id: string;
+    contextDescription: string;
+    operator: string;
+    entity: string;
+    textValue: string | null;
+    timeValue1: Date | null;
+    timeValue2: Date | null;
+    modifiedDate: Date;
+    createdDate: Date;
+}

@@ -116,6 +116,11 @@ export default async function HomePage() {
                         <ViewPolicyTab />
                     </Suspense>
                 </TabsContent>
+                <TabsContent value="context">
+                    <Suspense fallback={<TableSuspenseSkeleton />}>
+                        <ViewContextsTab />
+                    </Suspense>
+                </TabsContent>
             </Tabs>
         </div>
     );
