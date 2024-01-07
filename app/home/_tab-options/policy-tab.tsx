@@ -5,17 +5,19 @@ import { Policy } from '@/lib/interface';
 import { getAllPolicy } from '@/lib/service/policy/get-policy';
 import { Suspense } from 'react';
 
-export default async function ViewPolicyTab() {
+interface PolicyTabProps {
+    policy: Policy[];
+}
+
+export default async function ViewPolicyTab({ policy }: PolicyTabProps) {
     // const delay = (ms: number) => //mock suspense boundary for table
     //     new Promise(resolve => setTimeout(resolve, ms));
     // await delay(10000);
-    const data: Policy[] = await getAllPolicy();
-
     return (
         <section>
             <Suspense fallback={<TableSuspenseSkeleton />}>
                 <DataTable
-                    data={data}
+                    data={policy}
                     columns={policyColumn}
                     searchColumnName="policyName"
                 />

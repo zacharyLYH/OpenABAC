@@ -5,17 +5,22 @@ import { Context } from '@/lib/interface';
 import { getAllContext } from '@/lib/service/context/get-context';
 import { Suspense } from 'react';
 
-export default async function ViewContextsTab() {
+interface ViewContextsTabProps {
+    context: Context[];
+}
+
+export default async function ViewContextsTab({
+    context,
+}: ViewContextsTabProps) {
     // const delay = (ms: number) => //mock suspense boundary for table
     //     new Promise(resolve => setTimeout(resolve, ms));
     // await delay(10000);
-    const data: Context[] = await getAllContext();
     return (
         <section>
             {}
             <Suspense fallback={<TableSuspenseSkeleton />}>
                 <DataTable
-                    data={data}
+                    data={context}
                     columns={contextColumn}
                     searchColumnName="contextDescription"
                 />

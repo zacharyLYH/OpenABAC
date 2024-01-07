@@ -18,12 +18,12 @@ import ViewUserTab from './_tab-options/user-tab';
 import { Suspense } from 'react';
 import { TableSuspenseSkeleton } from '@/components/table-suspense';
 import ViewActionsTab from './_tab-options/actions-tab';
-import { getUserCount } from '@/lib/service/user/get-user';
+import { getAllUsers } from '@/lib/service/user/get-user';
 import ViewPolicyTab from './_tab-options/policy-tab';
 import ViewContextsTab from './_tab-options/context-tab';
-import { getContextCount } from '@/lib/service/context/get-context';
-import { getPolicyCount } from '@/lib/service/policy/get-policy';
-import { getActionCount } from '@/lib/service/action/get-action';
+import { getAllContext } from '@/lib/service/context/get-context';
+import { getAllPolicy } from '@/lib/service/policy/get-policy';
+import { getAllActions } from '@/lib/service/action/get-action';
 
 function TabSectionCard({
     title,
@@ -51,13 +51,12 @@ function TabSectionCard({
 }
 
 export default async function HomePage() {
-    const [userCount, contextCount, policyCount, actionCount] =
-        await Promise.all([
-            getUserCount(),
-            getContextCount(),
-            getPolicyCount(),
-            getActionCount(),
-        ]);
+    const [user, context, policy, action] = await Promise.all([
+        getAllUsers(),
+        getAllContext(),
+        getAllPolicy(),
+        getAllActions(),
+    ]);
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <h2 className="text-5xl font-bold tracking-tight">Dashboard</h2>
@@ -74,22 +73,22 @@ export default async function HomePage() {
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                             <TabSectionCard
                                 title="#Users"
-                                value={userCount.toString()}
+                                value={user.length.toString()}
                                 icon={<User className="h-5 w-5" />}
                             />
                             <TabSectionCard
                                 title="#Policies"
-                                value={policyCount.toString()}
+                                value={policy.length.toString()}
                                 icon={<Scroll className="h-5 w-5" />}
                             />
                             <TabSectionCard
                                 title="#Actions"
-                                value={actionCount.toString()}
+                                value={action.length.toString()}
                                 icon={<Move className="h-5 w-5" />}
                             />
                             <TabSectionCard
                                 title="#Context"
-                                value={contextCount.toString()}
+                                value={context.length.toString()}
                                 icon={<Container className="h-5 w-5" />}
                             />
                             <TabSectionCard
@@ -109,22 +108,22 @@ export default async function HomePage() {
                 </TabsContent>
                 <TabsContent value="user">
                     <Suspense fallback={<TableSuspenseSkeleton />}>
-                        <ViewUserTab />
+                        <ViewUserTab user={user} />
                     </Suspense>
                 </TabsContent>
                 <TabsContent value="actions">
                     <Suspense fallback={<TableSuspenseSkeleton />}>
-                        <ViewActionsTab />
+                        <ViewActionsTab action={action} />
                     </Suspense>
                 </TabsContent>
                 <TabsContent value="policies">
                     <Suspense fallback={<TableSuspenseSkeleton />}>
-                        <ViewPolicyTab />
+                        <ViewPolicyTab policy={policy} />
                     </Suspense>
                 </TabsContent>
                 <TabsContent value="context">
                     <Suspense fallback={<TableSuspenseSkeleton />}>
-                        <ViewContextsTab />
+                        <ViewContextsTab context={context} />
                     </Suspense>
                 </TabsContent>
             </Tabs>
