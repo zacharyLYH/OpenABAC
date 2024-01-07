@@ -2,7 +2,6 @@ import { TableSuspenseSkeleton } from '@/components/table-suspense';
 import { contextColumn } from '@/components/table/column-defs/context-column/context-column';
 import { DataTable } from '@/components/table/data-table';
 import { Context } from '@/lib/interface';
-import { getAllContext } from '@/lib/service/context/get-context';
 import { Suspense } from 'react';
 
 interface ViewContextsTabProps {
