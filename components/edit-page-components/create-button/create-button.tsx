@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 import { DataModal } from '@/components/ui/modal';
+import useAppStore from '@/zustand/app-store';
 
 interface CreateButtonProps {
     objName: string;
@@ -13,9 +13,9 @@ export const CreateButton: React.FC<CreateButtonProps> = ({
     objName,
     form,
 }) => {
-    const [modalOpen, setModalOpen] = useState(false);
+    const { modalOpen, toggleModal } = useAppStore();
     const handleCloseModal = () => {
-        setModalOpen(false);
+        toggleModal();
     };
     return (
         <>
@@ -28,7 +28,7 @@ export const CreateButton: React.FC<CreateButtonProps> = ({
                     contentClassName="w-[70%]"
                 />
             )}
-            <Button size="lg" onClick={() => setModalOpen(!modalOpen)}>
+            <Button size="lg" onClick={() => toggleModal()}>
                 Create {objName}
             </Button>
         </>
