@@ -54,3 +54,13 @@ body,
         --ring: 142.4 71.8% 29.2%;
     }
 }
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
