@@ -47,5 +47,9 @@ SELECT
         ELSE 'Deny List' 
     END AS allow
 FROM Policy;
+`;
 
+export const GET_POLICY_COUNT = `
+SELECT COUNT(*) AS count
+FROM Policy;
 `;

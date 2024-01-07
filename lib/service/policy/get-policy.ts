@@ -1,8 +1,11 @@
 'use server';
 
 import { db } from '@/lib/database';
-import { Policy, Query } from '@/lib/interface';
-import { GET_ALL_POLICIES } from '@/query/core-queries/policies/policies';
+import { Count, Policy, Query } from '@/lib/interface';
+import {
+    GET_ALL_POLICIES,
+    GET_POLICY_COUNT,
+} from '@/query/core-queries/policies/policies';
 
 export const getAllPolicy = async () => {
     if (process.env.IS_PRODUCTION === 'false') {
@@ -23,7 +26,15 @@ export const getAllPolicyGivenApplicationUserId = async (
 };
 
 export const getPolicyCount = async () => {
-    return;
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.length;
+    } else {
+        const query: Query = {
+            sql: GET_POLICY_COUNT,
+        };
+        const results = await db.query<Count[]>(query);
+        return results[0].count;
+    }
 };
 
 const mockData = [

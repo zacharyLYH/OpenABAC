@@ -59,3 +59,8 @@ export const GET_ALL_ACTIONS = `
 SELECT id, actionName, actionDescription, modifiedDate
 FROM Action;
 `;
+
+export const GET_ACTION_COUNT = `
+SELECT COUNT(*) AS count
+FROM Action;
+`;

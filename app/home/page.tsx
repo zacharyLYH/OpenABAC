@@ -20,6 +20,10 @@ import { TableSuspenseSkeleton } from '@/components/table-suspense';
 import ViewActionsTab from './_tab-options/actions-tab';
 import { getUserCount } from '@/lib/service/user/get-user';
 import ViewPolicyTab from './_tab-options/policy-tab';
+import ViewContextsTab from './_tab-options/context-tab';
+import { getContextCount } from '@/lib/service/context/get-context';
+import { getPolicyCount } from '@/lib/service/policy/get-policy';
+import { getActionCount } from '@/lib/service/action/get-action';
 
 function TabSectionCard({
     title,
@@ -47,7 +51,13 @@ function TabSectionCard({
 }
 
 export default async function HomePage() {
-    const userCount = await getUserCount();
+    const [userCount, contextCount, policyCount, actionCount] =
+        await Promise.all([
+            getUserCount(),
+            getContextCount(),
+            getPolicyCount(),
+            getActionCount(),
+        ]);
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <h2 className="text-5xl font-bold tracking-tight">Dashboard</h2>
@@ -65,25 +75,21 @@ export default async function HomePage() {
                             <TabSectionCard
                                 title="#Users"
                                 value={userCount.toString()}
-                                description="+20.1% from last month"
                                 icon={<User className="h-5 w-5" />}
                             />
                             <TabSectionCard
                                 title="#Policies"
-                                value="+2350"
-                                description="+180.1% from last month"
+                                value={policyCount.toString()}
                                 icon={<Scroll className="h-5 w-5" />}
                             />
                             <TabSectionCard
                                 title="#Actions"
-                                value="+12,234"
-                                description="+19% from last month"
+                                value={actionCount.toString()}
                                 icon={<Move className="h-5 w-5" />}
                             />
                             <TabSectionCard
                                 title="#Context"
-                                value="+573"
-                                description="+201 since last hour"
+                                value={contextCount.toString()}
                                 icon={<Container className="h-5 w-5" />}
                             />
                             <TabSectionCard

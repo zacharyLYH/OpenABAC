@@ -1,6 +1,9 @@
 import { db } from '@/lib/database';
-import { Action, Query } from '@/lib/interface';
-import { GET_ALL_ACTIONS } from '@/query/core-queries/actions/actions';
+import { Action, Count, Query } from '@/lib/interface';
+import {
+    GET_ACTION_COUNT,
+    GET_ALL_ACTIONS,
+} from '@/query/core-queries/actions/actions';
 
 export const getAllActions = async () => {
     if (process.env.IS_PRODUCTION === 'false') {
@@ -11,6 +14,18 @@ export const getAllActions = async () => {
         };
         const results = await db.query<Action[]>(query);
         return results;
+    }
+};
+
+export const getActionCount = async () => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.length;
+    } else {
+        const query: Query = {
+            sql: GET_ACTION_COUNT,
+        };
+        const results = await db.query<Count[]>(query);
+        return results[0].count;
     }
 };
 
