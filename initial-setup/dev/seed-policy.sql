@@ -1,0 +1,21 @@
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyAccessLevel1', 'Access level 1 policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyAccessLevel2', 'Access level 2 policy', FALSE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyDataRead', 'Data read policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyDataWrite', 'Data write policy', FALSE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyAdminAccess', 'Admin access policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyUserManagement', 'User management policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyContentReview', 'Content review policy', FALSE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyFinancialTransactions', 'Financial transactions policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyCustomerSupport', 'Customer support policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyQualityAssurance', 'Quality assurance policy', FALSE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicySecurityAudit', 'Security audit policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyRiskAssessment', 'Risk assessment policy', FALSE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyComplianceCheck', 'Compliance check policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyProductDevelopment', 'Product development policy', FALSE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyMarketingStrategy', 'Marketing strategy policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicySalesOperation', 'Sales operation policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyITInfrastructure', 'IT infrastructure policy', FALSE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyHumanResources', 'Human resources policy', TRUE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyLegalCompliance', 'Legal compliance policy', FALSE);
+INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyEnvironmentalStandards', 'Environmental standards policy', TRUE);
+select * from Policy

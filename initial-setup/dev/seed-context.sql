@@ -1,0 +1,22 @@
+INSERT INTO Context (id, contextDescription, operator, entity, textValue, timeValue1, timeValue2, modifiedDate, createdDate) VALUES
+(UUID(), 'Context Desc 1', 'equals', 'Entity1', 'Text1', '2023-01-01 00:00:00', '2023-01-02 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 2', 'less_than', 'Entity2', NULL, '2023-01-03 00:00:00', '2023-01-04 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 3', 'greater_than', 'Entity3', 'Text3', NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 4', 'not_equal', 'Entity4', 'Text4', '2023-01-05 00:00:00', '2023-01-06 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 5', 'equals', 'Entity5', NULL, '2023-01-07 00:00:00', '2023-01-08 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 6', 'less_than', 'Entity6', 'Text6', '2023-01-09 00:00:00', '2023-01-10 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 7', 'greater_than', 'Entity7', NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 8', 'not_equal', 'Entity8', 'Text8', '2023-01-11 00:00:00', '2023-01-12 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 9', 'equals', 'Entity9', 'Text9', '2023-01-13 00:00:00', '2023-01-14 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 10', 'less_than', 'Entity10', NULL, '2023-01-15 00:00:00', '2023-01-16 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 11', 'greater_than', 'Entity11', 'Text11', NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 12', 'not_equal', 'Entity12', 'Text12', '2023-01-17 00:00:00', '2023-01-18 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 13', 'equals', 'Entity13', NULL, '2023-01-19 00:00:00', '2023-01-20 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 14', 'less_than', 'Entity14', 'Text14', '2023-01-21 00:00:00', '2023-01-22 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 15', 'greater_than', 'Entity15', NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 16', 'not_equal', 'Entity16', 'Text16', '2023-01-23 00:00:00', '2023-01-24 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 17', 'equals', 'Entity17', 'Text17', '2023-01-25 00:00:00', '2023-01-26 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 18', 'less_than', 'Entity18', NULL, '2023-01-27 00:00:00', '2023-01-28 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 19', 'greater_than', 'Entity19', 'Text19', NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(UUID(), 'Context Desc 20', 'not_equal', 'Entity20', 'Text20', '2023-01-29 00:00:00', '2023-01-30 00:00:00', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+select * from Context
