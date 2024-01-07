@@ -205,7 +205,7 @@ export const CreateContextForm = () => {
                         )}
                     />
                 )}
-                <div className="flex justify-between">
+                <div className="flex flex-col space-y-4">
                     <Button onClick={() => setPreviewClicked(!previewClicked)}>
                         {previewClicked ? 'Hide Preview' : 'Preview'}
                     </Button>
