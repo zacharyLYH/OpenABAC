@@ -23,3 +23,13 @@ UPDATE Context
 SET contextDescription = ?, operator = ?, entity = ?, textValue = ?, timeValue1 = ?, timeValue2 = ?
 WHERE id = ?;
 `;
+
+export const GET_ALL_CONTEXT = `
+SELECT id, contextDescription, operator, entity, textValue, timeValue1, timeValue2
+FROM Context;
+`;
+
+export const GET_CONTEXT_COUNT = `
+SELECT COUNT(*) AS count
+FROM Context;
+`;
