@@ -35,13 +35,13 @@ export interface Action {
 }
 
 export interface Context {
-    id: string;
+    id?: string;
     contextDescription: string;
     operator: string;
     entity: string;
-    textValue: string | null;
-    timeValue1: Date | null;
-    timeValue2: Date | null;
-    modifiedDate: Date;
-    createdDate: Date;
+    textValue?: string | undefined;
+    timeValue1?: string | undefined;
+    timeValue2?: string | undefined;
+    modifiedDate?: Date;
+    createdDate?: Date;
 }
