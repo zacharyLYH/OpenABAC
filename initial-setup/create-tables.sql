@@ -71,8 +71,8 @@ CREATE TABLE Context (
     operator VARCHAR(255) NOT NULL,
     entity VARCHAR(255) NOT NULL,
     textValue TEXT,
-    timeValue1 DATETIME,
-    timeValue2 DATETIME,
+    timeValue1 VARCHAR(255),
+    timeValue2 VARCHAR(255),
     modifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
