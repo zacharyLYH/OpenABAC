@@ -22,6 +22,11 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useState } from 'react';
+import { createContext } from '@/lib/service/context/create-context';
+import { Circle } from 'lucide-react';
+import { toast } from 'sonner';
+import useContextStore from '@/zustand/edit-pages/context-store';
+import useAppStore from '@/zustand/app-store';
 
 const createContextSchema = z
     .object({
@@ -48,6 +53,8 @@ const createContextSchema = z
     );
 
 export const CreateContextForm = () => {
+    const { setCreatedContext } = useContextStore();
+    const { toggleModal } = useAppStore();
     const [previewClicked, setPreviewClicked] = useState(false);
     const form = useForm<z.infer<typeof createContextSchema>>({
         resolver: zodResolver(createContextSchema),
@@ -60,10 +67,16 @@ export const CreateContextForm = () => {
     const textValue = form.watch('textValue');
     const timeValue1 = form.watch('timeValue1');
     const timeValue2 = form.watch('timeValue2');
-    function onSubmit(values: z.infer<typeof createContextSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof createContextSchema>) {
+        try {
+            await createContext(values);
+            setCreatedContext(values); //untested
+            toggleModal();
+            toast.success('Context created successfully.');
+        } catch (e) {
+            console.log(e);
+            toast.error('Something went wrong...');
+        }
     }
     return (
         <Form {...form}>
@@ -206,7 +219,10 @@ export const CreateContextForm = () => {
                     />
                 )}
                 <div className="flex flex-col space-y-4">
-                    <Button onClick={() => setPreviewClicked(!previewClicked)}>
+                    <Button
+                        onClick={() => setPreviewClicked(!previewClicked)}
+                        type="button"
+                    >
                         {previewClicked ? 'Hide Preview' : 'Preview'}
                     </Button>
                     {previewClicked && (
@@ -217,7 +233,12 @@ export const CreateContextForm = () => {
                                 : textValue}
                         </code>
                     )}
-                    <Button type="submit">Submit</Button>
+                    <Button type="submit">
+                        {form.formState.isSubmitting ? (
+                            <Circle className="h-4 w-4 animate-spin mr-2" />
+                        ) : null}{' '}
+                        {form.formState.isSubmitting ? 'Submitting' : 'Submit'}
+                    </Button>
                 </div>
             </form>
         </Form>
