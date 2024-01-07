@@ -52,8 +52,8 @@ export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({
                 />
             )}
             <Button
-                size="sm"
-                variant="secondary"
+                size="default"
+                variant="default"
                 onClick={() => setModalOpen(!modalOpen)}
             >
                 Policies
