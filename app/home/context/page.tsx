@@ -3,7 +3,7 @@
 import { CreateContextForm } from '@/app/home/context/createContextForm';
 import { CreateButton } from '@/components/edit-page-components/create-button';
 import useContextStore from '@/zustand/edit-pages/context-store';
-import { AttachToAction } from './attachToAction';
+import { AttachToAction } from './attachAnAction';
 import { Separator } from '@/components/ui/separator';
 
 export default function ContextPage() {
