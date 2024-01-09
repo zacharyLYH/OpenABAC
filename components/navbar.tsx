@@ -13,6 +13,7 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import Image from "next/image"
 
 const components: { title: string; href: string; description: string }[] = [
     {
@@ -44,6 +45,12 @@ export function MainNav() {
     return (
         <NavigationMenu>
             <NavigationMenuList>
+                <Image
+                    src="/smaller-logo.png"
+                    alt="OpenABAC-logo"
+                    width={70}
+                    height={70}
+                />
                 <NavigationMenuItem>
                     <Link href="/home" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
