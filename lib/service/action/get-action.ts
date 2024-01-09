@@ -1,7 +1,9 @@
+import { SearchBarInterface } from '@/components/edit-page-components/search';
 import { db } from '@/lib/database';
 import { Action, Count, Query } from '@/lib/interface';
 import {
     GET_ACTION_COUNT,
+    GET_ACTION_VIA_SEARCH,
     GET_ALL_ACTIONS,
 } from '@/query/core-queries/actions/actions';
 
@@ -26,6 +28,21 @@ export const getActionCount = async () => {
         };
         const results = await db.query<Count[]>(query);
         return results[0].count;
+    }
+};
+
+export const getActionViaSearch = async () => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.map(item => ({
+            id: item.id,
+            value: item.actionName
+        }));
+    } else {
+        const query: Query = {
+            sql: GET_ACTION_VIA_SEARCH,
+        };
+        const results = await db.query<SearchBarInterface[]>(query);
+        return results
     }
 };
 

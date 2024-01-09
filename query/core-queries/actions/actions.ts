@@ -64,3 +64,8 @@ export const GET_ACTION_COUNT = `
 SELECT COUNT(*) AS count
 FROM Action;
 `;
+
+export const GET_ACTION_VIA_SEARCH = `
+SELECT id AS id, actionName AS value
+FROM Action;
+`
