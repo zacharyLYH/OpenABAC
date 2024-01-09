@@ -12,7 +12,8 @@ DATABASE_HOST_DEV=localhost
 DATABASE_USER_DEV=user1
 DATABASE_PASSWORD_DEV=password1
 DATABASE_NAME_DEV=openabac
-IS_PRODUCTION=false
+IS_PRODUCTION=false (Set to true in production)
+USE_PRODUCTION_DB=false (Set to true if using Docker MySQL or in production)
 ```
 
 First, set up a local database:
