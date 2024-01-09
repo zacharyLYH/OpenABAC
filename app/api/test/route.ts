@@ -7,10 +7,15 @@ interface QueryResult {
 }
 
 export async function GET() {
-    const query: Query = {
-        sql: `SELECT 1 AS TEST`,
-        params: [],
-    };
-    const result = await db.query<QueryResult[]>(query);
-    return NextResponse.json({ message: result[0].TEST }, { status: 200 });
+    if (process.env.USE_PRODUCTION_DB === 'true') {
+        const query: Query = {
+            sql: `SELECT 1 AS TEST`,
+            params: [],
+        };
+        const result = await db.query<QueryResult[]>(query);
+        return NextResponse.json({ message: result[0].TEST }, { status: 200 });
+    } else {
+        return NextResponse.json({ message: "Not using DB" }, { status: 200 });
+
+    }
 }
