@@ -27,6 +27,7 @@ import { Circle } from 'lucide-react';
 import { toast } from 'sonner';
 import useContextStore from '@/zustand/edit-pages/context-store';
 import useAppStore from '@/zustand/app-store';
+import { PreviewCreateContext } from './previewCreateContext';
 
 const createContextSchema = z
     .object({
@@ -225,14 +226,7 @@ export const CreateContextForm = () => {
                     >
                         {previewClicked ? 'Hide Preview' : 'Preview'}
                     </Button>
-                    {previewClicked && (
-                        <code>
-                            Allow access if {entity} {operator}{' '}
-                            {operator === 'BETWEEN'
-                                ? `${timeValue1} and ${timeValue2}`
-                                : textValue}
-                        </code>
-                    )}
+                    {previewClicked && <PreviewCreateContext context={{ entity: entity, operator: operator, timeValue1: timeValue1, timeValue2: timeValue2, textValue: textValue, contextDescription: "" }} />}
                     <Button type="submit">
                         {form.formState.isSubmitting ? (
                             <Circle className="h-4 w-4 animate-spin mr-2" />
