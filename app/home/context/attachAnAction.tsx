@@ -33,7 +33,7 @@ export const AttachToAction = () => {
                 setIsFetching(false)
             }
         };
-        if (actionsForSearch.length === 0) {
+        if (searchAndSelect) {
             fetchAllContext();
         }
     }, [searchAndSelect]);
