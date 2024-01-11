@@ -102,7 +102,9 @@ export const AttachToAction = () => {
                                     <Skeleton className="h-8 w-full" />
                                 </div>
                             ) : (
-                                <SearchBar objName="actions to add" data={actionsForSearch ?? []} placeholder="Search Actions..." />
+                                <>
+                                    <SearchAndSelect container={selectedActionsFromSearch} setContainer={setSelectedActionsFromSearch} objName="actions to add" data={actionsForSearch ?? []} placeholder="Search Actions..." />
+                                </>
                             )
                         )
                     }
