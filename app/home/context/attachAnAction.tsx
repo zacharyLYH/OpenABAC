@@ -14,7 +14,7 @@ import { PreviewCreateContext } from "./previewCreateContext"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const AttachToAction = () => {
-    const { createdContext, setCreatedContext, contextForSearch, setContextForSearch } = useContextStore()
+    const { createdContext, setCreatedContext, actionsForSearch, setActionsForSearch } = useContextStore()
     const [searchBar, toggleSearchBar] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     useEffect(() => {
@@ -26,14 +26,14 @@ export const AttachToAction = () => {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                setContextForSearch(data.message);
+                setActionsForSearch(data.message);
             } catch (error) {
                 console.error('Error fetching data:', error);
             } finally {
                 setIsFetching(false)
             }
         };
-        if (contextForSearch.length === 0) {
+        if (actionsForSearch.length === 0) {
             fetchAllContext();
         }
     }, [searchBar]);
@@ -102,7 +102,7 @@ export const AttachToAction = () => {
                                     <Skeleton className="h-16 w-3/4" />
                                 </div>
                             ) : (
-                                <SearchBar objName="actions to add" data={contextForSearch ?? []} placeholder="Search Actions..." />
+                                <SearchBar objName="actions to add" data={actionsForSearch ?? []} placeholder="Search Actions..." />
                             )
                         )
                     }

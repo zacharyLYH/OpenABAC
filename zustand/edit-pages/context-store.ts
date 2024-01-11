@@ -5,8 +5,10 @@ import { create } from 'zustand';
 interface ContextStore {
     createdContext: Context | null;
     setCreatedContext: (context: Context | null) => void;
-    contextForSearch: SearchBarInterface[] | [];
-    setContextForSearch: (contexts: SearchBarInterface[] | []) => void;
+    actionsForSearch: SearchBarInterface[] | [];
+    setActionsForSearch: (contexts: SearchBarInterface[] | []) => void;
+    selectedActionsFromSearch: SearchBarInterface[] | [];
+    setSelectedActionsFromSearch: (contexts: SearchBarInterface[] | []) => void;
 }
 
 const useContextStore = create<ContextStore>(set => ({
@@ -24,9 +26,12 @@ const useContextStore = create<ContextStore>(set => ({
     },
     setCreatedContext: (context: Context | null) =>
         set({ createdContext: context }),
-    contextForSearch: [],
-    setContextForSearch: (contexts: SearchBarInterface[] | []) =>
-        set({ contextForSearch: contexts }),
+    actionsForSearch: [],
+    setActionsForSearch: (actions: SearchBarInterface[] | []) =>
+        set({ actionsForSearch: actions }),
+    selectedActionsFromSearch: [],
+    setSelectedActionsFromSearch: (actions: SearchBarInterface[] | []) =>
+        set({ selectedActionsFromSearch: actions }),
 }));
 
 export default useContextStore;
