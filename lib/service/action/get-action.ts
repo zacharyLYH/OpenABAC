@@ -1,4 +1,4 @@
-import { SearchBarInterface } from '@/components/edit-page-components/search';
+import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { db } from '@/lib/database';
 import { Action, Count, Query } from '@/lib/interface';
 import {
@@ -41,7 +41,7 @@ export const getActionViaSearch = async () => {
         const query: Query = {
             sql: GET_ACTION_VIA_SEARCH,
         };
-        const results = await db.query<SearchBarInterface[]>(query);
+        const results = await db.query<SearchAndSelectInterface[]>(query);
         return results
     }
 };
