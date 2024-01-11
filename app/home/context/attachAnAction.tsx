@@ -96,10 +96,10 @@ export const AttachToAction = () => {
                         searchBar && (
                             isFetching ? (
                                 <div className="space-y-2">
-                                    <Skeleton className="h-16 w-3/4" />
-                                    <Skeleton className="h-16 w-3/4" />
-                                    <Skeleton className="h-16 w-3/4" />
-                                    <Skeleton className="h-16 w-3/4" />
+                                    <Skeleton className="h-4 w-full" />
+                                    <Skeleton className="h-4 w-full" />
+                                    <Skeleton className="h-4 w-full" />
+                                    <Skeleton className="h-4 w-full" />
                                 </div>
                             ) : (
                                 <SearchBar objName="actions to add" data={actionsForSearch ?? []} placeholder="Search Actions..." />
