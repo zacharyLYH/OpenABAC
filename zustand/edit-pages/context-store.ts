@@ -1,14 +1,14 @@
-import { SearchBarInterface } from '@/components/edit-page-components/search';
+import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { Context } from '@/lib/interface';
 import { create } from 'zustand';
 
 interface ContextStore {
     createdContext: Context | null;
     setCreatedContext: (context: Context | null) => void;
-    actionsForSearch: SearchBarInterface[] | [];
-    setActionsForSearch: (contexts: SearchBarInterface[] | []) => void;
-    selectedActionsFromSearch: SearchBarInterface[] | [];
-    setSelectedActionsFromSearch: (contexts: SearchBarInterface[] | []) => void;
+    actionsForSearch: SearchAndSelectInterface[] | [];
+    setActionsForSearch: (contexts: SearchAndSelectInterface[] | []) => void;
+    selectedActionsFromSearch: SearchAndSelectInterface[] | [];
+    setSelectedActionsFromSearch: (actions: SearchAndSelectInterface[] | []) => void;
 }
 
 const useContextStore = create<ContextStore>(set => ({
@@ -27,10 +27,10 @@ const useContextStore = create<ContextStore>(set => ({
     setCreatedContext: (context: Context | null) =>
         set({ createdContext: context }),
     actionsForSearch: [],
-    setActionsForSearch: (actions: SearchBarInterface[] | []) =>
+    setActionsForSearch: (actions: SearchAndSelectInterface[] | []) =>
         set({ actionsForSearch: actions }),
     selectedActionsFromSearch: [],
-    setSelectedActionsFromSearch: (actions: SearchBarInterface[] | []) =>
+    setSelectedActionsFromSearch: (actions: SearchAndSelectInterface[] | []) =>
         set({ selectedActionsFromSearch: actions }),
 }));
 
