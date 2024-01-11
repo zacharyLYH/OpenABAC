@@ -5,9 +5,11 @@ import { CreateButton } from '@/components/edit-page-components/create-button';
 import useContextStore from '@/zustand/edit-pages/context-store';
 import { AttachToAction } from './attachAnAction';
 import { Separator } from '@/components/ui/separator';
+import { EditButton } from '@/components/edit-page-components/edit-button';
 
 export default function ContextPage() {
     const { createdContext } = useContextStore()
+
     return (
         <div className='p-8'>
             <div className='flex flex-row justify-between'>
@@ -19,7 +21,7 @@ export default function ContextPage() {
             <div className='flex justify-center '>
                 {createdContext ? <AttachToAction /> : null}
             </div>
-
+            <EditButton getDataEndpoint='/api/context/getAll' entity='Context' />
         </div>
     );
 }
