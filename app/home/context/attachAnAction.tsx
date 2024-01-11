@@ -9,13 +9,13 @@ import { TextBubble } from "@/components/ui/text-bubble"
 import { Button } from "@/components/ui/button"
 import useContextStore from "@/zustand/edit-pages/context-store"
 import { useEffect, useState } from "react"
-import { SearchBar } from "@/components/edit-page-components/search"
+import { SearchAndSelect } from "@/components/edit-page-components/search"
 import { PreviewCreateContext } from "./previewCreateContext"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export const AttachToAction = () => {
-    const { createdContext, setCreatedContext, actionsForSearch, setActionsForSearch } = useContextStore()
-    const [searchBar, toggleSearchBar] = useState(false)
+    const { createdContext, setCreatedContext, actionsForSearch, setActionsForSearch, setSelectedActionsFromSearch, selectedActionsFromSearch } = useContextStore()
+    const [searchAndSelect, toggleSearchAndSelect] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     useEffect(() => {
         const fetchAllContext = async () => {
@@ -36,7 +36,7 @@ export const AttachToAction = () => {
         if (actionsForSearch.length === 0) {
             fetchAllContext();
         }
-    }, [searchBar]);
+    }, [searchAndSelect]);
     return (
         <>
             {createdContext &&
@@ -79,11 +79,11 @@ export const AttachToAction = () => {
                             <PreviewCreateContext context={createdContext} />
                         </CardFooter>
                     </Card>
-                    {!searchBar &&
+                    {!searchAndSelect &&
                         <>
                             <p className="mt-4 font-mono">Would you like to attach this context to an Action while you're here? </p>
                             <div className="flex mx-2 gap-x-2">
-                                <Button onClick={() => toggleSearchBar(true)} className="w-1/2">
+                                <Button onClick={() => toggleSearchAndSelect(true)} className="w-1/2">
                                     Let's do it
                                 </Button>
                                 <Button onClick={() => setCreatedContext(null)} variant="destructive" className="w-1/2">
@@ -93,7 +93,7 @@ export const AttachToAction = () => {
                         </>
                     }
                     {
-                        searchBar && (
+                        searchAndSelect && (
                             isFetching ? (
                                 <div className="space-y-2 mt-4">
                                     <Skeleton className="h-8 w-full" />
