@@ -3,29 +3,49 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Trash } from 'lucide-react';
 
-export interface SearchBarInterface {
+export interface SearchAndSelectInterface {
     id: string;
     value: string;
 }
 
-interface SearchBarProps {
+interface SearchAndSelectProps {
     objName?: string;
     placeholder: string;
-    data: SearchBarInterface[]
+    data: SearchAndSelectInterface[]
+    container: SearchAndSelectInterface[] | []
+    setContainer: (obj: SearchAndSelectInterface[] | []) => void
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ objName, placeholder, data }) => {
+export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, placeholder, data, setContainer, container }) => {
     const [query, setQuery] = useState('');
-    const [filteredData, setFilteredData] = useState<SearchBarInterface[]>([]);
+    const [filteredData, setFilteredData] = useState<SearchAndSelectInterface[]>([]);
+
 
     const handleSearch = (searchQuery: string) => {
         setQuery(searchQuery);
-        const filtered = data.filter(item =>
+
+        const filtered = data.filter((item) =>
+            !container.some((containerItem) => containerItem.id === item.id) &&
             item.value.toLowerCase().includes(searchQuery.toLowerCase())
         );
+
         setFilteredData(filtered);
     };
+
+    const selectItem = (item: SearchAndSelectInterface) => {
+        setContainer([...container, item]);
+        const updatedFilteredData = filteredData.filter((filteredItem) => filteredItem.id !== item.id);
+        setFilteredData(updatedFilteredData);
+    }
+
+    const deSelectItem = (item: SearchAndSelectInterface) => {
+        const removedItem = container.filter((containerItem) => containerItem.id !== item.id);
+        setContainer(removedItem);
+        setFilteredData([...filteredData, item]);
+    }
 
     return (
         <div className="flex flex-col mt-2 w-full items-center gap-1.5">
@@ -39,14 +59,24 @@ export const SearchBar: React.FC<SearchBarProps> = ({ objName, placeholder, data
                 onChange={(e) => handleSearch(e.target.value)}
             />
             {query && (
-                <div className="w-full bg-slate-700 border rounded-2xl max-h-60 overflow-auto">
+                <div className="w-full max-h-60 overflow-auto">
                     {filteredData.map(item => (
-                        <div key={item.id} className="p-2 hover:bg-slate-500 hover:cursor-pointer">
+                        <Button variant="outline" onClick={() => selectItem(item)} key={item.id} className="bg-slate-500 w-full justify-start">
                             {item.value}
-                        </div>
+                        </Button>
                     ))}
                 </div>
             )}
+            {container.length > 0 &&
+                container.map((item) => (
+                    <div key={item.id} className='flex flex-row gap-x-8'>
+                        <p>{item.id}{"    "}{item.value}</p>
+                        <Button onClick={() => deSelectItem(item)}>
+                            <Trash className='w-4 h-4' />
+                        </Button>
+                    </div>
+                ))
+            }
         </div>
     );
 };
