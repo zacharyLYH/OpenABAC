@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import { SearchAndSelect, SearchAndSelectInterface } from "./search";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ArrowLeft } from "lucide-react";
 
 interface EditButtonInterface {
     getDataEndpoint: string
     entity: string
+    editClickedIndicator: boolean
+    setEditClickedIndicator: (clicked: boolean) => void
 }
 
-export const EditButton: React.FC<EditButtonInterface> = ({ getDataEndpoint, entity }) => {
+export const EditButton: React.FC<EditButtonInterface> = ({ getDataEndpoint, entity, setEditClickedIndicator, editClickedIndicator }) => {
     const [data, setData] = useState<SearchAndSelectInterface[]>([])
     const [selected, setSelected] = useState<SearchAndSelectInterface[]>([])
-    const [edit, toggleEdit] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     useEffect(() => {
         const fetchAllData = async () => {
@@ -29,15 +31,15 @@ export const EditButton: React.FC<EditButtonInterface> = ({ getDataEndpoint, ent
                 setIsFetching(false)
             }
         }
-        if (edit) {
+        if (editClickedIndicator) {
             fetchAllData()
         }
-    }, [edit])
+    }, [editClickedIndicator])
     return (
         <>
-            {!edit ? (
-                <Button onClick={() => toggleEdit(!edit)}>
-                    {edit ? "Close editor" : `Edit ${entity}`}
+            {!editClickedIndicator ? (
+                <Button size="lg" onClick={() => setEditClickedIndicator(!editClickedIndicator)}>
+                    {editClickedIndicator ? "Close editor" : `Edit ${entity}`}
                 </Button>
             ) : (
                 <>
