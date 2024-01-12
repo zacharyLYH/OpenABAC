@@ -1,5 +1,5 @@
 export const GET_CONTEXT_GIVEN_ID = `
-SELECT contextDescription, operator, entity, textValue, timeValue1, timeValue2
+SELECT id, contextDescription, operator, entity, textValue, timeValue1, timeValue2
 FROM Context
 WHERE id = ?;
 `;
