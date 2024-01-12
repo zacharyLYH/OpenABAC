@@ -12,6 +12,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import { MultiSkeleton } from '@/components/ui/multi-skeleton';
+import { CopyButton } from '../table/copy-button';
 
 
 export interface SearchAndSelectInterface {
@@ -129,17 +131,20 @@ const QuickView = ({ id, entity }: { id: string, entity: string }) => {
                     <SheetTitle>{isFetching ? "Loading..." : entity}</SheetTitle>
                 </SheetHeader>
                 {isFetching ? (
-                    "Loading..."
+                    <MultiSkeleton number={4} />
                 ) : data.length === 1 && (
-                    <ul>
-                        {Object.entries(data[0]).map(([key, value]) => (
-                            (value !== null && value !== undefined) && (
-                                <li key={key}>
-                                    <strong>{key}:</strong> {value.toString()}
-                                </li>
-                            )
-                        ))}
-                    </ul>
+                    <>
+                        <ul className='my-2'>
+                            {Object.entries(data[0]).map(([key, value]) => (
+                                (value !== null && value !== undefined) && (
+                                    <li key={key}>
+                                        <strong>{key}:</strong> {value.toString()}
+                                    </li>
+                                )
+                            ))}
+                        </ul>
+                        <CopyButton data={data} />
+                    </>
                 )}
             </SheetContent>
         </Sheet>

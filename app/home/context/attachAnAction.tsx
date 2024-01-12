@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { SearchAndSelect } from "@/components/edit-page-components/search"
 import { PreviewCreateContext } from "./previewCreateContext"
 import { Skeleton } from "@/components/ui/skeleton"
+import { MultiSkeleton } from "@/components/ui/multi-skeleton"
 
 export const AttachToAction = () => {
     const { createdContext, setCreatedContext, actionsForSearch, setActionsForSearch, setSelectedActionsFromSearch, selectedActionsFromSearch } = useContextStore()
@@ -96,10 +97,7 @@ export const AttachToAction = () => {
                         searchAndSelect && (
                             isFetching ? (
                                 <div className="space-y-2 mt-4">
-                                    <Skeleton className="h-8 w-full" />
-                                    <Skeleton className="h-8 w-full" />
-                                    <Skeleton className="h-8 w-full" />
-                                    <Skeleton className="h-8 w-full" />
+                                    <MultiSkeleton number={5} />
                                 </div>
                             ) : (
                                 <>

@@ -3,6 +3,7 @@ import { SearchAndSelect, SearchAndSelectInterface } from "./search";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
+import { MultiSkeleton } from "../ui/multi-skeleton";
 
 interface EditButtonInterface {
     getDataEndpoint: string
@@ -43,15 +44,13 @@ export const EditButton: React.FC<EditButtonInterface> = ({ getDataEndpoint, ent
                 </Button>
             ) : (
                 <>
+                    <Button variant="outline" className="max-w-40" onClick={() => { setEditClickedIndicator(false); setSelected([]) }}><ArrowLeft className="w-5 h-5" />Back</Button>
                     {isFetching ? (
                         <div className="space-y-2 mt-4">
-                            {[...Array(15)].map((_, index) => (
-                                <Skeleton key={index} className="h-8 w-full" />
-                            ))}
+                            <MultiSkeleton />
                         </div>
                     ) : (
                         <>
-                            <Button variant="outline" className="max-w-40" onClick={() => { setEditClickedIndicator(false); setSelected([]) }}><ArrowLeft className="w-5 h-5" />Back</Button>
                             {selected.length === 0 ?
                                 <SearchAndSelect
                                     objName={`${entity}`}
