@@ -21,7 +21,7 @@ export const AttachToAction = () => {
         const fetchAllContext = async () => {
             try {
                 setIsFetching(true)
-                const response = await fetch("/api/context/getAll", { cache: "no-cache" });
+                const response = await fetch("/api/action/getAll", { cache: "no-cache" });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -103,7 +103,7 @@ export const AttachToAction = () => {
                                 </div>
                             ) : (
                                 <>
-                                    <SearchAndSelect container={selectedActionsFromSearch} setContainer={setSelectedActionsFromSearch} objName="actions to add" data={actionsForSearch ?? []} placeholder="Search Actions..." />
+                                    <SearchAndSelect container={selectedActionsFromSearch} setContainer={setSelectedActionsFromSearch} objName="Action" data={actionsForSearch ?? []} placeholder="Search Actions..." />
                                 </>
                             )
                         )
