@@ -51,7 +51,7 @@ export const EditButton: React.FC<EditButtonInterface> = ({ getDataEndpoint, ent
                         </div>
                     ) : (
                         <>
-                            <Button variant="outline" className="max-w-40" onClick={() => setEditClickedIndicator(false)}><ArrowLeft className="w-5 h-5" />Back</Button>
+                            <Button variant="outline" className="max-w-40" onClick={() => { setEditClickedIndicator(false); setSelected([]) }}><ArrowLeft className="w-5 h-5" />Back</Button>
                             {selected.length === 0 ?
                                 <SearchAndSelect
                                     objName={`${entity}`}
