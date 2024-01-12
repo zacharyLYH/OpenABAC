@@ -85,8 +85,8 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, place
             {container.length > 0 &&
                 container.map((item) => (
                     <div key={item.id} className='flex w-3/4 flex-row gap-x-8 justify-between items-center'>
-                        <p className='text-medium text-muted-foreground'>{item.value}</p>
-                        <Button variant="destructive" onClick={() => deSelectItem(item)}>
+                        <p key={item.id} className='text-medium text-muted-foreground'>{item.value}</p>
+                        <Button key={item.id} variant="destructive" onClick={() => deSelectItem(item)}>
                             <Trash className='w-4 h-4' />
                         </Button>
                     </div>
