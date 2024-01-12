@@ -14,7 +14,7 @@ interface ModalProps {
     title: string;
     description?: string;
     isOpen: boolean;
-    onClose: () => void;
+    onClose?: () => void;
     children?: React.ReactNode;
     contentClassName?: string;
 }
@@ -28,9 +28,9 @@ export const DataModal: React.FC<ModalProps> = ({
     contentClassName,
 }) => {
     const onChange = (open: boolean) => {
-        if (!open) {
-            onClose();
-        }
+        // if (!open) {
+        //     onClose();
+        // }
     };
 
     const contentRef = useRef<HTMLDivElement | null>(null);
