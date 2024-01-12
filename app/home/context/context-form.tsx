@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,15 +21,20 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createContext } from '@/lib/service/context/create-context';
 import { Circle } from 'lucide-react';
 import { toast } from 'sonner';
 import useContextStore from '@/zustand/edit-pages/context-store';
 import useAppStore from '@/zustand/app-store';
 import { PreviewCreateContext } from './previewCreateContext';
+import { Context } from '@/lib/interface';
 
-const createContextSchema = z
+export interface ContextFormProps {
+    initialData?: Context
+}
+
+const contextSchema = z
     .object({
         contextDescription: z.string().min(2).max(255),
         operator: z.string().min(1).max(255),
@@ -53,14 +58,19 @@ const createContextSchema = z
         },
     );
 
-export const CreateContextForm = () => {
+export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
     const { setCreatedContext } = useContextStore();
     const { toggleModal } = useAppStore();
     const [previewClicked, setPreviewClicked] = useState(false);
-    const form = useForm<z.infer<typeof createContextSchema>>({
-        resolver: zodResolver(createContextSchema),
+    const form = useForm<z.infer<typeof contextSchema>>({
+        resolver: zodResolver(contextSchema),
         defaultValues: {
-            operator: '<',
+            contextDescription: initialData?.contextDescription ?? '',
+            operator: initialData?.operator ?? '<',
+            entity: initialData?.entity ?? '',
+            textValue: initialData?.textValue ?? '',
+            timeValue1: initialData?.timeValue1 ?? '',
+            timeValue2: initialData?.timeValue2 ?? '',
         },
     });
     const entity = form.watch('entity');
@@ -68,10 +78,17 @@ export const CreateContextForm = () => {
     const textValue = form.watch('textValue');
     const timeValue1 = form.watch('timeValue1');
     const timeValue2 = form.watch('timeValue2');
-    async function onSubmit(values: z.infer<typeof createContextSchema>) {
+    async function onSubmit(values: z.infer<typeof contextSchema>) {
         try {
-            await createContext(values);
-            setCreatedContext(values); //untested
+            console.log("HOLA")
+            if (initialData) {
+                console.log(initialData)
+                // await updateContext();
+            } else {
+                console.log(values)
+                // await createContext(values);
+                // setCreatedContext(values); //untested
+            }
             toggleModal();
             toast.success('Context created successfully.');
         } catch (e) {
@@ -79,9 +96,11 @@ export const CreateContextForm = () => {
             toast.error('Something went wrong...');
         }
     }
+    // console.log("INIT: ", initialData)
+    const onError = (error: FieldErrors<{ contextDescription: string; operator: string; entity: string; textValue?: string | undefined; timeValue1?: string | undefined; timeValue2?: string | undefined; }>) => console.log(error)
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
                 <FormField
                     control={form.control}
                     name="contextDescription"

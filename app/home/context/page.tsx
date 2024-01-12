@@ -1,6 +1,6 @@
 "use client"
 
-import { CreateContextForm } from '@/app/home/context/createContextForm';
+import { ContextForm } from '@/app/home/context/context-form';
 import { CreateButton } from '@/components/edit-page-components/create-button';
 import useContextStore from '@/zustand/edit-pages/context-store';
 import { AttachToAction } from './attachAnAction';
@@ -18,9 +18,10 @@ export default function ContextPage() {
             <Separator className='my-4' />
             <div className='flex flex-col gap-y-4'>
                 {createdContext ? null :
-                    !editClickedIndicator ? <CreateButton objName="Context" form={<CreateContextForm />} /> : null}
+                    !editClickedIndicator ? <CreateButton objName="Context" form={<ContextForm />} /> : null}
                 {createdContext ? null :
-                    <EditButton editClickedIndicator={editClickedIndicator} setEditClickedIndicator={setEditClickedIndicator} getDataEndpoint='/api/context/getAll' entity='Context' />}
+                    <EditButton getDataByIdEndpoint='/api/context/getById' renderEditForm={(data) => <ContextForm initialData={data} />} editClickedIndicator={editClickedIndicator}
+                        setEditClickedIndicator={setEditClickedIndicator} getDataEndpoint='/api/context/getAll' entity='Context' />}
             </div>
             <div className='flex justify-center '>
                 {createdContext ? <AttachToAction /> : null}
