@@ -33,3 +33,8 @@ export const GET_CONTEXT_COUNT = `
 SELECT COUNT(*) AS count
 FROM Context;
 `;
+
+export const GET_CONTEXT_VIA_SEARCH = `
+SELECT id AS id, contextDescription AS value
+FROM Action;
+`

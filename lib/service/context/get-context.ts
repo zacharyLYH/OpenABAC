@@ -1,8 +1,11 @@
+import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { db } from '@/lib/database';
 import { Context, Count, Query } from '@/lib/interface';
 import {
     GET_ALL_CONTEXT,
     GET_CONTEXT_COUNT,
+    GET_CONTEXT_GIVEN_ID,
+    GET_CONTEXT_VIA_SEARCH,
 } from '@/query/core-queries/context/context';
 
 export const getAllContext = async () => {
@@ -26,6 +29,34 @@ export const getContextCount = async () => {
         };
         const results = await db.query<Count[]>(query);
         return results[0].count;
+    }
+};
+
+export const getContextById = async (id: string) => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.filter((mock) => mock.id === id)
+    } else {
+        const query: Query = {
+            sql: GET_CONTEXT_GIVEN_ID,
+            params: [id]
+        };
+        const results = await db.query<Context[]>(query);
+        return results
+    }
+}
+
+export const getContextViaSearch = async () => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.map(item => ({
+            id: item.id,
+            value: item.contextDescription
+        }));
+    } else {
+        const query: Query = {
+            sql: GET_CONTEXT_VIA_SEARCH,
+        };
+        const results = await db.query<SearchAndSelectInterface[]>(query);
+        return results
     }
 };
 
