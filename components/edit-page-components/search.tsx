@@ -2,9 +2,17 @@
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
+
 
 export interface SearchAndSelectInterface {
     id: string;
@@ -22,7 +30,6 @@ interface SearchAndSelectProps {
 export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, placeholder, data, setContainer, container }) => {
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState<SearchAndSelectInterface[]>([]);
-
 
     const handleSearch = (searchQuery: string) => {
         setQuery(searchQuery);
@@ -61,9 +68,15 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, place
             {query && (
                 <div className="w-full max-h-60 overflow-auto">
                     {filteredData.map(item => (
-                        <Button variant="outline" onClick={() => selectItem(item)} key={item.id} className="bg-slate-500 w-full justify-start">
-                            {item.value}
-                        </Button>
+                        <div className='flex justify-between' id={item.id}>
+                            <Button variant="outline" onClick={() => selectItem(item)} key={item.id} className="bg-slate-500 w-full justify-start">
+                                {item.value}
+                            </Button>
+                            {objName && ['Context', 'Action', 'Policy', 'User'].includes(objName) &&
+                                <QuickView id={item.id} entity={objName} />
+                            }
+                        </div>
+
                     ))}
                 </div>
             )}
@@ -80,3 +93,55 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, place
         </div>
     );
 };
+
+const QuickView = ({ id, entity }: { id: string, entity: string }) => {
+    const [data, setData] = useState<any[]>([])
+    const [isFetching, setIsFetching] = useState(false)
+    const [quickViewClicked, setQuickViewClicked] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsFetching(true)
+                const response = await fetch(`/api/${entity.toLowerCase()}/getById?id=${id}`);
+                const data = await response.json();
+                setData(data.message ? data.message : [])
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setIsFetching(false)
+            }
+        }
+        if (quickViewClicked) {
+            fetchData();
+        }
+    }, [quickViewClicked])
+
+    return (
+        <Sheet>
+            <SheetTrigger asChild>
+                <Button onClick={() => setQuickViewClicked(true)} variant="secondary" key={id} className="w-1/4 justify-center">
+                    Quick View
+                </Button>
+            </SheetTrigger>
+            <SheetContent side="top">
+                <SheetHeader>
+                    <SheetTitle>{isFetching ? "Loading..." : entity}</SheetTitle>
+                </SheetHeader>
+                {isFetching ? (
+                    "Loading..."
+                ) : data.length === 1 && (
+                    <ul>
+                        {Object.entries(data[0]).map(([key, value]) => (
+                            (value !== null && value !== undefined) && (
+                                <li key={key}>
+                                    <strong>{key}:</strong> {value.toString()}
+                                </li>
+                            )
+                        ))}
+                    </ul>
+                )}
+            </SheetContent>
+        </Sheet>
+    )
+}
