@@ -14,16 +14,16 @@ export const CreateButton: React.FC<CreateButtonProps> = ({
     form,
 }) => {
     const { modalOpen, toggleModal } = useAppStore();
-    const handleCloseModal = () => {
-        toggleModal();
-    };
+    // const handleCloseModal = () => {
+    //     toggleModal();
+    // };
     return (
         <>
             {modalOpen && (
                 <DataModal
                     title={`Create ${objName}`}
                     isOpen={modalOpen}
-                    onClose={handleCloseModal}
+                    // onClose={handleCloseModal}
                     children={form}
                     contentClassName="w-[70%]"
                 />
