@@ -2,6 +2,7 @@ import { SearchAndSelectInterface } from '@/components/edit-page-components/sear
 import { db } from '@/lib/database';
 import { Action, Count, Query } from '@/lib/interface';
 import {
+    GET_ACTION_BY_ID,
     GET_ACTION_COUNT,
     GET_ACTION_VIA_SEARCH,
     GET_ALL_ACTIONS,
@@ -45,6 +46,19 @@ export const getActionViaSearch = async () => {
         return results
     }
 };
+
+export const getActionById = async (id: string) => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.filter((mock) => mock.id === id)
+    } else {
+        const query: Query = {
+            sql: GET_ACTION_BY_ID,
+            params: [id]
+        };
+        const results = await db.query<Action[]>(query);
+        return results
+    }
+}
 
 const mockData = [
     {

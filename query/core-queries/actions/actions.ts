@@ -69,3 +69,10 @@ export const GET_ACTION_VIA_SEARCH = `
 SELECT id AS id, actionName AS value
 FROM Action;
 `
+
+//Untested
+export const GET_ACTION_BY_ID = `
+SELECT actionName, actionDescription, modifiedDate
+FROM Action
+WHERE ID = ?;
+`
