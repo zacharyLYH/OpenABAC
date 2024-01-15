@@ -14,6 +14,8 @@ import { PreviewCreateContext } from "./previewCreateContext"
 import { MultiSkeleton } from "@/components/ui/multi-skeleton"
 import { ArrowLeft, Link } from "lucide-react"
 import { toast } from "sonner"
+import { DataTable } from "@/components/table/data-table"
+import { attachColumn } from "@/components/table/column-defs/attach-column/attach-column"
 
 export const AttachToAction = () => {
     const { createdContext, setCreatedContext } = useContextStore()
@@ -54,6 +56,10 @@ export const AttachToAction = () => {
         } finally {
             setIsAttaching(false)
         }
+    }
+    const removeFromItemsToBeAttached = (item: SearchAndSelectInterface) => {
+        const newSelectected = selectedActionsFromSearch.filter((sel) => sel.id !== item.id)
+        setSelectedActionsFromSearch(newSelectected)
     }
     return (
         <>
@@ -122,9 +128,17 @@ export const AttachToAction = () => {
                                         <ArrowLeft className="w-5 h-5" />{selectedActionsFromSearch.length !== 0 ? "Remove all selections to go back" : "Back"}
                                     </Button>
                                     <SearchAndSelect container={selectedActionsFromSearch} setContainer={setSelectedActionsFromSearch} objName="Action" data={actionsForSearch ?? []} placeholder="Search Actions..." />
-                                    <Button onClick={attachContextToAction}>
-                                        <Link className="w-r h-4" />{isAttaching ? "Attaching..." : "Attach"}
-                                    </Button>
+                                    <DataTable
+                                        data={selectedActionsFromSearch}
+                                        columns={attachColumn(removeFromItemsToBeAttached)}
+                                        showColumnVisibilityDropdown={false}
+                                        showPagination={false}
+                                    />
+                                    {selectedActionsFromSearch.length > 0 &&
+                                        <Button onClick={attachContextToAction}>
+                                            <Link className="w-r h-4" />{isAttaching ? "Attaching..." : "Attach"}
+                                        </Button>
+                                    }
                                 </div>
                             )
                         )
