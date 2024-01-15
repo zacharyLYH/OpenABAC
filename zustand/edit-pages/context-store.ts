@@ -1,14 +1,9 @@
-import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { Context } from '@/lib/interface';
 import { create } from 'zustand';
 
 interface ContextStore {
     createdContext: Context | null;
     setCreatedContext: (context: Context | null) => void;
-    actionsForSearch: SearchAndSelectInterface[] | [];
-    setActionsForSearch: (contexts: SearchAndSelectInterface[] | []) => void;
-    selectedActionsFromSearch: SearchAndSelectInterface[] | [];
-    setSelectedActionsFromSearch: (actions: SearchAndSelectInterface[] | []) => void;
     editClickedIndicator: boolean;
     setEditClickedIndicator: (clicked: boolean) => void;
     deleteClickedIndicator: boolean;
@@ -30,12 +25,6 @@ const useContextStore = create<ContextStore>(set => ({
     },
     setCreatedContext: (context: Context | null) =>
         set({ createdContext: context }),
-    actionsForSearch: [],
-    setActionsForSearch: (actions: SearchAndSelectInterface[] | []) =>
-        set({ actionsForSearch: actions }),
-    selectedActionsFromSearch: [],
-    setSelectedActionsFromSearch: (actions: SearchAndSelectInterface[] | []) =>
-        set({ selectedActionsFromSearch: actions }),
     editClickedIndicator: false,
     setEditClickedIndicator: (clicked: boolean) =>
         set({ editClickedIndicator: clicked }),
