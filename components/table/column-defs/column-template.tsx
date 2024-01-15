@@ -5,6 +5,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { CopyButton } from "../copy-button";
 import { GetPoliciesButton } from "./user-column/show-user-policy-button";
 import { User } from "@/lib/interface";
+import { SearchAndSelectInterface } from "@/components/edit-page-components/search";
+import { DeleteRowButton } from "../delete-row-button";
+import { RemoveRowFromTableButton } from "../remove-row-from-table";
 
 export function selectColumn<T>(): ColumnDef<T>[] {
     return [
@@ -51,3 +54,20 @@ export function getPolicies<T extends User>(): ColumnDef<T>[] {
     ];
 }
 
+export function deleteButton<T extends SearchAndSelectInterface>(deleteEndpoint: string): ColumnDef<T>[] {
+    return [
+        {
+            id: "delete",
+            cell: ({ row }) => <DeleteRowButton itemId={row.original.id} deleteEndpoint={deleteEndpoint} />,
+        },
+    ];
+}
+
+export function removeFromDeleteList<T extends SearchAndSelectInterface>(removeFromItemsToBeDeleted: (item: SearchAndSelectInterface) => void): ColumnDef<T>[] {
+    return [
+        {
+            id: "delete",
+            cell: ({ row }) => <RemoveRowFromTableButton item={row.original} removeFunction={removeFromItemsToBeDeleted} />,
+        },
+    ];
+}
