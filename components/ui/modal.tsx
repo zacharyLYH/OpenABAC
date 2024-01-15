@@ -8,13 +8,13 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import useAppStore from '@/zustand/app-store';
 import { useEffect, useRef } from 'react';
 
 interface ModalProps {
     title: string;
     description?: string;
     isOpen: boolean;
-    onClose?: () => void;
     children?: React.ReactNode;
     contentClassName?: string;
 }
@@ -23,14 +23,16 @@ export const DataModal: React.FC<ModalProps> = ({
     title,
     description,
     isOpen,
-    onClose,
     children,
     contentClassName,
 }) => {
+
+    const { toggleModal } = useAppStore();
+
     const onChange = (open: boolean) => {
-        // if (!open) {
-        //     onClose();
-        // }
+        if (!open) {
+            toggleModal();
+        }
     };
 
     const contentRef = useRef<HTMLDivElement | null>(null);
