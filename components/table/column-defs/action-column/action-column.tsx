@@ -6,7 +6,7 @@ import { DataTableColumnHeader } from '../../column-header';
 import { copyColumn, selectColumn } from '../column-template';
 
 export const actionColumn: ColumnDef<Action>[] = [
-    ...selectColumn<Action>(),
+    // ...selectColumn<Action>(),
     {
         accessorKey: 'actionName',
         header: ({ column }) => (
