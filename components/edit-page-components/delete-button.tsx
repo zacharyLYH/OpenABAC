@@ -76,7 +76,6 @@ export const DeleteButton: React.FC<DeleteButtonInterface> = ({ getDataEndpoint,
                                 data={data}
                                 setContainer={setSelected}
                                 container={selected}
-                                showSelected={false}
                             />
                             <DataTable
                                 data={selected}

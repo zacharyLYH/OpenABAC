@@ -27,10 +27,9 @@ interface SearchAndSelectProps {
     data: SearchAndSelectInterface[]
     container: SearchAndSelectInterface[] | []
     setContainer: (obj: SearchAndSelectInterface[] | []) => void
-    showSelected?: boolean
 }
 
-export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, placeholder, data, setContainer, container, showSelected = true }) => {
+export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, placeholder, data, setContainer, container }) => {
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState<SearchAndSelectInterface[]>([]);
 
@@ -87,16 +86,6 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, place
                     ))}
                 </div>
             )}
-            {showSelected && container.length > 0 &&
-                container.map((item) => (
-                    <div key={item.id} className='flex w-3/4 flex-row gap-x-8 justify-between items-center'>
-                        <p key={item.id} className='text-medium text-muted-foreground'>{item.value}</p>
-                        <Button key={item.id} variant="destructive" onClick={() => deSelectItem(item)}>
-                            <X className='w-4 h-4' />
-                        </Button>
-                    </div>
-                ))
-            }
         </div>
     );
 };
