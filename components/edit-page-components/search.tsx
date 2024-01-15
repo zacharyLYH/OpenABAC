@@ -27,11 +27,16 @@ interface SearchAndSelectProps {
     data: SearchAndSelectInterface[]
     container: SearchAndSelectInterface[] | []
     setContainer: (obj: SearchAndSelectInterface[] | []) => void
+    showSelected?: boolean
 }
 
-export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, placeholder, data, setContainer, container }) => {
+export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, placeholder, data, setContainer, container, showSelected = true }) => {
     const [query, setQuery] = useState('');
     const [filteredData, setFilteredData] = useState<SearchAndSelectInterface[]>([]);
+
+    useEffect(() => {
+        handleSearch(query)
+    }, [container.length])
 
     const handleSearch = (searchQuery: string) => {
         setQuery(searchQuery);
@@ -46,14 +51,14 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, place
 
     const selectItem = (item: SearchAndSelectInterface) => {
         setContainer([...container, item]);
-        const updatedFilteredData = filteredData.filter((filteredItem) => filteredItem.id !== item.id);
-        setFilteredData(updatedFilteredData);
+        // const updatedFilteredData = filteredData.filter((filteredItem) => filteredItem.id !== item.id);
+        // setFilteredData(updatedFilteredData);
     }
 
     const deSelectItem = (item: SearchAndSelectInterface) => {
         const removedItem = container.filter((containerItem) => containerItem.id !== item.id);
         setContainer(removedItem);
-        setFilteredData([...filteredData, item]);
+        // setFilteredData([...filteredData, item]);
     }
 
     return (
@@ -82,7 +87,7 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, place
                     ))}
                 </div>
             )}
-            {container.length > 0 &&
+            {showSelected && container.length > 0 &&
                 container.map((item) => (
                     <div key={item.id} className='flex w-3/4 flex-row gap-x-8 justify-between items-center'>
                         <p key={item.id} className='text-medium text-muted-foreground'>{item.value}</p>
