@@ -15,7 +15,6 @@ export async function GET() {
         const result = await db.query<QueryResult[]>(query);
         return NextResponse.json({ message: result[0].TEST }, { status: 200 });
     } else {
-        return NextResponse.json({ message: "Not using DB" }, { status: 200 });
-
+        return NextResponse.json({ message: 'Not using DB' }, { status: 200 });
     }
 }

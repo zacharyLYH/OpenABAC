@@ -5,7 +5,11 @@ import { DataTableColumnHeader } from '../../column-header';
 import { deleteButton, removeFromDeleteList } from '../column-template';
 import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 
-export function deleteItemColumn<T extends SearchAndSelectInterface>(deleteEndpoint: string, removeFromItemsToBeDeleted: (item: SearchAndSelectInterface) => void, uiStateOnSuccessfulDelete: (id: string | string[]) => void): ColumnDef<T>[] {
+export function deleteItemColumn<T extends SearchAndSelectInterface>(
+    deleteEndpoint: string,
+    removeFromItemsToBeDeleted: (item: SearchAndSelectInterface) => void,
+    uiStateOnSuccessfulDelete: (id: string | string[]) => void,
+): ColumnDef<T>[] {
     return [
         {
             accessorKey: 'value',
@@ -14,6 +18,6 @@ export function deleteItemColumn<T extends SearchAndSelectInterface>(deleteEndpo
             ),
         },
         ...deleteButton<T>(deleteEndpoint, uiStateOnSuccessfulDelete),
-        ...removeFromDeleteList<T>(removeFromItemsToBeDeleted)
+        ...removeFromDeleteList<T>(removeFromItemsToBeDeleted),
     ];
 }

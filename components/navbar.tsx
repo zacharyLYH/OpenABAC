@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import Link from "next/link"
+import * as React from 'react';
+import Link from 'next/link';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -12,34 +12,33 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import Image from "next/image"
+} from '@/components/ui/navigation-menu';
+import Image from 'next/image';
 
 const components: { title: string; href: string; description: string }[] = [
     {
-        title: "User",
-        href: "/home/user",
+        title: 'User',
+        href: '/home/user',
         description:
-            "A user of your application who requires authorization through ABAC.",
+            'A user of your application who requires authorization through ABAC.',
     },
     {
-        title: "Action",
-        href: "/home/action",
-        description:
-            "An operation that a User wants to perform on a resource.",
+        title: 'Action',
+        href: '/home/action',
+        description: 'An operation that a User wants to perform on a resource.',
     },
     {
-        title: "Policies",
-        href: "/home/policy",
+        title: 'Policies',
+        href: '/home/policy',
         description:
-            "Sets of reusable and composable Actions to attach to Users.",
+            'Sets of reusable and composable Actions to attach to Users.',
     },
     {
-        title: "Context",
-        href: "/home/context",
-        description: "Contexts in which an Actions are valid.",
+        title: 'Context',
+        href: '/home/context',
+        description: 'Contexts in which an Actions are valid.',
     },
-]
+];
 
 export function MainNav() {
     return (
@@ -53,7 +52,9 @@ export function MainNav() {
                 />
                 <NavigationMenuItem>
                     <Link href="/home" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        <NavigationMenuLink
+                            className={navigationMenuTriggerStyle()}
+                        >
                             Overview
                         </NavigationMenuLink>
                     </Link>
@@ -62,7 +63,7 @@ export function MainNav() {
                     <NavigationMenuTrigger>Create/Modify</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            {components.map((component) => (
+                            {components.map(component => (
                                 <ListItem
                                     key={component.title}
                                     title={component.title}
@@ -74,21 +75,23 @@ export function MainNav() {
                         </ul>
                     </NavigationMenuContent>
                 </NavigationMenuItem>
-                <NavigationMenuItem >
+                <NavigationMenuItem>
                     <Link href="/settings" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        <NavigationMenuLink
+                            className={navigationMenuTriggerStyle()}
+                        >
                             Settings
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
-    )
+    );
 }
 
 const ListItem = React.forwardRef<
-    React.ElementRef<"a">,
-    React.ComponentPropsWithoutRef<"a">
+    React.ElementRef<'a'>,
+    React.ComponentPropsWithoutRef<'a'>
 >(({ className, title, children, ...props }, ref) => {
     return (
         <li>
@@ -96,18 +99,20 @@ const ListItem = React.forwardRef<
                 <a
                     ref={ref}
                     className={cn(
-                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                        className
+                        'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+                        className,
                     )}
                     {...props}
                 >
-                    <div className="text-sm font-medium leading-none">{title}</div>
+                    <div className="text-sm font-medium leading-none">
+                        {title}
+                    </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                         {children}
                     </p>
                 </a>
             </NavigationMenuLink>
         </li>
-    )
-})
-ListItem.displayName = "ListItem"
+    );
+});
+ListItem.displayName = 'ListItem';

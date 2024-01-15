@@ -30,7 +30,7 @@ const useContextStore = create<ContextStore>(set => ({
         set({ editClickedIndicator: clicked }),
     deleteClickedIndicator: false,
     setDeleteClickedIndicator: (clicked: boolean) =>
-        set({ deleteClickedIndicator: clicked })
+        set({ deleteClickedIndicator: clicked }),
 }));
 
 export default useContextStore;

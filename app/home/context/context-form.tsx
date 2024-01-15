@@ -31,7 +31,7 @@ import { PreviewCreateContext } from './previewCreateContext';
 import { Context } from '@/lib/interface';
 
 export interface ContextFormProps {
-    initialData?: Context
+    initialData?: Context;
 }
 
 const contextSchema = z
@@ -80,27 +80,43 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
     const timeValue2 = form.watch('timeValue2');
     async function onSubmit(values: z.infer<typeof contextSchema>) {
         try {
-            console.log("HOLA")
+            console.log('HOLA');
             if (initialData) {
-                console.log(initialData)
+                console.log(initialData);
                 // await updateContext();
             } else {
-                console.log(values)
+                console.log(values);
                 // await createContext(values);
                 // setCreatedContext(values); //untested
             }
             toggleModal();
-            toast.success(initialData ? 'Context updated successfully' : 'Context created successfully.');
+            toast.success(
+                initialData
+                    ? 'Context updated successfully'
+                    : 'Context created successfully.',
+            );
         } catch (e) {
             console.log(e);
             toast.error('Something went wrong...');
         }
     }
     // console.log("INIT: ", initialData)
-    const onError = (error: FieldErrors<{ contextDescription: string; operator: string; entity: string; textValue?: string | undefined; timeValue1?: string | undefined; timeValue2?: string | undefined; }>) => console.log(error)
+    const onError = (
+        error: FieldErrors<{
+            contextDescription: string;
+            operator: string;
+            entity: string;
+            textValue?: string | undefined;
+            timeValue1?: string | undefined;
+            timeValue2?: string | undefined;
+        }>,
+    ) => console.log(error);
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
+            <form
+                onSubmit={form.handleSubmit(onSubmit, onError)}
+                className="space-y-8"
+            >
                 <FormField
                     control={form.control}
                     name="contextDescription"
@@ -245,7 +261,18 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                     >
                         {previewClicked ? 'Hide Preview' : 'Preview'}
                     </Button>
-                    {previewClicked && <PreviewCreateContext context={{ entity: entity, operator: operator, timeValue1: timeValue1, timeValue2: timeValue2, textValue: textValue, contextDescription: "" }} />}
+                    {previewClicked && (
+                        <PreviewCreateContext
+                            context={{
+                                entity: entity,
+                                operator: operator,
+                                timeValue1: timeValue1,
+                                timeValue2: timeValue2,
+                                textValue: textValue,
+                                contextDescription: '',
+                            }}
+                        />
+                    )}
                     <Button type="submit">
                         {form.formState.isSubmitting ? (
                             <Circle className="h-4 w-4 animate-spin mr-2" />

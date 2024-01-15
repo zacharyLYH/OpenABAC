@@ -1,11 +1,13 @@
 ## Getting Started
 
 ### Prerequisite:
-- Next14^
-- Docker
-- NodeJS (version that supports Next14)
+
+-   Next14^
+-   Docker
+-   NodeJS (version that supports Next14)
 
 ### ENV for development with Docker
+
 ```
 DATABASE_URL_DEV=mysql://user1:root_password@localhost:3306/openabac
 DATABASE_HOST_DEV=localhost
@@ -23,6 +25,7 @@ yarn run dev:up
 ```
 
 Then, start the server:
+
 ```bash
 npm run dev
 # or
@@ -30,6 +33,7 @@ yarn dev
 ```
 
 Close the database connection when you're done with:
+
 ```bash
 yarn run db:down
 ```

@@ -24,9 +24,10 @@ export const CreateButton: React.FC<CreateButtonProps> = ({
                     title={`Create ${objName}`}
                     isOpen={modalOpen}
                     // onClose={handleCloseModal}
-                    children={form}
                     contentClassName="w-[70%]"
-                />
+                >
+                    {form}
+                </DataModal>
             )}
             <Button size="lg" onClick={() => toggleModal()}>
                 Create {objName}

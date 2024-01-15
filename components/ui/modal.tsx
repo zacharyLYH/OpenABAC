@@ -26,7 +26,6 @@ export const DataModal: React.FC<ModalProps> = ({
     children,
     contentClassName,
 }) => {
-
     const { toggleModal } = useAppStore();
 
     const onChange = (open: boolean) => {
@@ -42,16 +41,15 @@ export const DataModal: React.FC<ModalProps> = ({
             e.stopPropagation();
         };
 
-        if (isOpen && contentRef.current) {
-            contentRef.current.addEventListener('keydown', handleKeyDown);
+        const currentContentRef = contentRef.current;
+
+        if (isOpen && currentContentRef) {
+            currentContentRef.addEventListener('keydown', handleKeyDown);
         }
 
         return () => {
-            if (contentRef.current) {
-                contentRef.current.removeEventListener(
-                    'keydown',
-                    handleKeyDown,
-                );
+            if (currentContentRef) {
+                currentContentRef.removeEventListener('keydown', handleKeyDown);
             }
         };
     }, [isOpen]);

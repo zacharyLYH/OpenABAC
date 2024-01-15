@@ -1,7 +1,7 @@
-import { Skeleton } from "./skeleton"
+import { Skeleton } from './skeleton';
 
 interface MultiSkeletonProps {
-    number?: number
+    number?: number;
 }
 
 export const MultiSkeleton: React.FC<MultiSkeletonProps> = ({ number }) => {
@@ -11,5 +11,5 @@ export const MultiSkeleton: React.FC<MultiSkeletonProps> = ({ number }) => {
                 <Skeleton key={index} className="h-8 w-full" />
             ))}
         </div>
-    )
-}
+    );
+};

@@ -36,29 +36,29 @@ export const getActionViaSearch = async () => {
     if (process.env.IS_PRODUCTION === 'false') {
         return mockData.map(item => ({
             id: item.id,
-            value: item.actionName
+            value: item.actionName,
         }));
     } else {
         const query: Query = {
             sql: GET_ACTION_VIA_SEARCH,
         };
         const results = await db.query<SearchAndSelectInterface[]>(query);
-        return results
+        return results;
     }
 };
 
 export const getActionById = async (id: string) => {
     if (process.env.IS_PRODUCTION === 'false') {
-        return mockData.filter((mock) => mock.id === id)
+        return mockData.filter(mock => mock.id === id);
     } else {
         const query: Query = {
             sql: GET_ACTION_BY_ID,
-            params: [id]
+            params: [id],
         };
         const results = await db.query<Action[]>(query);
-        return results
+        return results;
     }
-}
+};
 
 const mockData = [
     {

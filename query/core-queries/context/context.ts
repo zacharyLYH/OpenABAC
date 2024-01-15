@@ -37,4 +37,4 @@ FROM Context;
 export const GET_CONTEXT_VIA_SEARCH = `
 SELECT id AS id, contextDescription AS value
 FROM Action;
-`
+`;

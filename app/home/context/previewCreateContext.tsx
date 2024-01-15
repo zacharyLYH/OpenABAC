@@ -1,10 +1,12 @@
-import { Context } from "@/lib/interface"
+import { Context } from '@/lib/interface';
 
 interface PreviewCreateContextProps {
-    context: Context
+    context: Context;
 }
 
-export const PreviewCreateContext: React.FC<PreviewCreateContextProps> = ({ context }) => {
+export const PreviewCreateContext: React.FC<PreviewCreateContextProps> = ({
+    context,
+}) => {
     return (
         <code>
             Allow access if {context.entity} {context.operator}{' '}
@@ -12,5 +14,5 @@ export const PreviewCreateContext: React.FC<PreviewCreateContextProps> = ({ cont
                 ? `${context.timeValue1} and ${context.timeValue2}`
                 : context.textValue}
         </code>
-    )
-}
+    );
+};

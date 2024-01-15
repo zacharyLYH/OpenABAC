@@ -38,7 +38,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
     searchColumnName?: string;
     showColumnVisibilityDropdown?: boolean;
-    showPagination?: boolean
+    showPagination?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -46,7 +46,7 @@ export function DataTable<TData, TValue>({
     data,
     searchColumnName,
     showColumnVisibilityDropdown = true,
-    showPagination = true
+    showPagination = true,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -134,10 +134,10 @@ export function DataTable<TData, TValue>({
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef
-                                                        .header,
-                                                    header.getContext(),
-                                                )}
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext(),
+                                                  )}
                                         </TableHead>
                                     );
                                 })}

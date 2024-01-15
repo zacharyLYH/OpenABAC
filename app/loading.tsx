@@ -4,5 +4,4 @@ export default function Loading() {
             <img src="/ball.svg" alt="Loading Animation" />
         </div>
     );
-};
-
+}

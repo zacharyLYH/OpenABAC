@@ -5,7 +5,9 @@ import { DataTableColumnHeader } from '../../column-header';
 import { removeFromDeleteList } from '../column-template';
 import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 
-export function attachColumn<T extends SearchAndSelectInterface>(removeFromItemsToBeDeleted: (item: SearchAndSelectInterface) => void): ColumnDef<T>[] {
+export function attachColumn<T extends SearchAndSelectInterface>(
+    removeFromItemsToBeDeleted: (item: SearchAndSelectInterface) => void,
+): ColumnDef<T>[] {
     return [
         {
             accessorKey: 'value',
@@ -13,6 +15,6 @@ export function attachColumn<T extends SearchAndSelectInterface>(removeFromItems
                 <DataTableColumnHeader column={column} title="To Attach" />
             ),
         },
-        ...removeFromDeleteList<T>(removeFromItemsToBeDeleted)
+        ...removeFromDeleteList<T>(removeFromItemsToBeDeleted),
     ];
 }

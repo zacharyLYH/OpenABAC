@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { DataTable } from '@/components/table/data-table';
 import { getAllPolicyGivenApplicationUserId } from '@/lib/service/policy/get-policy';
 import { policyColumn } from '../policy-column/policy-column';
+import useAppStore from '@/zustand/app-store';
 
 interface GetPoliciesButtonProps {
     applicationUserId: string;
@@ -15,7 +16,7 @@ interface GetPoliciesButtonProps {
 export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({
     applicationUserId,
 }) => {
-    const [modalOpen, setModalOpen] = useState(false);
+    const { modalOpen, toggleModal } = useAppStore();
     const [data, setData] = useState<Policy[] | null>(null);
 
     useEffect(() => {
@@ -30,32 +31,19 @@ export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({
         }
     }, [modalOpen]);
 
-    const handleCloseModal = () => {
-        setModalOpen(false);
-    };
-
     return (
         <>
             {modalOpen && data !== null && (
-                <DataModal
-                    title="Policies"
-                    isOpen={modalOpen}
-                    onClose={handleCloseModal}
-                    children={
-                        <DataTable
-                            data={data}
-                            columns={policyColumn}
-                            showColumnVisibilityDropdown={false}
-                            searchColumnName="policyName"
-                        />
-                    }
-                />
+                <DataModal title="Policies" isOpen={modalOpen}>
+                    <DataTable
+                        data={data}
+                        columns={policyColumn}
+                        showColumnVisibilityDropdown={false}
+                        searchColumnName="policyName"
+                    />
+                </DataModal>
             )}
-            <Button
-                size="default"
-                variant="default"
-                onClick={() => setModalOpen(!modalOpen)}
-            >
+            <Button size="default" variant="default" onClick={toggleModal}>
                 Policies
             </Button>
         </>

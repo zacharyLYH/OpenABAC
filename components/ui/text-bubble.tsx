@@ -1,5 +1,5 @@
 interface TextBubbleProps {
-    text: string
+    text: string;
 }
 
 export const TextBubble: React.FC<TextBubbleProps> = ({ text }) => {

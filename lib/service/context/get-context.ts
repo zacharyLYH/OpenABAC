@@ -34,29 +34,29 @@ export const getContextCount = async () => {
 
 export const getContextById = async (id: string) => {
     if (process.env.IS_PRODUCTION === 'false') {
-        return mockData.filter((mock) => mock.id === id)
+        return mockData.filter(mock => mock.id === id);
     } else {
         const query: Query = {
             sql: GET_CONTEXT_GIVEN_ID,
-            params: [id]
+            params: [id],
         };
         const results = await db.query<Context[]>(query);
-        return results
+        return results;
     }
-}
+};
 
 export const getContextViaSearch = async () => {
     if (process.env.IS_PRODUCTION === 'false') {
         return mockData.map(item => ({
             id: item.id,
-            value: item.contextDescription
+            value: item.contextDescription,
         }));
     } else {
         const query: Query = {
             sql: GET_CONTEXT_VIA_SEARCH,
         };
         const results = await db.query<SearchAndSelectInterface[]>(query);
-        return results
+        return results;
     }
 };
 
