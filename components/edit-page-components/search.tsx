@@ -75,7 +75,7 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, place
             {query && (
                 <div className="w-full max-h-60 overflow-auto">
                     {filteredData.map(item => (
-                        <div className='flex justify-between' id={item.id}>
+                        <div className='flex justify-between' key={item.id}>
                             <Button variant="outline" onClick={() => selectItem(item)} key={item.id} className="bg-slate-500 w-full justify-start">
                                 {item.value}
                             </Button>
