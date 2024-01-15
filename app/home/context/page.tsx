@@ -21,7 +21,7 @@ export default function ContextPage() {
                     !editClickedIndicator ? <CreateButton objName="Context" form={<ContextForm />} /> : null}
                 {createdContext ? null :
                     <EditButton getDataByIdEndpoint='/api/context/getById' renderEditForm={(data) => <ContextForm initialData={data} />} editClickedIndicator={editClickedIndicator}
-                        setEditClickedIndicator={setEditClickedIndicator} getDataEndpoint='/api/context/getAll' entity='Context' />}
+                        setEditClickedIndicator={setEditClickedIndicator} getDataEndpoint='/api/context/getContextViaSearch' entity='Context' />}
             </div>
             <div className='flex justify-center '>
                 {createdContext ? <AttachToAction /> : null}

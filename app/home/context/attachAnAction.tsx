@@ -22,7 +22,7 @@ export const AttachToAction = () => {
         const fetchAllContext = async () => {
             try {
                 setIsFetching(true)
-                const response = await fetch("/api/action/getAll", { cache: "no-cache" });
+                const response = await fetch("/api/action/getActionViaSearch", { cache: "no-cache" });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
