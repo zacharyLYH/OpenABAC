@@ -90,7 +90,7 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                 // setCreatedContext(values); //untested
             }
             toggleModal();
-            toast.success('Context created successfully.');
+            toast.success(initialData ? 'Context updated successfully' : 'Context created successfully.');
         } catch (e) {
             console.log(e);
             toast.error('Something went wrong...');
