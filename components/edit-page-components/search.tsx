@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Trash } from 'lucide-react';
+import { X } from 'lucide-react';
 import {
     Sheet,
     SheetContent,
@@ -92,7 +92,7 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({ objName, place
                     <div key={item.id} className='flex w-3/4 flex-row gap-x-8 justify-between items-center'>
                         <p key={item.id} className='text-medium text-muted-foreground'>{item.value}</p>
                         <Button key={item.id} variant="destructive" onClick={() => deSelectItem(item)}>
-                            <Trash className='w-4 h-4' />
+                            <X className='w-4 h-4' />
                         </Button>
                     </div>
                 ))
