@@ -9,15 +9,19 @@ import { TextBubble } from "@/components/ui/text-bubble"
 import { Button } from "@/components/ui/button"
 import useContextStore from "@/zustand/edit-pages/context-store"
 import { useEffect, useState } from "react"
-import { SearchAndSelect } from "@/components/edit-page-components/search"
+import { SearchAndSelect, SearchAndSelectInterface } from "@/components/edit-page-components/search"
 import { PreviewCreateContext } from "./previewCreateContext"
-import { Skeleton } from "@/components/ui/skeleton"
 import { MultiSkeleton } from "@/components/ui/multi-skeleton"
+import { ArrowLeft, Link } from "lucide-react"
+import { toast } from "sonner"
 
 export const AttachToAction = () => {
-    const { createdContext, setCreatedContext, actionsForSearch, setActionsForSearch, setSelectedActionsFromSearch, selectedActionsFromSearch } = useContextStore()
+    const { createdContext, setCreatedContext } = useContextStore()
     const [searchAndSelect, toggleSearchAndSelect] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
+    const [selectedActionsFromSearch, setSelectedActionsFromSearch] = useState<SearchAndSelectInterface[]>([])
+    const [actionsForSearch, setActionsForSearch] = useState<SearchAndSelectInterface[]>([])
+    const [isAttaching, setIsAttaching] = useState(false)
     useEffect(() => {
         const fetchAllContext = async () => {
             try {
@@ -38,6 +42,19 @@ export const AttachToAction = () => {
             fetchAllContext();
         }
     }, [searchAndSelect]);
+    const attachContextToAction = () => {
+        try {
+            setIsAttaching(true)
+            console.log("Trying to attach context to action ", selectedActionsFromSearch)
+            toast.error(`Successfully attached context to ${selectedActionsFromSearch.length} action(s)`)
+            setCreatedContext(null)
+        } catch (error) {
+            console.error(error)
+            toast.error("Something went wrong. Try again.")
+        } finally {
+            setIsAttaching(false)
+        }
+    }
     return (
         <>
             {createdContext &&
@@ -100,9 +117,15 @@ export const AttachToAction = () => {
                                     <MultiSkeleton number={5} />
                                 </div>
                             ) : (
-                                <>
+                                <div className="mt-2 space-y-2">
+                                    <Button disabled={selectedActionsFromSearch.length !== 0} variant="outline" className="w-full" onClick={() => { toggleSearchAndSelect(false); setSelectedActionsFromSearch([]) }}>
+                                        <ArrowLeft className="w-5 h-5" />{selectedActionsFromSearch.length !== 0 ? "Remove all selections to go back" : "Back"}
+                                    </Button>
                                     <SearchAndSelect container={selectedActionsFromSearch} setContainer={setSelectedActionsFromSearch} objName="Action" data={actionsForSearch ?? []} placeholder="Search Actions..." />
-                                </>
+                                    <Button onClick={attachContextToAction}>
+                                        <Link className="w-r h-4" />{isAttaching ? "Attaching..." : "Attach"}
+                                    </Button>
+                                </div>
                             )
                         )
                     }
