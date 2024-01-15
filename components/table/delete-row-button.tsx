@@ -13,19 +13,40 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { toast } from 'sonner';
 
 interface DeleteRowButtonProps {
-    itemId: string;
+    itemId?: string;
     deleteEndpoint: string
+    itemIds?: string[]
+    uiStateOnSuccessfulDelete: (id: string | string[]) => void
+    label?: string
 }
 
 export const DeleteRowButton: React.FC<DeleteRowButtonProps> = ({
     itemId,
     deleteEndpoint,
+    itemIds,
+    uiStateOnSuccessfulDelete,
+    label
 }) => {
 
     const deleteHandler = () => {
-        console.log("DELETE ", itemId, " via ", deleteEndpoint)
+        try {
+            if (itemIds) {
+                console.log("DELETE ", itemIds, " via ", deleteEndpoint)
+                for (const id of itemIds) {
+                    uiStateOnSuccessfulDelete(itemIds)
+                }
+            } else {
+                console.log("DELETE ", itemId, " via ", deleteEndpoint)
+                uiStateOnSuccessfulDelete(itemId!)
+            }
+            toast.success(`Successfully deleted ${itemIds ? itemIds.length : 1} item(s)!`)
+        } catch (error) {
+            console.error(error)
+            toast.error("Something went wrong. Please try again")
+        }
     };
 
     return (
@@ -35,7 +56,8 @@ export const DeleteRowButton: React.FC<DeleteRowButtonProps> = ({
                     size="default"
                     variant="destructive"
                 >
-                    <Trash className='w-4 h-4' />
+                    {label ? label :
+                        <Trash className='w-4 h-4' />}
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

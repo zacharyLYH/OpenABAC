@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { MultiSkeleton } from "../ui/multi-skeleton";
 import { DataTable } from "../table/data-table";
 import { deleteItemColumn } from "../table/column-defs/delete-items/delete-items-column";
+import { DeleteRowButton } from "../table/delete-row-button";
 
 interface DeleteButtonInterface {
     getDataEndpoint: string
@@ -45,6 +46,15 @@ export const DeleteButton: React.FC<DeleteButtonInterface> = ({ getDataEndpoint,
         setSelected(newSelectected)
     }
 
+    const uiStateOnSuccessfulDelete = (id: string | string[]) => {
+        const idsToRemove = Array.isArray(id) ? id : [id];
+        const newData = data.filter(dataItem => !idsToRemove.includes(dataItem.id));
+        setData(newData);
+        const newSelected = selected.filter(selectedItem => !idsToRemove.includes(selectedItem.id));
+        setSelected(newSelected);
+    };
+
+
     return (
         <>
             {!deleteClickedIndicator ? (
@@ -70,9 +80,13 @@ export const DeleteButton: React.FC<DeleteButtonInterface> = ({ getDataEndpoint,
                             />
                             <DataTable
                                 data={selected}
-                                columns={deleteItemColumn(deleteEndpoint, removeFromItemsToBeDeleted)}
+                                columns={deleteItemColumn(deleteEndpoint, removeFromItemsToBeDeleted, uiStateOnSuccessfulDelete)}
                                 showColumnVisibilityDropdown={false}
+                                showPagination={false}
                             />
+                            {selected.length > 0 &&
+                                <DeleteRowButton deleteEndpoint={deleteEndpoint} itemIds={selected.map(item => item.id)} uiStateOnSuccessfulDelete={uiStateOnSuccessfulDelete} label="Delete Selected" />
+                            }
                         </>
                     )}
                 </>
