@@ -51,18 +51,20 @@ export const AttachToAction = () => {
 
     const { mutate, isPending } = useMutation({
         mutationFn: attachFunctionPlaceholder,
-        onError: (error) => {
+        onError: error => {
             console.log(error);
             toast.error(`An error occurred.`);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["PLACEHOLDER_ATTACH_CONTEXT_TO_ACTION"] });
+            queryClient.invalidateQueries({
+                queryKey: ['PLACEHOLDER_ATTACH_CONTEXT_TO_ACTION'],
+            });
             toast.success(
                 `Successfully attached context to ${selectedActionsFromSearch.length} action(s)`,
             );
-            setCreatedContext(null)
-            toggleSearchAndSelect(false)
-            setSelectedActionsFromSearch([])
+            setCreatedContext(null);
+            toggleSearchAndSelect(false);
+            setSelectedActionsFromSearch([]);
         },
     });
 
@@ -210,9 +212,7 @@ export const AttachToAction = () => {
                                 {selectedActionsFromSearch.length > 0 && (
                                     <Button onClick={deleteHandler}>
                                         <Link className="w-r h-4" />
-                                        {isPending
-                                            ? 'Attaching...'
-                                            : 'Attach'}
+                                        {isPending ? 'Attaching...' : 'Attach'}
                                     </Button>
                                 )}
                             </div>

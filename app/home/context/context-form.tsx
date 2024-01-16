@@ -204,15 +204,20 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                     disabled={operator !== 'BETWEEN'}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className={operator !== 'BETWEEN' ? 'line-through text-muted-foreground' : ''}>
+                            <FormLabel
+                                className={
+                                    operator !== 'BETWEEN'
+                                        ? 'line-through text-muted-foreground'
+                                        : ''
+                                }
+                            >
                                 Time Value 1
                             </FormLabel>
                             <FormControl>
                                 <Input placeholder="10pm" {...field} />
                             </FormControl>
                             <FormDescription>
-                                The first time value to check the
-                                context for.
+                                The first time value to check the context for.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -224,15 +229,20 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                     disabled={operator !== 'BETWEEN'}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className={operator !== 'BETWEEN' ? 'line-through text-muted-foreground' : ''}>
+                            <FormLabel
+                                className={
+                                    operator !== 'BETWEEN'
+                                        ? 'line-through text-muted-foreground'
+                                        : ''
+                                }
+                            >
                                 Time Value 2
                             </FormLabel>
                             <FormControl>
                                 <Input placeholder="12pm" {...field} />
                             </FormControl>
                             <FormDescription>
-                                The second time value to check the
-                                context for.
+                                The second time value to check the context for.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -244,7 +254,13 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                     disabled={operator === 'BETWEEN'}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className={operator === 'BETWEEN' ? 'line-through text-muted-foreground' : ''}>
+                            <FormLabel
+                                className={
+                                    operator === 'BETWEEN'
+                                        ? 'line-through text-muted-foreground'
+                                        : ''
+                                }
+                            >
                                 Text Value
                             </FormLabel>
                             <FormControl>

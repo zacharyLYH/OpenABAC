@@ -46,13 +46,17 @@ export const DeleteRowButton: React.FC<DeleteRowButtonProps> = ({
 
     const { mutate } = useMutation({
         mutationFn: deleteFunctionPlaceholder,
-        onError: (error) => {
+        onError: error => {
             console.log(error);
             toast.error(`An error occurred.`);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [RQ_GET_CONTEXT_VIA_SEARCH] });
-            toast.success(`Successfully deleted ${itemIds ? itemIds.length : 1} item(s)!`);
+            queryClient.invalidateQueries({
+                queryKey: [RQ_GET_CONTEXT_VIA_SEARCH],
+            });
+            toast.success(
+                `Successfully deleted ${itemIds ? itemIds.length : 1} item(s)!`,
+            );
         },
     });
 
