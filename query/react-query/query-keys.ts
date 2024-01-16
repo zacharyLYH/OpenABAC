@@ -1,0 +1,1 @@
+export const RQ_GET_ALL_CONTEXT = "GET_ALL_CONTEXT_IN_DB"

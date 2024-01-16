@@ -16,7 +16,7 @@ export default async function ViewContextsTab({
     // await delay(10000);
     return (
         <section>
-            {}
+            { }
             <Suspense fallback={<TableSuspenseSkeleton />}>
                 <DataTable
                     data={context}

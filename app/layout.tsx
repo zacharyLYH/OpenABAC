@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
+import TanStackProvider from '@/components/providers/tanstack-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,14 +21,16 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={cn(inter.className, 'bg-black')}>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="dark"
-                    disableTransitionOnChange
-                >
-                    {children}
-                    <Toaster />
-                </ThemeProvider>
+                <TanStackProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="dark"
+                        disableTransitionOnChange
+                    >
+                        {children}
+                        <Toaster />
+                    </ThemeProvider>
+                </TanStackProvider>
             </body>
         </html>
     );
