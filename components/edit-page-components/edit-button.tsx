@@ -5,6 +5,9 @@ import { ArrowLeft } from 'lucide-react';
 import { MultiSkeleton } from '@/components/ui/multi-skeleton';
 import { DataModal } from '@/components/ui/modal';
 import useAppStore from '@/zustand/app-store';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { RQ_GET_CONTEXT_BY_ID, RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
 
 interface EditButtonInterface {
     getDataEndpoint: string;
@@ -23,64 +26,46 @@ export const EditButton: React.FC<EditButtonInterface> = ({
     editClickedIndicator,
     renderEditForm,
 }) => {
-    const [data, setData] = useState<SearchAndSelectInterface[]>([]);
-    const [selectedData, setSelectedData] = useState<any>();
     const [selected, setSelected] = useState<SearchAndSelectInterface[]>([]);
-    const [isFetching, setIsFetching] = useState(false);
     const { modalOpen, toggleModal } = useAppStore();
+
     useEffect(() => {
-        setSelected([]);
-        setSelectedData([]);
+        if (modalOpen === false) {
+            setSelected([]);
+        }
     }, [modalOpen === false]);
+
     useEffect(() => {
-        const fetchAllData = async () => {
-            try {
-                setIsFetching(true);
-                const response = await fetch(getDataEndpoint, {
-                    cache: 'no-cache',
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setData(data.message);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setIsFetching(false);
-            }
-        };
-        if (editClickedIndicator) {
-            fetchAllData();
+        if (selected.length === 1) {
+            toggleModal()
         }
-    }, [editClickedIndicator]);
-    useEffect(() => {
-        const fetchAllDataById = async () => {
-            try {
-                setIsFetching(true);
-                const response = await fetch(
-                    getDataByIdEndpoint + `?id=${selected[0].id}`,
-                    { cache: 'no-cache' },
-                );
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setSelectedData(data.message[0]);
-                toggleModal();
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setIsFetching(false);
-            }
-        };
-        if (selected.length > 0) {
-            fetchAllDataById();
-        }
-    }, [selected.length]);
+    }, [selected.length])
+
+    const getDataByIdEndpointFetch = async () => {
+        const resp = await axios.get(`${getDataByIdEndpoint}?id=${selected[0]?.id}`);
+        return resp.data;
+    };
+
+    const { data: selectedData } = useQuery({
+        queryKey: [RQ_GET_CONTEXT_BY_ID, selected.length > 0 ? selected[0].id : "ignore"],
+        queryFn: getDataByIdEndpointFetch,
+        enabled: selected.length > 0,
+    });
+
+    const getDataEndpointFetch = async () => {
+        const resp = await axios.get(getDataEndpoint);
+        return resp.data;
+    };
+
+    const { data, isLoading } = useQuery({
+        queryKey: [RQ_GET_CONTEXT_VIA_SEARCH],
+        queryFn: getDataEndpointFetch,
+        enabled: editClickedIndicator,
+    });
+
     return (
         <>
-            {editClickedIndicator &&
+            {editClickedIndicator && (
                 <>
                     <Button
                         variant="outline"
@@ -93,7 +78,7 @@ export const EditButton: React.FC<EditButtonInterface> = ({
                         <ArrowLeft className="w-5 h-5" />
                         Back
                     </Button>
-                    {isFetching ? (
+                    {isLoading ? (
                         <div className="space-y-2 mt-4">
                             <MultiSkeleton />
                         </div>
@@ -103,24 +88,24 @@ export const EditButton: React.FC<EditButtonInterface> = ({
                                 <SearchAndSelect
                                     objName={`${entity}`}
                                     placeholder={`Edit ${entity}...`}
-                                    data={data}
+                                    data={data?.message}
                                     setContainer={setSelected}
                                     container={selected}
                                 />
                             )}
-                            {modalOpen && (
+                            {modalOpen && selectedData && (
                                 <DataModal
                                     title={`Update ${entity}`}
                                     isOpen={modalOpen}
                                     contentClassName="w-[70%]"
                                 >
-                                    {renderEditForm(selectedData)}
+                                    {renderEditForm(selectedData?.message[0])}
                                 </DataModal>
                             )}
                         </>
                     )}
                 </>
-            }
+            )}
         </>
     );
 };
