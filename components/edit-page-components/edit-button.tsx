@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { SearchAndSelect, SearchAndSelectInterface } from './search';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { MultiSkeleton } from '../ui/multi-skeleton';
-import { DataModal } from '../ui/modal';
+import { MultiSkeleton } from '@/components/ui/multi-skeleton';
+import { DataModal } from '@/components/ui/modal';
 import useAppStore from '@/zustand/app-store';
 
 interface EditButtonInterface {
@@ -80,16 +80,7 @@ export const EditButton: React.FC<EditButtonInterface> = ({
     }, [selected.length]);
     return (
         <>
-            {!editClickedIndicator ? (
-                <Button
-                    size="lg"
-                    onClick={() =>
-                        setEditClickedIndicator(!editClickedIndicator)
-                    }
-                >
-                    {editClickedIndicator ? 'Close editor' : `Edit ${entity}`}
-                </Button>
-            ) : (
+            {editClickedIndicator &&
                 <>
                     <Button
                         variant="outline"
@@ -129,7 +120,7 @@ export const EditButton: React.FC<EditButtonInterface> = ({
                         </>
                     )}
                 </>
-            )}
+            }
         </>
     );
 };

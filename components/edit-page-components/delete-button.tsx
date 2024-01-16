@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { SearchAndSelect, SearchAndSelectInterface } from './search';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { MultiSkeleton } from '../ui/multi-skeleton';
-import { DataTable } from '../table/data-table';
-import { deleteItemColumn } from '../table/column-defs/delete-items/delete-items-column';
-import { DeleteRowButton } from '../table/delete-row-button';
+import { MultiSkeleton } from '@/components/ui/multi-skeleton';
+import { DataTable } from '@/components/table/data-table';
+import { deleteItemColumn } from '@/components/table/column-defs/delete-items/delete-items-column';
+import { DeleteRowButton } from '@/components/table/delete-row-button';
 
 interface DeleteButtonInterface {
     getDataEndpoint: string;
@@ -68,18 +68,7 @@ export const DeleteButton: React.FC<DeleteButtonInterface> = ({
 
     return (
         <>
-            {!deleteClickedIndicator ? (
-                <Button
-                    size="lg"
-                    onClick={() =>
-                        setDeleteClickedIndicator(!deleteClickedIndicator)
-                    }
-                >
-                    {deleteClickedIndicator
-                        ? 'Close editor'
-                        : `Delete ${entity}`}
-                </Button>
-            ) : (
+            {deleteClickedIndicator &&
                 <>
                     <Button
                         variant="outline"
@@ -128,7 +117,7 @@ export const DeleteButton: React.FC<DeleteButtonInterface> = ({
                         </>
                     )}
                 </>
-            )}
+            }
         </>
     );
 };
