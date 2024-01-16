@@ -19,58 +19,62 @@ import { ArrowLeft, Link } from 'lucide-react';
 import { toast } from 'sonner';
 import { DataTable } from '@/components/table/data-table';
 import { attachColumn } from '@/components/table/column-defs/attach-column/attach-column';
+import axios from 'axios';
+import { RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const AttachToAction = () => {
+    const queryClient = useQueryClient();
     const { createdContext, setCreatedContext } = useContextStore();
     const [searchAndSelect, toggleSearchAndSelect] = useState(false);
-    const [isFetching, setIsFetching] = useState(false);
     const [selectedActionsFromSearch, setSelectedActionsFromSearch] = useState<
         SearchAndSelectInterface[]
     >([]);
-    const [actionsForSearch, setActionsForSearch] = useState<
-        SearchAndSelectInterface[]
-    >([]);
-    const [isAttaching, setIsAttaching] = useState(false);
-    useEffect(() => {
-        const fetchAllContext = async () => {
-            try {
-                setIsFetching(true);
-                const response = await fetch('/api/action/getActionViaSearch', {
-                    cache: 'no-cache',
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setActionsForSearch(data.message);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setIsFetching(false);
-            }
-        };
-        if (searchAndSelect) {
-            fetchAllContext();
-        }
-    }, [searchAndSelect]);
-    const attachContextToAction = () => {
-        try {
-            setIsAttaching(true);
-            console.log(
-                'Trying to attach context to action ',
-                selectedActionsFromSearch,
-            );
-            toast.error(
+
+    const getDataEndpointFetch = async () => {
+        const resp = await axios.get('/api/action/getActionViaSearch');
+        return resp.data;
+    };
+
+    const { data, isLoading } = useQuery({
+        queryKey: [RQ_GET_CONTEXT_VIA_SEARCH],
+        queryFn: getDataEndpointFetch,
+        enabled: searchAndSelect,
+    });
+
+    const attachFunctionPlaceholder = async () => {
+        console.log(
+            'Trying to attach context to action ',
+            selectedActionsFromSearch,
+        );
+    };
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: attachFunctionPlaceholder,
+        onError: (error) => {
+            console.log(error);
+            toast.error(`An error occurred.`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["PLACEHOLDER_ATTACH_CONTEXT_TO_ACTION"] });
+            toast.success(
                 `Successfully attached context to ${selectedActionsFromSearch.length} action(s)`,
             );
-            setCreatedContext(null);
+            setCreatedContext(null)
+            toggleSearchAndSelect(false)
+            setSelectedActionsFromSearch([])
+        },
+    });
+
+    const deleteHandler = () => {
+        try {
+            mutate();
         } catch (error) {
             console.error(error);
-            toast.error('Something went wrong. Try again.');
-        } finally {
-            setIsAttaching(false);
+            toast.error('Something went wrong. Please try again');
         }
     };
+
     const removeFromItemsToBeAttached = (item: SearchAndSelectInterface) => {
         const newSelectected = selectedActionsFromSearch.filter(
             sel => sel.id !== item.id,
@@ -166,7 +170,7 @@ export const AttachToAction = () => {
                         </>
                     )}
                     {searchAndSelect &&
-                        (isFetching ? (
+                        (isLoading ? (
                             <div className="space-y-2 mt-4">
                                 <MultiSkeleton number={5} />
                             </div>
@@ -192,7 +196,7 @@ export const AttachToAction = () => {
                                     container={selectedActionsFromSearch}
                                     setContainer={setSelectedActionsFromSearch}
                                     objName="Action"
-                                    data={actionsForSearch ?? []}
+                                    data={data.message ?? []}
                                     placeholder="Search Actions..."
                                 />
                                 <DataTable
@@ -204,9 +208,9 @@ export const AttachToAction = () => {
                                     showPagination={false}
                                 />
                                 {selectedActionsFromSearch.length > 0 && (
-                                    <Button onClick={attachContextToAction}>
+                                    <Button onClick={deleteHandler}>
                                         <Link className="w-r h-4" />
-                                        {isAttaching
+                                        {isPending
                                             ? 'Attaching...'
                                             : 'Attach'}
                                     </Button>
