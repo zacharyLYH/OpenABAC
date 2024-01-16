@@ -14,6 +14,8 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
 
 interface DeleteRowButtonProps {
     itemId?: string;
@@ -30,20 +32,33 @@ export const DeleteRowButton: React.FC<DeleteRowButtonProps> = ({
     uiStateOnSuccessfulDelete,
     label,
 }) => {
+    const queryClient = useQueryClient();
+
+    const deleteFunctionPlaceholder = async () => {
+        if (itemIds) {
+            console.log('DELETE ', itemIds, ' via ', deleteEndpoint);
+            uiStateOnSuccessfulDelete(itemIds);
+        } else {
+            console.log('DELETE ', itemId, ' via ', deleteEndpoint);
+            uiStateOnSuccessfulDelete(itemId!);
+        }
+    };
+
+    const { mutate } = useMutation({
+        mutationFn: deleteFunctionPlaceholder,
+        onError: (error) => {
+            console.log(error);
+            toast.error(`An error occurred.`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [RQ_GET_CONTEXT_VIA_SEARCH] });
+            toast.success(`Successfully deleted ${itemIds ? itemIds.length : 1} item(s)!`);
+        },
+    });
+
     const deleteHandler = () => {
         try {
-            if (itemIds) {
-                console.log('DELETE ', itemIds, ' via ', deleteEndpoint);
-                for (const id of itemIds) {
-                    uiStateOnSuccessfulDelete(itemIds);
-                }
-            } else {
-                console.log('DELETE ', itemId, ' via ', deleteEndpoint);
-                uiStateOnSuccessfulDelete(itemId!);
-            }
-            toast.success(
-                `Successfully deleted ${itemIds ? itemIds.length : 1} item(s)!`,
-            );
+            mutate();
         } catch (error) {
             console.error(error);
             toast.error('Something went wrong. Please try again');
