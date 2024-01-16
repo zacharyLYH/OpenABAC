@@ -9,11 +9,11 @@ import { EditButton } from '@/components/edit-page-components/edit-button';
 import { DeleteButton } from '@/components/edit-page-components/delete-button';
 import { useQuery } from '@tanstack/react-query';
 import { RQ_GET_ALL_CONTEXT } from '@/query/react-query/query-keys'
-import axios from "axios";
 import { TableSuspenseSkeleton } from '@/components/table-suspense';
 import { DataTable } from '@/components/table/data-table';
 import { contextColumn } from '@/components/table/column-defs/context-column/context-column';
 import { Button } from '@/components/ui/button';
+import axios from "axios"
 
 export default function ContextPage() {
     const {
@@ -29,7 +29,10 @@ export default function ContextPage() {
         const resp = await axios.get("/api/context/getAll")
         return await resp.data
     }
-    const query = useQuery({ queryKey: [RQ_GET_ALL_CONTEXT], queryFn: getAllContext })
+    const query = useQuery({
+        queryKey: [RQ_GET_ALL_CONTEXT],
+        queryFn: getAllContext,
+    });
     return (
         <div className="p-8">
             <div className="flex flex-row justify-between">
