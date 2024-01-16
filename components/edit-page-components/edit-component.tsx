@@ -7,24 +7,27 @@ import { DataModal } from '@/components/ui/modal';
 import useAppStore from '@/zustand/app-store';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { RQ_GET_CONTEXT_BY_ID, RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
 
-interface EditButtonInterface {
+interface EditComponentInterface {
     getDataEndpoint: string;
     getDataByIdEndpoint: string;
     entity: string;
     editClickedIndicator: boolean;
     setEditClickedIndicator: (clicked: boolean) => void;
     renderEditForm: (data?: any) => JSX.Element;
+    getContextByIdQueryKey: string[]
+    getContextViaSearchQueryKey: string[]
 }
 
-export const EditButton: React.FC<EditButtonInterface> = ({
+export const EditComponent: React.FC<EditComponentInterface> = ({
     getDataEndpoint,
     getDataByIdEndpoint,
     entity,
     setEditClickedIndicator,
     editClickedIndicator,
     renderEditForm,
+    getContextByIdQueryKey,
+    getContextViaSearchQueryKey
 }) => {
     const [selected, setSelected] = useState<SearchAndSelectInterface[]>([]);
     const { modalOpen, toggleModal } = useAppStore();
@@ -37,28 +40,34 @@ export const EditButton: React.FC<EditButtonInterface> = ({
 
     useEffect(() => {
         if (selected.length === 1) {
-            toggleModal()
+            toggleModal();
         }
-    }, [selected.length])
+    }, [selected.length]);
 
     const getDataByIdEndpointFetch = async () => {
-        const resp = await axios.get(`${getDataByIdEndpoint}?id=${selected[0]?.id}`);
+        const resp = await axios.get(
+            `${getDataByIdEndpoint}?id=${selected[0]?.id}`,
+        );
         return resp.data;
     };
 
     const { data: selectedData } = useQuery({
-        queryKey: [RQ_GET_CONTEXT_BY_ID, selected.length > 0 ? selected[0].id : "ignore"],
+        queryKey: [
+            ...getContextByIdQueryKey,
+            selected.length > 0 ? selected[0].id : 'ignore',
+        ],
         queryFn: getDataByIdEndpointFetch,
         enabled: selected.length > 0,
     });
 
     const getDataEndpointFetch = async () => {
         const resp = await axios.get(getDataEndpoint);
+        console.log(resp.data)
         return resp.data;
     };
 
     const { data, isLoading } = useQuery({
-        queryKey: [RQ_GET_CONTEXT_VIA_SEARCH],
+        queryKey: getContextViaSearchQueryKey,
         queryFn: getDataEndpointFetch,
         enabled: editClickedIndicator,
     });

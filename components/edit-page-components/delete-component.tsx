@@ -6,36 +6,37 @@ import { MultiSkeleton } from '@/components/ui/multi-skeleton';
 import { DataTable } from '@/components/table/data-table';
 import { deleteItemColumn } from '@/components/table/column-defs/delete-items/delete-items-column';
 import { DeleteRowButton } from '@/components/table/delete-row-button';
-import { RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { Context } from '@/lib/interface';
 
-interface DeleteButtonInterface {
+interface DeleteComponentInterface {
     getDataEndpoint: string;
     entity: string;
     deleteClickedIndicator: boolean;
     setDeleteClickedIndicator: (clicked: boolean) => void;
     deleteEndpoint: string;
+    getQueryKey: string[]
 }
 
-export const DeleteButton: React.FC<DeleteButtonInterface> = ({
+export const DeleteComponent: React.FC<DeleteComponentInterface> = ({
     getDataEndpoint,
     entity,
     setDeleteClickedIndicator,
     deleteClickedIndicator,
     deleteEndpoint,
+    getQueryKey
 }) => {
     const [selected, setSelected] = useState<SearchAndSelectInterface[]>([]);
 
     const getDataEndpointFetch = async () => {
         const resp = await axios.get(getDataEndpoint);
-        console.log("FETCHING FROM DELETE!")
+        console.log('FETCHING FROM DELETE!');
         return resp.data;
     };
 
     const { data, isLoading } = useQuery({
-        queryKey: [RQ_GET_CONTEXT_VIA_SEARCH],
+        queryKey: getQueryKey,
         queryFn: getDataEndpointFetch,
         enabled: deleteClickedIndicator,
     });
@@ -60,7 +61,7 @@ export const DeleteButton: React.FC<DeleteButtonInterface> = ({
 
     return (
         <>
-            {deleteClickedIndicator &&
+            {deleteClickedIndicator && (
                 <>
                     <Button
                         variant="outline"
@@ -109,7 +110,7 @@ export const DeleteButton: React.FC<DeleteButtonInterface> = ({
                         </>
                     )}
                 </>
-            }
+            )}
         </>
     );
 };
