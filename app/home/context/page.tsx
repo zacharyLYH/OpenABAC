@@ -3,7 +3,6 @@
 import { ContextForm } from '@/app/home/context/context-form';
 import { CreateButton } from '@/components/edit-page-components/create-button';
 import useContextStore from '@/zustand/edit-pages/context-store';
-import { AttachToAction } from './attachAnAction';
 import { Separator } from '@/components/ui/separator';
 import { EditComponent } from '@/components/edit-page-components/edit-component';
 import { DeleteComponent } from '@/components/edit-page-components/delete-component';
@@ -14,10 +13,21 @@ import { DataTable } from '@/components/table/data-table';
 import { contextColumn } from '@/components/table/column-defs/context-column/context-column';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
+import { PostCreate } from '@/components/edit-page-components/post-create-component';
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { TextBubble } from '@/components/ui/text-bubble';
+import { PreviewCreateContext } from './previewCreateContext';
 
 export default function ContextPage() {
     const {
         createdContext,
+        setCreatedContext,
         editClickedIndicator,
         setEditClickedIndicator,
         deleteClickedIndicator,
@@ -109,7 +119,14 @@ export default function ContextPage() {
                 <TableSuspenseSkeleton />
             )}
             <div className="flex justify-center ">
-                {createdContext ? <AttachToAction /> : null}
+                <PostCreate
+                    createdObj={createdContext}
+                    setCreatedObj={setCreatedContext}
+                    createdEntityName='Context'
+                    attachToEntityName='Action'
+                    attachToEntity_GetViaSearchEndpoint='/api/action/getActionViaSearch'
+                    attachToEntity_GetViaSearchEndpoint_QueryKey={RQ_GET_CONTEXT_VIA_SEARCH}
+                />
             </div>
         </div>
     );
