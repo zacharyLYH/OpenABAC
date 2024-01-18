@@ -2,9 +2,8 @@
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
 import {
     Sheet,
     SheetContent,
@@ -36,27 +35,14 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
     container,
 }) => {
     const [query, setQuery] = useState('');
-    const [filteredData, setFilteredData] = useState<
-        SearchAndSelectInterface[]
-    >([]);
 
-    useEffect(() => {
-        handleSearch(query);
-    }, [container.length]);
-
-    const handleSearch = (searchQuery: string) => {
-        setQuery(searchQuery);
-
-        const filtered = data.filter(
+    const filteredData: SearchAndSelectInterface[] = useMemo(() => {
+        return data.filter(
             item =>
-                !container.some(
-                    containerItem => containerItem.id === item.id,
-                ) &&
-                item.value.toLowerCase().includes(searchQuery.toLowerCase()),
+                !container.some(containerItem => containerItem.id === item.id) &&
+                item.value.toLowerCase().includes(query.toLowerCase()),
         );
-
-        setFilteredData(filtered);
-    };
+    }, [data, container, query]);
 
     const selectItem = (item: SearchAndSelectInterface) => {
         setContainer([...container, item]);
@@ -75,7 +61,7 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
                 placeholder={placeholder}
                 className="w-full rounded-lg px-8 py-2 text-full"
                 value={query}
-                onChange={e => handleSearch(e.target.value)}
+                onChange={e => setQuery(e.target.value)}
             />
             {query && (
                 <div className="w-full max-h-60 overflow-auto">
