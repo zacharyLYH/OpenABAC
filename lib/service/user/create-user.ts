@@ -2,7 +2,7 @@ import { CREATE_USER } from '@/query/core-queries/user/user';
 import { Query, User } from '../../interface';
 import { db } from '../../database';
 
-export async function createUser({ jsonCol, applicationUserId }: User) {
+export async function createUser(jsonCol: any, applicationUserId: string) {
     try {
         const query: Query = {
             sql: CREATE_USER,
