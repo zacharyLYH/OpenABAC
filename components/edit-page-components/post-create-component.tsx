@@ -1,3 +1,13 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { SearchAndSelect, SearchAndSelectInterface } from "./search";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { MultiSkeleton } from "@/components/ui/multi-skeleton";
+import { ArrowLeft, Link } from "lucide-react";
+import { DataTable } from "@/components/table/data-table";
+import { attachColumn } from "@/components/table/column-defs/attach-column/attach-column";
 import {
     Card,
     CardContent,
@@ -6,38 +16,40 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { TextBubble } from '@/components/ui/text-bubble';
-import { Button } from '@/components/ui/button';
-import useContextStore from '@/zustand/edit-pages/context-store';
-import { useEffect, useState } from 'react';
-import {
-    SearchAndSelect,
-    SearchAndSelectInterface,
-} from '@/components/edit-page-components/search';
-import { PreviewCreateContext } from './previewCreateContext';
-import { MultiSkeleton } from '@/components/ui/multi-skeleton';
-import { ArrowLeft, Link } from 'lucide-react';
-import { toast } from 'sonner';
-import { DataTable } from '@/components/table/data-table';
-import { attachColumn } from '@/components/table/column-defs/attach-column/attach-column';
-import axios from 'axios';
-import { RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { PreviewCreateContext } from "@/app/home/context/previewCreateContext";
+import { Context } from "@/lib/interface";
 
-export const AttachToAction = () => {
+interface PostCreateProps<T> {
+    createdObj: T | null;
+    setCreatedObj: (obj: T | null) => void;
+    createdEntityName: string
+    attachToEntityName: string
+    attachToEntity_GetViaSearchEndpoint: string
+    attachToEntity_GetViaSearchEndpoint_QueryKey: string
+}
+
+function isContext(obj: any): obj is Context {
+    return (
+        obj &&
+        typeof obj.contextDescription === 'string' &&
+        typeof obj.operator === 'string' &&
+        typeof obj.entity === 'string'
+    );
+}
+
+export const PostCreate = <T,>({ createdEntityName, createdObj, setCreatedObj, attachToEntityName, attachToEntity_GetViaSearchEndpoint, attachToEntity_GetViaSearchEndpoint_QueryKey }: PostCreateProps<T>) => {
     const queryClient = useQueryClient();
-    const { createdContext, setCreatedContext } = useContextStore();
     const [searchAndSelect, toggleSearchAndSelect] = useState(false);
     const [selectedActionsFromSearch, setSelectedActionsFromSearch] = useState<
         SearchAndSelectInterface[]
     >([]);
-
     const getDataEndpointFetch = async () => {
-        const resp = await axios.get('/api/action/getActionViaSearch');
+        const resp = await axios.get(attachToEntity_GetViaSearchEndpoint);
         return resp.data;
     };
 
     const { data, isLoading } = useQuery({
-        queryKey: [RQ_GET_CONTEXT_VIA_SEARCH],
+        queryKey: [attachToEntity_GetViaSearchEndpoint_QueryKey],
         queryFn: getDataEndpointFetch,
         enabled: searchAndSelect,
     });
@@ -62,13 +74,13 @@ export const AttachToAction = () => {
             toast.success(
                 `Successfully attached context to ${selectedActionsFromSearch.length} action(s)`,
             );
-            setCreatedContext(null);
+            setCreatedObj(null);
             toggleSearchAndSelect(false);
             setSelectedActionsFromSearch([]);
         },
     });
 
-    const deleteHandler = () => {
+    const attachHandler = () => {
         try {
             mutate();
         } catch (error) {
@@ -83,76 +95,41 @@ export const AttachToAction = () => {
         );
         setSelectedActionsFromSearch(newSelectected);
     };
+
+    const iterateCreatedObj = (obj: T) => {
+        if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+            return Object.entries(obj).map(([key, value]) => {
+                if (value !== null && value !== undefined) {
+                    return (
+                        <div className="flex flex-row" key={key}>
+                            <p className="text-muted-foreground">{key}:</p>
+                            <TextBubble text={String(value)} />
+                        </div>
+                    );
+                }
+                return null;
+            });
+        }
+        return null;
+    };
     return (
         <>
-            {createdContext && (
+            {createdObj && (
                 <div className="flex flex-col">
                     <Card>
                         <CardHeader>
                             <CardTitle>✅ Created</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <div className="flex flex-row">
-                                <p className="text-muted-foreground">
-                                    Description:
-                                </p>
-                                <TextBubble
-                                    text={createdContext.contextDescription}
-                                />
-                            </div>
-                            <div className="flex flex-row">
-                                <p className="text-muted-foreground">
-                                    Operator:
-                                </p>
-                                <TextBubble
-                                    text={createdContext.contextDescription}
-                                />
-                            </div>
-                            <div className="flex flex-row">
-                                <p className="text-muted-foreground">Entity:</p>
-                                <TextBubble
-                                    text={createdContext.contextDescription}
-                                />
-                            </div>
-                            {createdContext.textValue ? (
-                                <div className="flex flex-row">
-                                    <p className="text-muted-foreground">
-                                        Text Value:
-                                    </p>
-                                    <TextBubble
-                                        text={createdContext.textValue}
-                                    />
-                                </div>
-                            ) : (
-                                <>
-                                    <div className="flex flex-row">
-                                        <p className="text-muted-foreground">
-                                            Time 1
-                                        </p>
-                                        <TextBubble
-                                            text={createdContext.timeValue1!}
-                                        />
-                                    </div>
-                                    <div className="flex flex-row">
-                                        <p className="text-muted-foreground">
-                                            Time 2
-                                        </p>
-                                        <TextBubble
-                                            text={createdContext.timeValue2!}
-                                        />
-                                    </div>
-                                </>
-                            )}
-                        </CardContent>
+                        <CardContent>{iterateCreatedObj(createdObj)}</CardContent>
                         <CardFooter>
-                            <PreviewCreateContext context={createdContext} />
+                            {isContext(createdObj) && <PreviewCreateContext context={createdObj} />}
                         </CardFooter>
                     </Card>
                     {!searchAndSelect && (
                         <>
                             <p className="mt-4 font-mono">
-                                Would you like to attach this context to an
-                                Action while you&apos;re here?{' '}
+                                Would you like to attach this {createdEntityName} to an{' '}
+                                {attachToEntityName} while you&apos;re here?{' '}
                             </p>
                             <div className="flex mx-2 gap-x-2">
                                 <Button
@@ -162,7 +139,7 @@ export const AttachToAction = () => {
                                     Let&apos;s do it
                                 </Button>
                                 <Button
-                                    onClick={() => setCreatedContext(null)}
+                                    onClick={() => setCreatedObj(null)}
                                     variant="destructive"
                                     className="w-1/2"
                                 >
@@ -171,17 +148,15 @@ export const AttachToAction = () => {
                             </div>
                         </>
                     )}
-                    {searchAndSelect &&
-                        (isLoading ? (
+                    {searchAndSelect && (
+                        isLoading ? (
                             <div className="space-y-2 mt-4">
                                 <MultiSkeleton number={5} />
                             </div>
                         ) : (
                             <div className="mt-2 space-y-2">
                                 <Button
-                                    disabled={
-                                        selectedActionsFromSearch.length !== 0
-                                    }
+                                    disabled={selectedActionsFromSearch.length !== 0}
                                     variant="outline"
                                     className="w-full"
                                     onClick={() => {
@@ -197,28 +172,27 @@ export const AttachToAction = () => {
                                 <SearchAndSelect
                                     container={selectedActionsFromSearch}
                                     setContainer={setSelectedActionsFromSearch}
-                                    objName="Action"
+                                    objName={attachToEntityName}
                                     data={data.message ?? []}
-                                    placeholder="Search Actions..."
+                                    placeholder={`Search ${attachToEntityName}...`}
                                 />
                                 <DataTable
                                     data={selectedActionsFromSearch}
-                                    columns={attachColumn(
-                                        removeFromItemsToBeAttached,
-                                    )}
+                                    columns={attachColumn(removeFromItemsToBeAttached)}
                                     showColumnVisibilityDropdown={false}
                                     showPagination={false}
                                 />
                                 {selectedActionsFromSearch.length > 0 && (
-                                    <Button onClick={deleteHandler}>
+                                    <Button onClick={attachHandler}>
                                         <Link className="w-r h-4" />
                                         {isPending ? 'Attaching...' : 'Attach'}
                                     </Button>
                                 )}
                             </div>
-                        ))}
+                        )
+                    )}
                 </div>
             )}
         </>
-    );
-};
+    )
+}
