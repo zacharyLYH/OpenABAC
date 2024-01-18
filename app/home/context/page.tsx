@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { EditComponent } from '@/components/edit-page-components/edit-component';
 import { DeleteComponent } from '@/components/edit-page-components/delete-component';
 import { useQuery } from '@tanstack/react-query';
-import { RQ_GET_ALL_CONTEXT, RQ_GET_CONTEXT_BY_ID, RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
+import { RQ_GET_ACTION_VIA_SEARCH, RQ_GET_ALL_CONTEXT, RQ_GET_CONTEXT_BY_ID, RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
 import { TableSuspenseSkeleton } from '@/components/table-suspense';
 import { DataTable } from '@/components/table/data-table';
 import { contextColumn } from '@/components/table/column-defs/context-column/context-column';
@@ -125,7 +125,7 @@ export default function ContextPage() {
                     createdEntityName='Context'
                     attachToEntityName='Action'
                     attachToEntity_GetViaSearchEndpoint='/api/action/getActionViaSearch'
-                    attachToEntity_GetViaSearchEndpoint_QueryKey={RQ_GET_CONTEXT_VIA_SEARCH}
+                    attachToEntity_GetViaSearchEndpoint_QueryKey={RQ_GET_ACTION_VIA_SEARCH}
                 />
             </div>
         </div>
