@@ -64,14 +64,6 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
         // setFilteredData(updatedFilteredData);
     };
 
-    const deSelectItem = (item: SearchAndSelectInterface) => {
-        const removedItem = container.filter(
-            containerItem => containerItem.id !== item.id,
-        );
-        setContainer(removedItem);
-        // setFilteredData([...filteredData, item]);
-    };
-
     return (
         <div className="flex flex-col mt-2 w-full items-center gap-1.5">
             <Label htmlFor="search-bar" className="text-lg">

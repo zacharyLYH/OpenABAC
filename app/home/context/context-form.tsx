@@ -21,7 +21,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { createContext } from '@/lib/service/context/create-context';
 import { Circle } from 'lucide-react';
 import { toast } from 'sonner';
@@ -45,11 +45,13 @@ const contextSchema = z
     })
     .refine(
         data => {
-            // If textValue is provided, timeValue1 and timeValue2 should not be provided, and vice versa.
-            if (data.textValue) {
-                return !data.timeValue1 && !data.timeValue2;
+            // console.log("data.timeValue1: ", data.timeValue1)
+            // console.log("data.timeValue2: ", data.timeValue2)
+            // console.log("data.textValue: ", data.textValue)
+            if (data.operator === "BETWEEN") {
+                return data.timeValue1 !== '' && data.timeValue2 !== '' && data.timeValue1 !== undefined && data.timeValue2 !== undefined && data.textValue === undefined;
             } else {
-                return data.timeValue1 && data.timeValue2;
+                return data.textValue !== undefined && data.textValue !== '' && data.timeValue1 === undefined && data.timeValue2 === undefined;
             }
         },
         {
@@ -80,7 +82,6 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
     const timeValue2 = form.watch('timeValue2');
     async function onSubmit(values: z.infer<typeof contextSchema>) {
         try {
-            console.log('HOLA');
             if (initialData) {
                 console.log(initialData);
                 // await updateContext();
@@ -102,7 +103,7 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
     }
     // console.log("INIT: ", initialData)
     const onError = (
-        error: FieldErrors<{
+        errors: FieldErrors<{
             contextDescription: string;
             operator: string;
             entity: string;
@@ -110,7 +111,13 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
             timeValue1?: string | undefined;
             timeValue2?: string | undefined;
         }>,
-    ) => console.log(error);
+    ) => {
+        Object.entries(errors).forEach(([_, error]) => {
+            if (error) {
+                toast.error(`${error.message}`);
+            }
+        });
+    };
     return (
         <Form {...form}>
             <form
@@ -199,61 +206,81 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                         </FormItem>
                     )}
                 />
-                {operator === 'BETWEEN' ? (
-                    <>
-                        <FormField
-                            control={form.control}
-                            name="timeValue1"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Time Value 1</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="10pm" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                        The first time value to check the
-                                        context for.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="timeValue2"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Time Value 2</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="12pm" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                        The second time value to check the
-                                        context for.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </>
-                ) : (
-                    <FormField
-                        control={form.control}
-                        name="textValue"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Text Value</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="10pm" {...field} />
-                                </FormControl>
-                                <FormDescription>
-                                    The text value to check the context for.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                )}
+                <FormField
+                    control={form.control}
+                    name="timeValue1"
+                    disabled={operator !== 'BETWEEN'}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className={
+                                    operator !== 'BETWEEN'
+                                        ? 'line-through text-muted-foreground'
+                                        : ''
+                                }
+                            >
+                                Time Value 1
+                            </FormLabel>
+                            <FormControl>
+                                <Input placeholder="10pm" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                The first time value to check the context for.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="timeValue2"
+                    disabled={operator !== 'BETWEEN'}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className={
+                                    operator !== 'BETWEEN'
+                                        ? 'line-through text-muted-foreground'
+                                        : ''
+                                }
+                            >
+                                Time Value 2
+                            </FormLabel>
+                            <FormControl>
+                                <Input placeholder="12pm" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                The second time value to check the context for.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="textValue"
+                    disabled={operator === 'BETWEEN'}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel
+                                className={
+                                    operator === 'BETWEEN'
+                                        ? 'line-through text-muted-foreground'
+                                        : ''
+                                }
+                            >
+                                Text Value
+                            </FormLabel>
+                            <FormControl>
+                                <Input placeholder="10pm" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                The text value to check the context for.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <div className="flex flex-col space-y-4">
                     <Button
                         onClick={() => setPreviewClicked(!previewClicked)}
