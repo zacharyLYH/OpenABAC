@@ -1,0 +1,36 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - "**"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Use Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "20.10.0"
+
+            - name: Install dependencies
+              run: yarn install
+
+            - name: Run lint
+              run: yarn run lint
+
+            - name: Build
+              run: yarn run build
+              env:
+                  DATABASE_URL_DEV: ${{ secrets.DATABASE_URL_DEV }}
+                  DATABASE_HOST_DEV: ${{ secrets.DATABASE_HOST_DEV }}
+                  DATABASE_USER_DEV: ${{ secrets.DATABASE_USER_DEV }}
+                  DATABASE_PASSWORD_DEV: ${{ secrets.DATABASE_PASSWORD_DEV }}
+                  DATABASE_NAME_DEV: ${{ secrets.DATABASE_NAME_DEV }}
+                  IS_PRODUCTION: ${{ secrets.IS_PRODUCTION }}
+                  USE_PRODUCTION_DB: ${{ secrets.USE_PRODUCTION_DB }}
