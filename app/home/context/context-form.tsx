@@ -45,11 +45,13 @@ const contextSchema = z
     })
     .refine(
         data => {
-            // If textValue is provided, timeValue1 and timeValue2 should not be provided, and vice versa.
-            if (data.textValue) {
-                return !data.timeValue1 && !data.timeValue2;
+            console.log("data.timeValue1: ", data.timeValue1)
+            console.log("data.timeValue2: ", data.timeValue2)
+            console.log("data.textValue: ", data.textValue)
+            if (data.operator === "BETWEEN") {
+                return data.timeValue1 !== '' && data.timeValue2 !== '' && data.timeValue1 !== undefined && data.timeValue2 !== undefined && data.textValue === undefined;
             } else {
-                return data.timeValue1 && data.timeValue2;
+                return data.textValue !== undefined && data.textValue !== '' && data.timeValue1 === undefined && data.timeValue2 === undefined;
             }
         },
         {
