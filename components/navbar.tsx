@@ -76,11 +76,11 @@ export function MainNav() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/settings" legacyBehavior passHref>
+                    <Link href="/home/attach" legacyBehavior passHref>
                         <NavigationMenuLink
                             className={navigationMenuTriggerStyle()}
                         >
-                            Settings
+                            Attach Entity
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
