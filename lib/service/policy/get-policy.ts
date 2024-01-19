@@ -5,6 +5,7 @@ import { db } from '@/lib/database';
 import { Count, Policy, Query } from '@/lib/interface';
 import {
     GET_ALL_POLICIES,
+    GET_POLICY_BY_ID,
     GET_POLICY_COUNT,
     GET_POLICY_GIVEN_ID,
     GET_POLICY_VIA_SEARCH,
@@ -60,7 +61,7 @@ export const getPolicyById = async (id: string) => {
         return mockData.filter(mock => mock.id === id);
     } else {
         const query: Query = {
-            sql: GET_POLICY_GIVEN_ID,
+            sql: GET_POLICY_BY_ID,
             params: [id],
         };
         const results = await db.query<Policy[]>(query);
