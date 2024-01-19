@@ -53,3 +53,8 @@ export const GET_POLICY_COUNT = `
 SELECT COUNT(*) AS count
 FROM Policy;
 `;
+
+export const GET_POLICY_VIA_SEARCH = `
+SELECT id AS id, policyName AS value
+FROM Policy;
+`
