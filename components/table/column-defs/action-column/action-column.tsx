@@ -3,10 +3,9 @@
 import { Action } from '@/lib/interface';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTableColumnHeader } from '../../column-header';
-import { copyColumn, selectColumn } from '../column-template';
+import { copyColumn } from '../column-template';
 
 export const actionColumn: ColumnDef<Action>[] = [
-    // ...selectColumn<Action>(),
     {
         accessorKey: 'actionName',
         header: ({ column }) => (
