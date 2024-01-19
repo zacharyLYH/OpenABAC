@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { DataTable } from '@/components/table/data-table';
 import { getAllPolicyGivenApplicationUserId } from '@/lib/service/policy/get-policy';
 import { policyColumn } from '../policy-column/policy-column';
-import useAppStore from '@/zustand/app-store';
 
 interface GetPoliciesButtonProps {
     applicationUserId: string;
@@ -16,7 +15,7 @@ interface GetPoliciesButtonProps {
 export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({
     applicationUserId,
 }) => {
-    const { modalOpen, toggleModal } = useAppStore();
+    const [modalOpen, toggleModal] = useState(false);
     const [data, setData] = useState<Policy[] | null>(null);
 
     useEffect(() => {
@@ -34,7 +33,7 @@ export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({
     return (
         <>
             {modalOpen && data !== null && (
-                <DataModal title="Policies" isOpen={modalOpen}>
+                <DataModal title="Policies" isOpen={modalOpen} onClose={() => toggleModal(false)}>
                     <DataTable
                         data={data}
                         columns={policyColumn}
@@ -43,7 +42,7 @@ export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({
                     />
                 </DataModal>
             )}
-            <Button size="default" variant="default" onClick={toggleModal}>
+            <Button size="default" variant="default" onClick={() => toggleModal(true)}>
                 Policies
             </Button>
         </>
