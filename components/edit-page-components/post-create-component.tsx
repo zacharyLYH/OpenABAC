@@ -1,3 +1,5 @@
+"use client"
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SearchAndSelect, SearchAndSelectInterface } from "./search";
 import { useState } from "react";
@@ -72,7 +74,7 @@ export const PostCreate = <T,>({ createdEntityName, createdObj, setCreatedObj, a
                 queryKey: ['PLACEHOLDER_ATTACH_CONTEXT_TO_ACTION'],
             });
             toast.success(
-                `Successfully attached context to ${selectedActionsFromSearch.length} action(s)`,
+                `Successfully attached ${createdEntityName} to ${selectedActionsFromSearch.length} ${attachToEntityName}(s)`,
             );
             setCreatedObj(null);
             toggleSearchAndSelect(false);
