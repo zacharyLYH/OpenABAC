@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
 
     return (
         <>
-            <div className="flex justify-between">
+            <div className="flex items-center justify-between">
                 {searchColumnName ? (
                     <div className="flex items-center py-4 w-full">
                         <Input
@@ -134,10 +134,10 @@ export function DataTable<TData, TValue>({
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
-                                                      header.getContext(),
-                                                  )}
+                                                    header.column.columnDef
+                                                        .header,
+                                                    header.getContext(),
+                                                )}
                                         </TableHead>
                                     );
                                 })}
