@@ -41,6 +41,6 @@ export const userColumn: ColumnDef<User>[] = [
             <DataTableColumnHeader column={column} title="Modified Date" />
         ),
     },
-    // ...getPolicies<User>(),
+    ...getPolicies<User>(),
     ...copyColumn<User>(),
 ];
