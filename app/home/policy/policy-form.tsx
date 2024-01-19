@@ -28,6 +28,7 @@ import { toast } from 'sonner';
 import useContextStore from '@/zustand/edit-pages/context-store';
 import useAppStore from '@/zustand/app-store';
 import { Policy } from '@/lib/interface';
+import usePolicyStore from '@/zustand/edit-pages/policy-store';
 
 export interface PolicyFormProps {
     initialData?: Policy;
@@ -42,7 +43,7 @@ const policySchema = z
 
 //Form doesn't allow Boolean type in the allow field. While in this component, allow field shall be string. Convert string to boolean if we're passing in initial data. And convert boolean to string to write out to api 
 export const PolicyForm: React.FC<PolicyFormProps> = ({ initialData }) => {
-    const { setCreatedContext } = useContextStore();
+    const { setCreatedPolicy } = usePolicyStore();
     const { toggleModal } = useAppStore();
     const form = useForm<z.infer<typeof policySchema>>({
         resolver: zodResolver(policySchema),
