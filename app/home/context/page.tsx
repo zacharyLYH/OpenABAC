@@ -45,9 +45,9 @@ export default function ContextPage() {
     });
     return (
         <div className="p-8">
-            <div className="flex flex-row justify-between">
-                <h2 className="text-5xl font-bold tracking-tight">Context</h2>
-                <div className="flex flex-row gap-x-4">
+            <div className="flex flex-col md:flex-row justify-between">
+                <h2 className="text-5xl font-bold tracking-tight text-green-600">Context</h2>
+                <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 gap-x-4">
                     {!createdContext &&
                         !deleteClickedIndicator &&
                         (!editClickedIndicator ? (
