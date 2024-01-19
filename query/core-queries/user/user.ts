@@ -43,3 +43,14 @@ export const GET_NUMBER_OF_USERS = `
 SELECT COUNT(*) AS count
 FROM User;
 `;
+
+export const GET_USER_VIA_SEARCH = `
+SELECT id AS id, applicationUserId AS value
+FROM Action;
+`;
+
+export const GET_USER_BY_ID = `
+SELECT applicationUserId, jsonCol, modifiedDate
+FROM Action
+WHERE ID = ?;
+`;

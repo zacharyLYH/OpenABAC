@@ -3,10 +3,9 @@
 import { Context } from '@/lib/interface';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTableColumnHeader } from '../../column-header';
-import { copyColumn, selectColumn } from '../column-template';
+import { copyColumn } from '../column-template';
 
 export const contextColumn: ColumnDef<Context>[] = [
-    ...selectColumn<Context>(),
     {
         accessorKey: 'contextDescription',
         header: ({ column }) => (

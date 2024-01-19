@@ -1,10 +1,14 @@
 'use server';
 
+import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { db } from '@/lib/database';
 import { Count, Policy, Query } from '@/lib/interface';
 import {
     GET_ALL_POLICIES,
+    GET_POLICY_BY_ID,
     GET_POLICY_COUNT,
+    GET_POLICY_GIVEN_ID,
+    GET_POLICY_VIA_SEARCH,
 } from '@/query/core-queries/policies/policies';
 
 export const getAllPolicy = async () => {
@@ -34,6 +38,34 @@ export const getPolicyCount = async () => {
         };
         const results = await db.query<Count[]>(query);
         return results[0].count;
+    }
+};
+
+export const getPolicyViaSearch = async () => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.map(item => ({
+            id: item.id,
+            value: item.policyName,
+        }));
+    } else {
+        const query: Query = {
+            sql: GET_POLICY_VIA_SEARCH,
+        };
+        const results = await db.query<SearchAndSelectInterface[]>(query);
+        return results;
+    }
+};
+
+export const getPolicyById = async (id: string) => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.filter(mock => mock.id === id);
+    } else {
+        const query: Query = {
+            sql: GET_POLICY_BY_ID,
+            params: [id],
+        };
+        const results = await db.query<Policy[]>(query);
+        return results;
     }
 };
 

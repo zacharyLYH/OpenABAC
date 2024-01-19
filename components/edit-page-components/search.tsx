@@ -147,7 +147,11 @@ const QuickView = ({ id, entity }: { id: string; entity: string }) => {
                                         value !== undefined && (
                                             <li key={key}>
                                                 <strong>{key}:</strong>{' '}
-                                                {value.toString()}
+                                                {typeof value === 'object' && value !== null ? (
+                                                    <pre>{JSON.stringify(value, null, 2)}</pre> // Pretty print the JSON
+                                                ) : (
+                                                    value.toString()
+                                                )}
                                             </li>
                                         ),
                                 )}

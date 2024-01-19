@@ -1,62 +1,54 @@
 'use client';
 
-import { ContextForm } from '@/app/home/context/context-form';
 import { CreateButton } from '@/components/edit-page-components/create-button';
-import useContextStore from '@/zustand/edit-pages/context-store';
 import { Separator } from '@/components/ui/separator';
 import { EditComponent } from '@/components/edit-page-components/edit-component';
 import { DeleteComponent } from '@/components/edit-page-components/delete-component';
 import { useQuery } from '@tanstack/react-query';
-import { RQ_GET_ACTION_VIA_SEARCH, RQ_GET_ALL_CONTEXT, RQ_GET_CONTEXT_BY_ID, RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
 import { TableSuspenseSkeleton } from '@/components/table-suspense';
 import { DataTable } from '@/components/table/data-table';
-import { contextColumn } from '@/components/table/column-defs/context-column/context-column';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { PostCreate } from '@/components/edit-page-components/post-create-component';
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { TextBubble } from '@/components/ui/text-bubble';
-import { PreviewCreateContext } from './previewCreateContext';
+import useActionStore from '@/zustand/edit-pages/action-store';
+import { RQ_GET_ACTION_BY_ID, RQ_GET_ACTION_VIA_SEARCH, RQ_GET_ALL_ACTION, RQ_GET_POLICY_VIA_SEARCH } from '@/query/react-query/query-keys';
+import { ActionForm } from './action-form';
+import { actionColumn } from '@/components/table/column-defs/action-column/action-column';
 
-export default function ContextPage() {
+
+export default function ActionPage() {
     const {
-        createdContext,
-        setCreatedContext,
+        createdAction,
+        setCreatedAction,
         editClickedIndicator,
         setEditClickedIndicator,
         deleteClickedIndicator,
         setDeleteClickedIndicator,
-    } = useContextStore();
-    const getDataEndpoint = '/api/context/getContextViaSearch';
-    const entity = 'Context';
-    const getAllContext = async () => {
-        const resp = await axios.get('/api/context/getAll');
+    } = useActionStore();
+    const getDataEndpoint = '/api/action/getActionViaSearch';
+    const entity = 'Action';
+    const getAllAction = async () => {
+        const resp = await axios.get('/api/action/getAll');
         return await resp.data;
     };
     const query = useQuery({
-        queryKey: [RQ_GET_ALL_CONTEXT],
-        queryFn: getAllContext,
+        queryKey: [RQ_GET_ALL_ACTION],
+        queryFn: getAllAction,
     });
     return (
         <div className="p-8">
             <div className="flex flex-col md:flex-row justify-between">
-                <h2 className="text-5xl font-bold tracking-tight text-green-600">Context</h2>
+                <h2 className="text-5xl font-bold tracking-tight text-green-600">Action</h2>
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 gap-x-4">
-                    {!createdContext &&
+                    {!createdAction &&
                         !deleteClickedIndicator &&
                         (!editClickedIndicator ? (
                             <CreateButton
-                                objName="Context"
-                                form={<ContextForm />}
+                                objName="Action"
+                                form={<ActionForm />}
                             />
                         ) : null)}
-                    {!createdContext && !deleteClickedIndicator && (
+                    {!createdAction && !deleteClickedIndicator && (
                         <Button
                             size="lg"
                             onClick={() =>
@@ -68,7 +60,7 @@ export default function ContextPage() {
                                 : `Edit ${entity}`}
                         </Button>
                     )}
-                    {!createdContext && !editClickedIndicator && (
+                    {!createdAction && !editClickedIndicator && (
                         <Button
                             size="lg"
                             onClick={() =>
@@ -85,47 +77,47 @@ export default function ContextPage() {
                 </div>
             </div>
             <Separator className="my-8" />
-            {!createdContext && !deleteClickedIndicator && (
+            {!createdAction && !deleteClickedIndicator && (
                 <EditComponent
-                    getDataByIdEndpoint="/api/context/getById"
-                    renderEditForm={data => <ContextForm initialData={data} />}
+                    getDataByIdEndpoint="/api/action/getById"
+                    renderEditForm={data => <ActionForm initialData={data} />}
                     editClickedIndicator={editClickedIndicator}
                     setEditClickedIndicator={setEditClickedIndicator}
                     getDataEndpoint={getDataEndpoint}
                     entity={entity}
-                    getContextByIdQueryKey={[RQ_GET_CONTEXT_BY_ID]}
-                    getContextViaSearchQueryKey={[RQ_GET_CONTEXT_VIA_SEARCH]}
+                    getContextByIdQueryKey={[RQ_GET_ACTION_BY_ID]}
+                    getContextViaSearchQueryKey={[RQ_GET_ACTION_VIA_SEARCH]}
                 />
             )}
-            {!createdContext && !editClickedIndicator && (
+            {!createdAction && !editClickedIndicator && (
                 <DeleteComponent
                     getDataEndpoint={getDataEndpoint}
                     entity={entity}
                     deleteClickedIndicator={deleteClickedIndicator}
                     setDeleteClickedIndicator={setDeleteClickedIndicator}
-                    deleteEndpoint="/api/context/delete"
-                    getQueryKey={[RQ_GET_CONTEXT_VIA_SEARCH]}
+                    deleteEndpoint="/api/action/delete"
+                    getQueryKey={[RQ_GET_ACTION_VIA_SEARCH]}
                 />
             )}
-            {createdContext ||
+            {createdAction ||
                 deleteClickedIndicator ||
                 editClickedIndicator ? null : query.data ? (
                     <DataTable
                         data={query.data.message}
-                        columns={contextColumn}
-                        searchColumnName="contextDescription"
+                        columns={actionColumn}
+                        searchColumnName="actionName"
                     />
                 ) : (
                 <TableSuspenseSkeleton />
             )}
             <div className="flex justify-center ">
                 <PostCreate
-                    createdObj={createdContext}
-                    setCreatedObj={setCreatedContext}
-                    createdEntityName='Context'
-                    attachToEntityName='Action'
-                    attachToEntity_GetViaSearchEndpoint='/api/action/getActionViaSearch'
-                    attachToEntity_GetViaSearchEndpoint_QueryKey={RQ_GET_ACTION_VIA_SEARCH}
+                    createdObj={createdAction}
+                    setCreatedObj={setCreatedAction}
+                    createdEntityName='Action'
+                    attachToEntityName='Policy'
+                    attachToEntity_GetViaSearchEndpoint='/api/policy/getPolicyViaSearch'
+                    attachToEntity_GetViaSearchEndpoint_QueryKey={RQ_GET_POLICY_VIA_SEARCH}
                 />
             </div>
         </div>

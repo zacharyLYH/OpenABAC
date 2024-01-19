@@ -3,7 +3,7 @@
 import { User } from '@/lib/interface';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTableColumnHeader } from '../../column-header';
-import { copyColumn, getPolicies, selectColumn } from '../column-template';
+import { copyColumn, getPolicies } from '../column-template';
 
 const renderJsonCell = (cell: any) => {
     const jsonStr = JSON.stringify(cell.getValue(), null, 2);
@@ -19,7 +19,6 @@ const renderJsonCell = (cell: any) => {
 };
 
 export const userColumn: ColumnDef<User>[] = [
-    ...selectColumn<User>(),
     {
         accessorKey: 'applicationUserId',
         header: ({ column }) => (

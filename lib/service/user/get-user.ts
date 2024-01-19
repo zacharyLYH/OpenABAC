@@ -1,8 +1,11 @@
+import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { db } from '@/lib/database';
 import { Count, Query, User } from '@/lib/interface';
 import {
     GET_ALL_USERS,
     GET_NUMBER_OF_USERS,
+    GET_USER_BY_ID,
+    GET_USER_VIA_SEARCH,
 } from '@/query/core-queries/user/user';
 
 export const getAllUsers = async () => {
@@ -27,6 +30,34 @@ export const getUserCount = async () => {
         };
         const results = await db.query<Count[]>(query);
         return results[0].count;
+    }
+};
+
+export const getUserViaSearch = async () => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.map(item => ({
+            id: item.id,
+            value: item.applicationUserId,
+        }));
+    } else {
+        const query: Query = {
+            sql: GET_USER_VIA_SEARCH,
+        };
+        const results = await db.query<SearchAndSelectInterface[]>(query);
+        return results;
+    }
+};
+
+export const getUserById = async (id: string) => {
+    if (process.env.IS_PRODUCTION === 'false') {
+        return mockData.filter(mock => mock.id === id);
+    } else {
+        const query: Query = {
+            sql: GET_USER_BY_ID,
+            params: [id],
+        };
+        const results = await db.query<User[]>(query);
+        return results;
     }
 };
 
@@ -70,7 +101,7 @@ const mockData = [
             age: 29,
             occupation: 'Doctor',
         },
-        applicationUserId: '012349',
+        applicationUserId: '0123497',
         id: '005',
         modifiedDate: new Date(),
         createdDate: new Date('2023-01-05'),
@@ -83,7 +114,7 @@ const mockData = [
             gender: 'Not applicable',
         },
         applicationUserId: '012349',
-        id: '005',
+        id: '006',
         modifiedDate: new Date(),
         createdDate: new Date('2023-01-05'),
     },
