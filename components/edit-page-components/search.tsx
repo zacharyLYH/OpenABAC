@@ -55,12 +55,12 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
 
     return (
         <div className="flex flex-col mt-2 w-full items-center gap-1.5">
-            <Label htmlFor="search-bar" className="text-lg">
+            <Label htmlFor={objName} className="text-lg">
                 Search {objName}
             </Label>
             <Input
                 type="text"
-                id="search-bar"
+                id={objName}
                 placeholder={placeholder}
                 className="w-full rounded-lg px-8 py-2 text-full"
                 value={!disabled ? query : "Remove selected to search..."}
