@@ -39,7 +39,7 @@ const AttachEntity = () => {
                                 mountIndicator={left.length > 0 && right.length > 0 && leftSelected.length > 0}
                                 placeholder={`Select (1) ${right}...`}
                                 maxAllowSelect={1}
-                            /> : <p>👈 Select {left} to {addOrRemove} to {right} </p>}
+                            /> : <p>👈 Select {left} to {addOrRemove === "Add" ? "add to" : "remove from "} {right} </p>}
                     </div>
                 </div>
             }
