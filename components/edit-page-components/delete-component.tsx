@@ -90,8 +90,9 @@ export const DeleteComponent: React.FC<DeleteComponentInterface> = ({
                             <DataTable
                                 data={selected}
                                 columns={deleteItemColumn(
-                                    deleteEndpoint,
                                     removeFromItemsToBeDeleted,
+                                    "To delete",
+                                    deleteEndpoint,
                                     uiStateOnSuccessfulDelete,
                                 )}
                                 showColumnVisibilityDropdown={false}

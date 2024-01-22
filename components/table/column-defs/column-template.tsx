@@ -59,21 +59,22 @@ export function getPolicies<T extends User>(): ColumnDef<T>[] {
 }
 
 export function deleteButton<T extends SearchAndSelectInterface>(
-    deleteEndpoint: string,
-    uiStateOnSuccessfulDelete: (id: string | string[]) => void,
+    deleteEndpoint?: string,
+    uiStateOnSuccessfulDelete?: (id: string | string[]) => void,
 ): ColumnDef<T>[] {
-    return [
-        {
-            id: 'delete',
-            cell: ({ row }) => (
-                <DeleteRowButton
-                    uiStateOnSuccessfulDelete={uiStateOnSuccessfulDelete}
-                    itemId={row.original.id}
-                    deleteEndpoint={deleteEndpoint}
-                />
-            ),
-        },
-    ];
+    return uiStateOnSuccessfulDelete && deleteEndpoint ?
+        [
+            {
+                id: 'delete',
+                cell: ({ row }) => (
+                    <DeleteRowButton
+                        uiStateOnSuccessfulDelete={uiStateOnSuccessfulDelete}
+                        itemId={row.original.id}
+                        deleteEndpoint={deleteEndpoint}
+                    />
+                ),
+            },
+        ] : [];
 }
 
 export function removeFromDeleteList<T extends SearchAndSelectInterface>(
