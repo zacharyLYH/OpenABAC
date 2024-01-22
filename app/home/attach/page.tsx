@@ -15,7 +15,7 @@ const AttachEntity = () => {
                 <SelectComponent options={setAddOrRemoveOptions} container={setAddOrRemove} placeholder="Add/Remove..." />
                 <SelectComponent options={leftOptions} container={setLeft} placeholder="Entity..." disabled={addOrRemove.length === 0} />
                 <p>{addOrRemove === 'Add' ? 'To' : 'From'}</p>
-                <Input className="max-w-24" value={right} disabled />
+                <Input className="max-w-24" value={right} disabled readOnly />
             </div>
             {addOrRemove && left && right &&
                 <div className="flex flex-row w-full">
