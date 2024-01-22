@@ -1,3 +1,4 @@
+import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { create } from 'zustand';
 
 
@@ -7,40 +8,45 @@ interface AttachEntityStore {
     left: string | '';
     setLeft: (value: string | '') => void
     right: string | '';
-    setRight: (value: string | '') => void
-    rightOptions: string[];
-    setRightOptions: (options: string[]) => void;
     leftOptions: string[]
+    leftSelected: SearchAndSelectInterface[]
+    setLeftSelected: (item: SearchAndSelectInterface[]) => void
+    rightSelected: SearchAndSelectInterface[]
+    setRightSelected: (item: SearchAndSelectInterface[]) => void
 }
 
 const useAttachEntityStore = create<AttachEntityStore>(set => ({
     addOrRemove: "",
     setAddOrRemove: (value: string) =>
-        set({ addOrRemove: value }),
+        set({ addOrRemove: value, left: '', right: '', leftSelected: [], rightSelected: [] }),
     left: '',
-    setLeft: (value) => {
-        const rightOptions = getRightOptions(value);
-        set({ left: value });
-        set({ rightOptions });
+    setLeft: (value: string) => {
+        set((state) => {
+            const right = getRightOptions(value, state.addOrRemove);
+            return { left: value, right, leftSelected: [], rightSelected: [] };
+        });
     },
     right: '',
-    setRight: (value) => set({ right: value }),
-    rightOptions: [],
-    setRightOptions: (options) => set({ rightOptions: options }),
-    leftOptions: ["User", "Policy", "Action"]
+    leftOptions: ["Policy", "Action", "Context"],
+    leftSelected: [],
+    setLeftSelected: (item: SearchAndSelectInterface[]) => {
+        set({ leftSelected: item });
+    },
+    rightSelected: [],
+    setRightSelected: (item: SearchAndSelectInterface[]) => {
+        set({ rightSelected: item });
+    },
 }));
 
-const getRightOptions = (leftValue: string | ''): string[] => {
-    switch (leftValue) {
-        case "User":
-            return ["Policy", "Action", "Context"];
-        case "Policy":
-            return ["Action", "Context"];
-        case "Action":
-            return ["Context"];
-        default:
-            return [];
+const getRightOptions = (leftValue: string, addOrRemove: string): string => {
+    if (addOrRemove) {
+        switch (leftValue) {
+            case 'Policy': return "User"
+            case 'Action': return "Policy"
+            case "Context": return "Action"
+        }
     }
+    return ""
 };
 
 export default useAttachEntityStore;
