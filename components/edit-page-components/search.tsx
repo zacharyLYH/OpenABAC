@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/sheet';
 import { MultiSkeleton } from '@/components/ui/multi-skeleton';
 import { CopyButton } from '../table/copy-button';
+import { Eye } from 'lucide-react';
 
 export interface SearchAndSelectInterface {
     id: string;
@@ -25,6 +26,7 @@ interface SearchAndSelectProps {
     data: SearchAndSelectInterface[];
     container: SearchAndSelectInterface[] | [];
     setContainer: (obj: SearchAndSelectInterface[] | []) => void;
+    disabled?: boolean
 }
 
 export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
@@ -33,6 +35,7 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
     data,
     setContainer,
     container,
+    disabled = false
 }) => {
     const [query, setQuery] = useState('');
 
@@ -52,18 +55,19 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
 
     return (
         <div className="flex flex-col mt-2 w-full items-center gap-1.5">
-            <Label htmlFor="search-bar" className="text-lg">
+            <Label htmlFor={objName} className="text-lg">
                 Search {objName}
             </Label>
             <Input
                 type="text"
-                id="search-bar"
+                id={objName}
                 placeholder={placeholder}
                 className="w-full rounded-lg px-8 py-2 text-full"
-                value={query}
+                value={!disabled ? query : "Remove selected to search..."}
                 onChange={e => setQuery(e.target.value)}
+                disabled={disabled}
             />
-            {query && (
+            {query && !disabled && (
                 <div className="w-full max-h-60 overflow-auto">
                     {filteredData.map(item => (
                         <div className="flex justify-between" key={item.id}>
@@ -124,9 +128,8 @@ const QuickView = ({ id, entity }: { id: string; entity: string }) => {
                     onClick={() => setQuickViewClicked(true)}
                     variant="secondary"
                     key={id}
-                    className="w-1/4 justify-center"
                 >
-                    Quick View
+                    <Eye />
                 </Button>
             </SheetTrigger>
             <SheetContent side="top">
