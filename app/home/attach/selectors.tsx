@@ -13,14 +13,14 @@ interface SelectComponentProps {
     options: string[]
     container: (value: string) => void
     disabled?: boolean
+    placeholder: string
 }
 
-export function SelectComponent({ options, container, disabled = false }: SelectComponentProps) {
-
+export function SelectComponent({ options, container, disabled = false, placeholder }: SelectComponentProps) {
     return (
         <Select onValueChange={(value) => container(value)}>
-            <SelectTrigger className="max-w-40 my-2" disabled={disabled}>
-                <SelectValue placeholder={`Select...`} />
+            <SelectTrigger className="w-40" disabled={disabled}>
+                <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
                 {options.map((op) => (
