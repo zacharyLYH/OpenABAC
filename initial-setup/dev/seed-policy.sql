@@ -1,21 +1,57 @@
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyAccessLevel1', 'Access level 1 policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyAccessLevel2', 'Access level 2 policy', FALSE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyDataRead', 'Data read policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyDataWrite', 'Data write policy', FALSE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyAdminAccess', 'Admin access policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyUserManagement', 'User management policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyContentReview', 'Content review policy', FALSE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyFinancialTransactions', 'Financial transactions policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyCustomerSupport', 'Customer support policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyQualityAssurance', 'Quality assurance policy', FALSE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicySecurityAudit', 'Security audit policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyRiskAssessment', 'Risk assessment policy', FALSE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyComplianceCheck', 'Compliance check policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyProductDevelopment', 'Product development policy', FALSE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyMarketingStrategy', 'Marketing strategy policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicySalesOperation', 'Sales operation policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyITInfrastructure', 'IT infrastructure policy', FALSE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyHumanResources', 'Human resources policy', TRUE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyLegalCompliance', 'Legal compliance policy', FALSE);
-INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), 'PolicyEnvironmentalStandards', 'Environmental standards policy', TRUE);
-select * from Policy
+ INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES
+ (UUID(), 'DistinguishedDevPolicy', 'Grants distinguished developers read, write, and delete access to all code bases.', TRUE),
+ (UUID(), 'FullAccessCodeBase/ProjectAlpha', 'Grants full access to the code base of Project Alpha.', TRUE),
+ (UUID(), 'RWAcessCodeBase/ProjectAlpha', 'Grants read and write access to the code base of Project Alpha.', TRUE),
+ (UUID(), 'FullAccessGit/ProjectAlpha', 'Grants full access to the Git repository of Project Alpha.', TRUE),
+ (UUID(), 'ChangeDevRoster/ProjectAlpha', 'Allows modification of the developer roster for Project Alpha.', TRUE),
+ (UUID(), 'FullAccessProd/ProjectAlpha', 'Grants full access to the production environment of Project Alpha.', TRUE),
+ (UUID(), 'FullAccessTest/ProjectAlpha', 'Grants full access to the test environment of Project Alpha.', TRUE),
+ (UUID(), 'GitAccessOnlyProd/ProjectAlpha', 'Grants Git repository access in the production environment of Project Alpha.', TRUE),
+ (UUID(), 'NoAccessToProd/ProjectAlpha', 'Explicit denial for access to anything related to Production in Project Alpha.', FALSE),
+ (UUID(), 'FullAccessMQ/ProjectAlpha', 'Grants full access to the message queue system of Project Alpha.', TRUE),
+ (UUID(), 'GitAccessOnlyDev/ProjectAlpha', 'Grants Git repository access in the development environment of Project Alpha.', TRUE),
+ (UUID(), 'FullAccessDev/ProjectAlpha', 'Grants full access to the development environment of Project Alpha.', TRUE),
+ (UUID(), 'ViewOnlyMQ/ProjectAlpha', 'Grants view-only access to the message queue system of Project Alpha.', TRUE),
+ (UUID(), 'FullAccessDB/ProjectAlpha', 'Grants full access to the database systems of Project Alpha.', TRUE),
+
+ (UUID(), 'FullAccessCodeBase/ProjectGamma', 'Grants full access to the code base of Project Gamma.', TRUE),
+ (UUID(), 'RWAcessCodeBase/ProjectGamma', 'Grants read and write access to the code base of Project Gamma.', TRUE),
+ (UUID(), 'FullAccessGit/ProjectGamma', 'Grants full access to the Git repository of Project Gamma.', TRUE),
+ (UUID(), 'ChangeDevRoster/ProjectGamma', 'Allows modification of the developer roster for Project Gamma.', TRUE),
+ (UUID(), 'FullAccessProd/ProjectGamma', 'Grants full access to the production environment of Project Gamma.', TRUE),
+ (UUID(), 'FullAccessTest/ProjectGamma', 'Grants full access to the test environment of Project Gamma.', TRUE),
+ (UUID(), 'GitAccessOnlyProd/ProjectGamma', 'Grants Git repository access in the production environment of Project Gamma.', TRUE),
+ (UUID(), 'NoAccessToProd/ProjectGamma', 'Explicit denial for access to anything related to Production in Project Gamma.', FALSE),
+ (UUID(), 'FullAccessMQ/ProjectGamma', 'Grants full access to the message queue system of Project Gamma.', TRUE),
+ (UUID(), 'GitAccessOnlyDev/ProjectGamma', 'Grants Git repository access in the development environment of Project Gamma.', TRUE),
+ (UUID(), 'FullAccessDev/ProjectGamma', 'Grants full access to the development environment of Project Gamma.', TRUE),
+ (UUID(), 'ViewOnlyMQ/ProjectGamma', 'Grants view-only access to the message queue system of Project Gamma.', TRUE),
+ (UUID(), 'FullAccessDB/ProjectGamma', 'Grants full access to the database systems of Project Gamma.', TRUE),
+
+ (UUID(), 'FullAccessCodeBase/ProjectBeta', 'Grants full access to the code base of Project Beta.', TRUE),
+ (UUID(), 'RWAcessCodeBase/ProjectBeta', 'Grants read and write access to the code base of Project Beta.', TRUE),
+ (UUID(), 'FullAccessGit/ProjectBeta', 'Grants full access to the Git repository of Project Beta.', TRUE),
+ (UUID(), 'ChangeDevRoster/ProjectBeta', 'Allows modification of the developer roster for Project Beta.', TRUE),
+ (UUID(), 'FullAccessProd/ProjectBeta', 'Grants full access to the production environment of Project Beta.', TRUE),
+ (UUID(), 'FullAccessTest/ProjectBeta', 'Grants full access to the test environment of Project Beta.', TRUE),
+ (UUID(), 'GitAccessOnlyProd/ProjectBeta', 'Grants Git repository access in the production environment of Project Beta.', TRUE),
+ (UUID(), 'NoAccessToProd/ProjectBeta', 'Explicit denial for access to anything related to Production in Project Beta.', FALSE),
+ (UUID(), 'FullAccessMQ/ProjectBeta', 'Grants full access to the message queue system of Project Beta.', TRUE),
+ (UUID(), 'GitAccessOnlyDev/ProjectBeta', 'Grants Git repository access in the development environment of Project Beta.', TRUE),
+ (UUID(), 'FullAccessDev/ProjectBeta', 'Grants full access to the development environment of Project Beta.', TRUE),
+ (UUID(), 'ViewOnlyMQ/ProjectBeta', 'Grants view-only access to the message queue system of Project Beta.', TRUE),
+ (UUID(), 'FullAccessDB/ProjectBeta', 'Grants full access to the database systems of Project Beta.', TRUE),
+
+ (UUID(), 'FullAccessCodeBase/ProjectDelta', 'Grants full access to the code base of Project Delta.', TRUE),
+ (UUID(), 'RWAcessCodeBase/ProjectDelta', 'Grants read and write access to the code base of Project Delta.', TRUE),
+ (UUID(), 'FullAccessGit/ProjectDelta', 'Grants full access to the Git repository of Project Delta.', TRUE),
+ (UUID(), 'ChangeDevRoster/ProjectDelta', 'Allows modification of the developer roster for Project Delta.', TRUE),
+ (UUID(), 'FullAccessProd/ProjectDelta', 'Grants full access to the production environment of Project Delta.', TRUE),
+ (UUID(), 'FullAccessTest/ProjectDelta', 'Grants full access to the test environment of Project Delta.', TRUE),
+ (UUID(), 'GitAccessOnlyProd/ProjectDelta', 'Grants Git repository access in the production environment of Project Delta.', TRUE),
+ (UUID(), 'NoAccessToProd/ProjectDelta', 'Explicit denial for access to anything related to Production in Project Delta.', FALSE),
+ (UUID(), 'FullAccessMQ/ProjectDelta', 'Grants full access to the message queue system of Project Delta.', TRUE),
+ (UUID(), 'GitAccessOnlyDev/ProjectDelta', 'Grants Git repository access in the development environment of Project Delta.', TRUE),
+ (UUID(), 'FullAccessDev/ProjectDelta', 'Grants full access to the development environment of Project Delta.', TRUE),
+ (UUID(), 'ViewOnlyMQ/ProjectDelta', 'Grants view-only access to the message queue system of Project Delta.', TRUE),
+ (UUID(), 'FullAccessDB/ProjectDelta', 'Grants full access to the database systems of Project Delta.', TRUE);
