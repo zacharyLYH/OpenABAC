@@ -27,8 +27,7 @@ CREATE TABLE User (
     modifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    INDEX (applicationUserId)
-    UNIQUE (applicationUserId)
+    UNIQUE INDEX applicationUserId_idx (applicationUserId)
 );
 
 -- UserPolicy Table
@@ -98,11 +97,11 @@ CREATE TABLE IncompatibleActionToAction (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Statistics {
+CREATE TABLE Statistics (
     id CHAR(36) NOT NULL,
-    statisticName VARCHAR(255)
-    statisticNumberValue INT
-    statisticVarCharValue VARCHAR(255)
-    statisticBooleanValue BOOLEAN 
+    statisticName VARCHAR(255),
+    statisticNumberValue INT,
+    statisticVarCharValue VARCHAR(255),
+    statisticBooleanValue BOOLEAN,
     PRIMARY KEY (id)
-}
+);
