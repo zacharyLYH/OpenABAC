@@ -49,6 +49,23 @@ In the simplest implementation, when your user requests for some sensitive data 
 
 In advanced implementations, if your applciation runs on Typescript and you don't mind starting a MySQL data connection, you may copy the folder from `/abac`and all of its contents into your project. This folder contains all the logic for authorization. Doing so, your application will reduce some latency since you won't be making an authorization request from a separately hosted service.
 
+## OpenABAC concepts
+The authorization model in OpenABAC is simple. Whenever you need to know if a particular user of your application is allowed to perform a requested action, just send over the `actionName` and the `appliactionUserId`. In the background, OpenABAC will efficiently lookup this `actionName` among all the possible actions this `applicationUserId` has a policy for, and if there's a match, an authorized message is sent back to the authorization caller (usually your apis). 
+
+An action is the smallest unit of work that your application will perform. To decide what should be an action and what shouldn't, consider whether the action in question needs to be restricted. If yes, it should be included, otherwise, it should be assumed that the public has access to this action. A detail that is often underdiscussed is the maintenance of these actions. Indeed, your application needs to be aware of these `actionName`s - the authorization model assumes you pass in the requisite `actionName`, so it implies your application is aware of these `actionName`s. Smartly maintaining this is key to reducing bugs in your authorization scheme.
+
+`actionName`s have to be unique across the abac - otherwise authorization will not be effective. The action name is a 255 character field, and OpenABAC is not opinionated on how you should construct good action names. A suggested technique is to logically modularize your authorization requirements, inspired by directories and URLs. Being proficient in your application's requirements will help you make smart decisions and "feature-proofing" your action name schema. 
+
+A policy is a group of actions. Policies exist so that instead of assigning all the actions to a user, the policy will allow you to do less work to assign all the same actions. The benefit to such a grouping is a reduced mental overhead for development and debugging, and less overall work if an identical set of actions can be reused. A good way to think about policies are the "things" that are actually "attached" to the user. By thinking as such, constructing good policies become more intuitive. As rules of thumb, good policies represent a minimal set of actions that will be commonly used together. The same action can be attached to multiple policies. 
+
+Policies can be further divided into an `allow` policy or a `deny` policy. Lets suppose you have a critical internal service that you don't want junior engineers to ever come close to. In addition to not provisioning a policy to access that critical service, you may even supply a `deny` policy that wraps all the actions that you don't want junior engineers to touch. So, if a junior engineer ever requests for an action that belongs to the critical service, the deny policy kicks in and rejects the authorization request. By default, all policies are allow policies. When you attach a deny policy to an `applicationUserId`, an check in the background makes sure that a contradiction doesn't happen - an allow policy with some action A will not be found in the deny policy. During an authorization request, deny policies are always checked before allow policies - if the action requested is found in a deny policies, the request is rejected immediately.
+
+`policyName`s, like `actionName`s, are unique across the abac. Similar care and foresight should be practiced in deciding how policies should be named. 
+
+A Context is an additional parameter that needs to be cleared before authorization is approved in the event of a match in Action. It is essentially a second layer of authorization after an Action matches. This is strictly optional and Actions to Contexts can have a many to many relationship. There are 2 types of contexts, time based and text based. Time based contexts are usually used to restrict an action to only be available in a certain time frame. The available operators are >, <, >=, <=, BETWEEN, ==, !=. You are provided 2 time related fields `timeValue1` and `timeValue2`. You will only use both if the BETWEEN operator is selected, otherwise only `timeValue1` will be used. Text based contexts will read from the `User`'s `jsonCol` field. In `textValue`, provide the field from `jsonCol` that the Context should expect, then the operators  >, <, >=, <=, IN, ==, != can be used to check for authorization. If the `textValue` doesn't get found in the `jsonCol` beloging to this user, an error gets thrown and authorization fails. Since `Context`s are attached to `Action`s, it is beneficial to think of Contexts as a furhter authorization after Action. 
+
+A User is probably the simplest concepts there is in OpenABAC. The `applicationUserId` is the user id that you associate this user in your main business application. This field does not discriminate any of the methods of generating user ids, but each id has to be under 255 characters long. The `jsonCol` is a JSON object that you may use only with `Context`s discussed above. The `jsonCol` is a good place to provide some additional data about this user that should influence authorization of this user. However, keep in mind, since Contexts are further authorizations after Actions, it is erroneous to think that "authorization can come from `jsonCol`". The previous statement is only partly true. When thinking about setting up a good authorization scheme, do not focus on beefing up `jsonCol`s to start. Instead, think about `Action`s, and then any `Context`s that actions require, then if the context is a text based context, think about `jsonCol`s. However, as a general rule of thumb, do not treat the `jsonCol` as a "replica" of the data from your main application - keep it as lean and as general as possible.
+
 ## Features & APIs
 One of the out standing features of OpenABAC is the administrator UI. This UI allows less technical team members to avoid upskilling in OpenABAC's implementation and MySQL. In this section, we'll outline the various APIs available for consumption via your application. It will however not specify the APIs that are used within the UI. 
 
@@ -69,22 +86,36 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
     - `actions`: string[]. A list of action all names that this user is allowed to do.
 
 #### `POST /api/abac/createAction/`
-- Creates an action. Commonly used when a new resource is created and provisioning some actions is required. This endpoint is a transaction behind the scenes. Meaning, either all your actions get created or none. 
+- Creates actions. Commonly used when a new resource is created and provisioning some actions is required. This endpoint is a transaction behind the scenes. Meaning, either all your actions get created or none. 
 
 ``` 
-body.createAction: [  
+body.listOfActions: [  
     {  
         actionName : string  
         actionDescription: string  
         conflictingActionName: string[]  
-
     }  
 ]
 ```
-A list 
-- Returns 
-    - `success`: boolean. Indication of successful creation of **ALL** actions from `body.listOfActionName`.
+- Returns
+    - `success`: boolean. Indication of successful creation of **ALL** actions from `body.listOfActions`.
     - `message`: string. An additional message in case an action fails to get created.
+
+#### `POST /api/abac/createPolicy/`
+- Creates policies. Commonly used in immediately with `/abac/createAction` to create policies out of newly created actions. This endpoint is a transaction behind the scenes. Meaning, either all your policies get created or none. 
+``` 
+body.listOfPolicies: [  
+    {  
+        policyName : string  
+        policyDescription: string  
+        conflictingPolicyName: string[]  
+        allow: boolean
+    }  
+]
+```
+- Returns
+    - `success`: boolean. Indication of successful creation of **ALL** policies from `body.listOfPolicies`.
+    - `message`: string. An additional message in case a policy fails to get created.
 
 #### `POST /api/abac/authorize/attachAction/:actionName`
 - Gets all the actions associated with this user
