@@ -80,6 +80,10 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
     const textValue = form.watch('textValue');
     const timeValue1 = form.watch('timeValue1');
     const timeValue2 = form.watch('timeValue2');
+    const disableTextValue = operator === 'BETWEEN' || !!timeValue1;
+    const disableTimeValue1 = operator === 'IN' || !!textValue;
+    const disableTimeValue2 = operator !== 'BETWEEN';
+
     async function onSubmit(values: z.infer<typeof contextSchema>) {
         try {
             if (initialData) {
@@ -206,15 +210,19 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                         </FormItem>
                     )}
                 />
+                {/* disable when
+                    - operator is IN
+                    - operator is not BETWEEN
+                */}
                 <FormField
                     control={form.control}
                     name="timeValue1"
-                    disabled={operator !== 'BETWEEN'}
+                    disabled={disableTimeValue1}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel
                                 className={
-                                    operator !== 'BETWEEN'
+                                    disableTimeValue1
                                         ? 'line-through text-muted-foreground'
                                         : ''
                                 }
@@ -234,12 +242,12 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                 <FormField
                     control={form.control}
                     name="timeValue2"
-                    disabled={operator !== 'BETWEEN'}
+                    disabled={disableTimeValue2}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel
                                 className={
-                                    operator !== 'BETWEEN'
+                                    disableTimeValue2
                                         ? 'line-through text-muted-foreground'
                                         : ''
                                 }
@@ -259,12 +267,12 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                 <FormField
                     control={form.control}
                     name="textValue"
-                    disabled={operator === 'BETWEEN'}
+                    disabled={disableTextValue}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel
                                 className={
-                                    operator === 'BETWEEN'
+                                    disableTextValue
                                         ? 'line-through text-muted-foreground'
                                         : ''
                                 }
