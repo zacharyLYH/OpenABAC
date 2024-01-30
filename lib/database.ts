@@ -10,7 +10,7 @@ class Database {
     private static instance: Database;
     private connection: Connection | null = null;
 
-    private constructor() {}
+    private constructor() { }
 
     public static getInstance(): Database {
         if (!Database.instance) {
@@ -37,6 +37,9 @@ class Database {
                         password: process.env.DATABASE_PASSWORD,
                         database: process.env.DATABASE_NAME,
                         port: parseInt(process.env.DATABASE_PORT || '3306'),
+                        ssl: {
+                            rejectUnauthorized: true
+                        }
                     });
                 }
             } catch (error) {
