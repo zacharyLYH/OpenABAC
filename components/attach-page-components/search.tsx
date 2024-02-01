@@ -5,7 +5,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { MultiSkeleton } from "@/components/ui/multi-skeleton";
 
-interface AttachPageSearch {
+export interface AttachPageSearchProps {
     addOrRemove: string
     entity: string;
     selected: SearchAndSelectInterface[] | [];
@@ -15,7 +15,7 @@ interface AttachPageSearch {
     placeholder: string
 }
 
-const AttachPageSearch: React.FC<AttachPageSearch> = ({ addOrRemove, entity, selected, setSelected, mountIndicator, placeholder, maxAllowSelect }) => {
+const AttachPageSearch: React.FC<AttachPageSearchProps> = ({ addOrRemove, entity, selected, setSelected, mountIndicator, placeholder, maxAllowSelect }) => {
     const fetchData = async () => {
         const resp = await axios.get(`/api/${entity.toLowerCase()}/get${entity}ViaSearch`);
         return resp.data;
