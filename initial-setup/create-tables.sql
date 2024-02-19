@@ -66,6 +66,7 @@ CREATE TABLE ActionContext (
 -- Context Table
 CREATE TABLE Context (
     id CHAR(36) NOT NULL,
+    contextName VARCHAR(255), 
     contextDescription VARCHAR(255),
     operator VARCHAR(255) NOT NULL,
     entity VARCHAR(255) NOT NULL,
@@ -74,7 +75,8 @@ CREATE TABLE Context (
     timeValue2 VARCHAR(255),
     modifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE INDEX contextName_idx (contextName)
 );
 
 CREATE TABLE Statistics (
