@@ -46,7 +46,7 @@ FROM User;
 
 export const GET_USER_VIA_SEARCH = `
 SELECT id AS id, applicationUserId AS value
-FROM Action;
+FROM User;
 `;
 
 export const GET_USER_BY_ID = `
