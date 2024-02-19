@@ -77,26 +77,6 @@ CREATE TABLE Context (
     PRIMARY KEY (id)
 );
 
--- IncompatiblePolicyToPolicy Table
-CREATE TABLE IncompatiblePolicyToPolicy (
-    id CHAR(36) NOT NULL,
-    policyId1 CHAR(36) NOT NULL,
-    policyId2 CHAR(36) NOT NULL,
-    modifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
--- IncompatibleActionToAction Table
-CREATE TABLE IncompatibleActionToAction (
-    id CHAR(36) NOT NULL,
-    actionId1 CHAR(36) NOT NULL,
-    actionId2 CHAR(36) NOT NULL,
-    modifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE Statistics (
     id CHAR(36) NOT NULL,
     statisticName VARCHAR(255),
