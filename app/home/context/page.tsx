@@ -19,15 +19,6 @@ import { contextColumn } from '@/components/table/column-defs/context-column/con
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { PostCreate } from '@/components/edit-page-components/post-create-component';
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { TextBubble } from '@/components/ui/text-bubble';
-import { PreviewCreateContext } from './previewCreateContext';
 
 export default function ContextPage() {
     const {
