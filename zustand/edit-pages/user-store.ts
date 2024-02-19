@@ -1,4 +1,4 @@
-import { User } from '@/lib/interface';
+import { User } from '@/abac/interface';
 import { create } from 'zustand';
 
 interface UserStore {
@@ -23,8 +23,7 @@ const useUserStore = create<UserStore>(set => ({
         modifiedDate: new Date(), // Current date and time
         createdDate: new Date('2023-01-01'), // Specific date
     },
-    setCreatedUser: (User: User | null) =>
-        set({ createdUser: User }),
+    setCreatedUser: (User: User | null) => set({ createdUser: User }),
     editClickedIndicator: false,
     setEditClickedIndicator: (clicked: boolean) =>
         set({ editClickedIndicator: clicked }),

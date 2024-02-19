@@ -1,8 +1,8 @@
 'use server';
 
-import { db } from '@/lib/database';
-import { Context, Query } from '@/lib/interface';
-import { CREATE_CONTEXT } from '@/query/core-queries/context/context';
+import { db } from '@/abac/database';
+import { Context, Query } from '@/abac/interface';
+import { CREATE_CONTEXT } from '@/abac/core-queries/context/context';
 
 export const createContext = async (context: Context) => {
     const query: Query = {

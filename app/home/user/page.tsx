@@ -10,7 +10,12 @@ import { DataTable } from '@/components/table/data-table';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { PostCreate } from '@/components/edit-page-components/post-create-component';
-import { RQ_GET_USER_BY_ID, RQ_GET_USER_VIA_SEARCH, RQ_GET_ALL_USER, RQ_GET_POLICY_VIA_SEARCH } from '@/query/react-query/query-keys';
+import {
+    RQ_GET_USER_BY_ID,
+    RQ_GET_USER_VIA_SEARCH,
+    RQ_GET_ALL_USER,
+    RQ_GET_POLICY_VIA_SEARCH,
+} from '@/react-query/query-keys';
 import { policyColumn } from '@/components/table/column-defs/policy-column/policy-column';
 import useUserStore from '@/zustand/edit-pages/user-store';
 import { UserForm } from './user-form';
@@ -38,15 +43,14 @@ export default function UserPage() {
     return (
         <div className="p-8">
             <div className="flex flex-col md:flex-row justify-between">
-                <h2 className="text-5xl font-bold tracking-tight text-green-600">User</h2>
+                <h2 className="text-5xl font-bold tracking-tight text-green-600">
+                    User
+                </h2>
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 gap-x-4">
                     {!createdUser &&
                         !deleteClickedIndicator &&
                         (!editClickedIndicator ? (
-                            <CreateButton
-                                objName="User"
-                                form={<UserForm />}
-                            />
+                            <CreateButton objName="User" form={<UserForm />} />
                         ) : null)}
                     {!createdUser && !deleteClickedIndicator && (
                         <Button
@@ -100,24 +104,26 @@ export default function UserPage() {
                 />
             )}
             {createdUser ||
-                deleteClickedIndicator ||
-                editClickedIndicator ? null : query.data ? (
-                    <DataTable
-                        data={query.data.message}
-                        columns={userColumn}
-                        searchColumnName="applicationUserId"
-                    />
-                ) : (
+            deleteClickedIndicator ||
+            editClickedIndicator ? null : query.data ? (
+                <DataTable
+                    data={query.data.message}
+                    columns={userColumn}
+                    searchColumnName="applicationUserId"
+                />
+            ) : (
                 <TableSuspenseSkeleton />
             )}
             <div className="flex justify-center ">
                 <PostCreate
                     createdObj={createdUser}
                     setCreatedObj={setCreatedUser}
-                    createdEntityName='User'
-                    attachToEntityName='Policy'
-                    attachToEntity_GetViaSearchEndpoint='/api/policy/getPolicyViaSearch'
-                    attachToEntity_GetViaSearchEndpoint_QueryKey={RQ_GET_POLICY_VIA_SEARCH}
+                    createdEntityName="User"
+                    attachToEntityName="Policy"
+                    attachToEntity_GetViaSearchEndpoint="/api/policy/getPolicyViaSearch"
+                    attachToEntity_GetViaSearchEndpoint_QueryKey={
+                        RQ_GET_POLICY_VIA_SEARCH
+                    }
                 />
             </div>
         </div>

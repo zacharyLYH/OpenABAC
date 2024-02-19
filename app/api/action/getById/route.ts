@@ -1,4 +1,4 @@
-import { getActionById } from '@/lib/service/action/get-action';
+import { getActionById } from '@/abac/helpers/action/get-action';
 import { NextResponse } from 'next/server';
 import { type NextRequest } from 'next/server';
 

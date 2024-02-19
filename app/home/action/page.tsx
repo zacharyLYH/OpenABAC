@@ -11,10 +11,14 @@ import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { PostCreate } from '@/components/edit-page-components/post-create-component';
 import useActionStore from '@/zustand/edit-pages/action-store';
-import { RQ_GET_ACTION_BY_ID, RQ_GET_ACTION_VIA_SEARCH, RQ_GET_ALL_ACTION, RQ_GET_POLICY_VIA_SEARCH } from '@/query/react-query/query-keys';
+import {
+    RQ_GET_ACTION_BY_ID,
+    RQ_GET_ACTION_VIA_SEARCH,
+    RQ_GET_ALL_ACTION,
+    RQ_GET_POLICY_VIA_SEARCH,
+} from '@/react-query/query-keys';
 import { ActionForm } from './action-form';
 import { actionColumn } from '@/components/table/column-defs/action-column/action-column';
-
 
 export default function ActionPage() {
     const {
@@ -38,7 +42,9 @@ export default function ActionPage() {
     return (
         <div className="p-8">
             <div className="flex flex-col md:flex-row justify-between">
-                <h2 className="text-5xl font-bold tracking-tight text-green-600">Action</h2>
+                <h2 className="text-5xl font-bold tracking-tight text-green-600">
+                    Action
+                </h2>
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 gap-x-4">
                     {!createdAction &&
                         !deleteClickedIndicator &&
@@ -100,24 +106,26 @@ export default function ActionPage() {
                 />
             )}
             {createdAction ||
-                deleteClickedIndicator ||
-                editClickedIndicator ? null : query.data ? (
-                    <DataTable
-                        data={query.data.message}
-                        columns={actionColumn}
-                        searchColumnName="actionName"
-                    />
-                ) : (
+            deleteClickedIndicator ||
+            editClickedIndicator ? null : query.data ? (
+                <DataTable
+                    data={query.data.message}
+                    columns={actionColumn}
+                    searchColumnName="actionName"
+                />
+            ) : (
                 <TableSuspenseSkeleton />
             )}
             <div className="flex justify-center ">
                 <PostCreate
                     createdObj={createdAction}
                     setCreatedObj={setCreatedAction}
-                    createdEntityName='Action'
-                    attachToEntityName='Policy'
-                    attachToEntity_GetViaSearchEndpoint='/api/policy/getPolicyViaSearch'
-                    attachToEntity_GetViaSearchEndpoint_QueryKey={RQ_GET_POLICY_VIA_SEARCH}
+                    createdEntityName="Action"
+                    attachToEntityName="Policy"
+                    attachToEntity_GetViaSearchEndpoint="/api/policy/getPolicyViaSearch"
+                    attachToEntity_GetViaSearchEndpoint_QueryKey={
+                        RQ_GET_POLICY_VIA_SEARCH
+                    }
                 />
             </div>
         </div>

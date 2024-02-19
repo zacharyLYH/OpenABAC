@@ -4,7 +4,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 import { CopyButton } from '../copy-button';
 import { GetPoliciesButton } from './user-column/show-user-policy-button';
-import { User } from '@/lib/interface';
+import { User } from '@/abac/interface';
 import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { DeleteRowButton } from '../delete-row-button';
 import { RemoveRowFromTableButton } from '../remove-row-from-table';
@@ -62,19 +62,20 @@ export function deleteButton<T extends SearchAndSelectInterface>(
     deleteEndpoint?: string,
     uiStateOnSuccessfulDelete?: (id: string | string[]) => void,
 ): ColumnDef<T>[] {
-    return uiStateOnSuccessfulDelete && deleteEndpoint ?
-        [
-            {
-                id: 'delete',
-                cell: ({ row }) => (
-                    <DeleteRowButton
-                        uiStateOnSuccessfulDelete={uiStateOnSuccessfulDelete}
-                        itemId={row.original.id}
-                        deleteEndpoint={deleteEndpoint}
-                    />
-                ),
-            },
-        ] : [];
+    return uiStateOnSuccessfulDelete && deleteEndpoint
+        ? [
+              {
+                  id: 'delete',
+                  cell: ({ row }) => (
+                      <DeleteRowButton
+                          uiStateOnSuccessfulDelete={uiStateOnSuccessfulDelete}
+                          itemId={row.original.id}
+                          deleteEndpoint={deleteEndpoint}
+                      />
+                  ),
+              },
+          ]
+        : [];
 }
 
 export function removeFromDeleteList<T extends SearchAndSelectInterface>(

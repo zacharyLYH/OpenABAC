@@ -7,7 +7,12 @@ import { Separator } from '@/components/ui/separator';
 import { EditComponent } from '@/components/edit-page-components/edit-component';
 import { DeleteComponent } from '@/components/edit-page-components/delete-component';
 import { useQuery } from '@tanstack/react-query';
-import { RQ_GET_ACTION_VIA_SEARCH, RQ_GET_ALL_CONTEXT, RQ_GET_CONTEXT_BY_ID, RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
+import {
+    RQ_GET_ACTION_VIA_SEARCH,
+    RQ_GET_ALL_CONTEXT,
+    RQ_GET_CONTEXT_BY_ID,
+    RQ_GET_CONTEXT_VIA_SEARCH,
+} from '@/react-query/query-keys';
 import { TableSuspenseSkeleton } from '@/components/table-suspense';
 import { DataTable } from '@/components/table/data-table';
 import { contextColumn } from '@/components/table/column-defs/context-column/context-column';
@@ -46,7 +51,9 @@ export default function ContextPage() {
     return (
         <div className="p-8">
             <div className="flex flex-col md:flex-row justify-between">
-                <h2 className="text-5xl font-bold tracking-tight text-green-600">Context</h2>
+                <h2 className="text-5xl font-bold tracking-tight text-green-600">
+                    Context
+                </h2>
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 gap-x-4">
                     {!createdContext &&
                         !deleteClickedIndicator &&
@@ -108,24 +115,26 @@ export default function ContextPage() {
                 />
             )}
             {createdContext ||
-                deleteClickedIndicator ||
-                editClickedIndicator ? null : query.data ? (
-                    <DataTable
-                        data={query.data.message}
-                        columns={contextColumn}
-                        searchColumnName="contextDescription"
-                    />
-                ) : (
+            deleteClickedIndicator ||
+            editClickedIndicator ? null : query.data ? (
+                <DataTable
+                    data={query.data.message}
+                    columns={contextColumn}
+                    searchColumnName="contextDescription"
+                />
+            ) : (
                 <TableSuspenseSkeleton />
             )}
             <div className="flex justify-center ">
                 <PostCreate
                     createdObj={createdContext}
                     setCreatedObj={setCreatedContext}
-                    createdEntityName='Context'
-                    attachToEntityName='Action'
-                    attachToEntity_GetViaSearchEndpoint='/api/action/getActionViaSearch'
-                    attachToEntity_GetViaSearchEndpoint_QueryKey={RQ_GET_ACTION_VIA_SEARCH}
+                    createdEntityName="Context"
+                    attachToEntityName="Action"
+                    attachToEntity_GetViaSearchEndpoint="/api/action/getActionViaSearch"
+                    attachToEntity_GetViaSearchEndpoint_QueryKey={
+                        RQ_GET_ACTION_VIA_SEARCH
+                    }
                 />
             </div>
         </div>

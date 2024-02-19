@@ -1,4 +1,4 @@
-import { getPolicyById } from '@/lib/service/policy/get-policy';
+import { getPolicyById } from '@/abac/helpers/policy/get-policy';
 import { NextResponse } from 'next/server';
 import { type NextRequest } from 'next/server';
 

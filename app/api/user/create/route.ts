@@ -1,4 +1,4 @@
-import { createUser } from '@/lib/service/user/create-user';
+import { createUser } from '@/abac/helpers/user/create-user';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {

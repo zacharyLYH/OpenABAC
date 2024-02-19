@@ -1,4 +1,4 @@
-import { Policy } from '@/lib/interface';
+import { Policy } from '@/abac/interface';
 import { create } from 'zustand';
 
 interface PolicyStore {
@@ -20,8 +20,7 @@ const usePolicyStore = create<PolicyStore>(set => ({
         createdDate: new Date('2023-01-01'),
         allow: true,
     },
-    setCreatedPolicy: (Policy: Policy | null) =>
-        set({ createdPolicy: Policy }),
+    setCreatedPolicy: (Policy: Policy | null) => set({ createdPolicy: Policy }),
     editClickedIndicator: false,
     setEditClickedIndicator: (clicked: boolean) =>
         set({ editClickedIndicator: clicked }),

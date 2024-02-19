@@ -1,6 +1,6 @@
 'use client';
 
-import { Policy } from '@/lib/interface';
+import { Policy } from '@/abac/interface';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTableColumnHeader } from '../../column-header';
 import { copyColumn } from '../column-template';

@@ -1,4 +1,4 @@
-import { Action } from '@/lib/interface';
+import { Action } from '@/abac/interface';
 import { create } from 'zustand';
 
 interface ActionStore {
@@ -19,8 +19,7 @@ const useActionStore = create<ActionStore>(set => ({
         modifiedDate: new Date(),
         createdDate: new Date('2023-01-05'),
     },
-    setCreatedAction: (Action: Action | null) =>
-        set({ createdAction: Action }),
+    setCreatedAction: (Action: Action | null) => set({ createdAction: Action }),
     editClickedIndicator: false,
     setEditClickedIndicator: (clicked: boolean) =>
         set({ editClickedIndicator: clicked }),

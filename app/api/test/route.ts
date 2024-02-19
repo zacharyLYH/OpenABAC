@@ -1,5 +1,5 @@
-import { db } from '@/lib/database';
-import { Query } from '@/lib/interface';
+import { db } from '@/abac/database';
+import { Query } from '@/abac/interface';
 import { NextResponse } from 'next/server';
 
 interface QueryResult {
@@ -7,7 +7,7 @@ interface QueryResult {
 }
 
 export async function GET() {
-    if (process.env.USE_PRODUCTION_DB === 'true') {
+    if (process.env.IS_PRODUCTION === 'true') {
         const query: Query = {
             sql: `SELECT 1 AS TEST`,
             params: [],

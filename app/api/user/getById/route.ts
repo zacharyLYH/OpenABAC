@@ -1,4 +1,4 @@
-import { getUserById } from '@/lib/service/user/get-user';
+import { getUserById } from '@/abac/helpers/user/get-user';
 import { NextResponse } from 'next/server';
 import { type NextRequest } from 'next/server';
 

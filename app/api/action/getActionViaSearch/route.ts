@@ -1,4 +1,4 @@
-import { getActionViaSearch } from '@/lib/service/action/get-action';
+import { getActionViaSearch } from '@/abac/helpers/action/get-action';
 import { NextResponse } from 'next/server';
 
 export async function GET() {

@@ -1,6 +1,6 @@
 'use client';
 
-import { Context } from '@/lib/interface';
+import { Context } from '@/abac/interface';
 import { ColumnDef } from '@tanstack/react-table';
 import { DataTableColumnHeader } from '../../column-header';
 import { copyColumn } from '../column-template';

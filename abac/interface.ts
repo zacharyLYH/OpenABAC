@@ -45,3 +45,10 @@ export interface Context {
     modifiedDate?: Date;
     createdDate?: Date;
 }
+
+export interface ABACRequestResponse {
+    authorized?: boolean;
+    data?: any;
+    message?: string;
+    statusCode?: number;
+}

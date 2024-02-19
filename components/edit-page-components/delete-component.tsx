@@ -8,7 +8,7 @@ import { deleteItemColumn } from '@/components/table/column-defs/delete-items/de
 import { DeleteRowButton } from '@/components/table/delete-row-button';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { Context } from '@/lib/interface';
+import { Context } from '@/abac/interface';
 
 interface DeleteComponentInterface {
     getDataEndpoint: string;
@@ -16,7 +16,7 @@ interface DeleteComponentInterface {
     deleteClickedIndicator: boolean;
     setDeleteClickedIndicator: (clicked: boolean) => void;
     deleteEndpoint: string;
-    getQueryKey: string[]
+    getQueryKey: string[];
 }
 
 export const DeleteComponent: React.FC<DeleteComponentInterface> = ({
@@ -25,7 +25,7 @@ export const DeleteComponent: React.FC<DeleteComponentInterface> = ({
     setDeleteClickedIndicator,
     deleteClickedIndicator,
     deleteEndpoint,
-    getQueryKey
+    getQueryKey,
 }) => {
     const [selected, setSelected] = useState<SearchAndSelectInterface[]>([]);
 
@@ -91,7 +91,7 @@ export const DeleteComponent: React.FC<DeleteComponentInterface> = ({
                                 data={selected}
                                 columns={deleteItemColumn(
                                     removeFromItemsToBeDeleted,
-                                    "To delete",
+                                    'To delete',
                                     deleteEndpoint,
                                     uiStateOnSuccessfulDelete,
                                 )}

@@ -12,7 +12,7 @@ PolicyAction pa ON p.id = pa.policyId
     JOIN
 Action a ON pa.actionId = a.id
 WHERE
-u.applicationUserId = ?, p.allow = ?;
+u.applicationUserId = ? AND p.allow = ?;
 `;
 
 export const GET_ALLOWED_OR_DISALLOWED_ACTIONS_WITH_CONTEXT_PROVIDED_APPLICATIONUSERID = `
@@ -33,7 +33,7 @@ ActionContext ac ON a.id = ac.actionId
     JOIN
 Context c ON ac.contextId = c.id
 WHERE
-u.applicationUserId = ?, p.allow = ?;
+u.applicationUserId = ? AND  p.allow = ?;
 `;
 
 export const DELETE_ACTIONS_GIVEN_ID = `
@@ -75,4 +75,33 @@ export const GET_ACTION_BY_ID = `
 SELECT actionName, actionDescription, modifiedDate
 FROM Action
 WHERE ID = ?;
+`;
+
+export const AUTHORIZE_ACTIONS_WITH_CONTEXT_CHECK = `
+SELECT 
+    a.actionName, a.actionDescription
+FROM
+    User u
+        JOIN
+    UserPolicy up ON u.id = up.abacId
+        JOIN
+    Policy p ON up.policyId = p.id
+        JOIN
+    PolicyAction pa ON p.id = pa.policyId
+        JOIN
+    Action a ON pa.actionId = a.id
+        JOIN
+WHERE
+    (u.applicationUserId = ? AND p.allow = true AND a.actionName = ?)
+`;
+
+export const AUTHORIZE_ACTIONS_SUDO = `
+SELECT 
+    a.actionName, a.actionDescription
+FROM
+    Action a
+    JOIN PolicyAction pa ON a.id = pa.actionId
+    JOIN Policy p ON pa.policyId = p.id
+WHERE
+    p.allow = true AND a.actionName = ?
 `;

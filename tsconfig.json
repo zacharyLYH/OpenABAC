@@ -27,7 +27,7 @@
         "**/*.ts",
         "**/*.tsx",
         ".next/types/**/*.ts",
-        "query/core-queries/policy-action",
+        "abac/core-queries/policy-action",
         "components/table/column-defs"
     ],
     "exclude": ["node_modules"]

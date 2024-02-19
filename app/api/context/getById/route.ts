@@ -1,4 +1,4 @@
-import { getContextById } from '@/lib/service/context/get-context';
+import { getContextById } from '@/abac/helpers/context/get-context';
 import { NextResponse } from 'next/server';
 import { type NextRequest } from 'next/server';
 

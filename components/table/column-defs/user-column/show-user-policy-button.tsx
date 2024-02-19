@@ -2,10 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { DataModal } from '@/components/ui/modal';
-import { Policy } from '@/lib/interface';
+import { Policy } from '@/abac/interface';
 import { useEffect, useState } from 'react';
 import { DataTable } from '@/components/table/data-table';
-import { getAllPolicyGivenApplicationUserId } from '@/lib/service/policy/get-policy';
+import { getAllPolicyGivenApplicationUserId } from '@/abac/helpers/policy/get-policy';
 import { policyColumn } from '../policy-column/policy-column';
 
 interface GetPoliciesButtonProps {
@@ -33,7 +33,11 @@ export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({
     return (
         <>
             {modalOpen && data !== null && (
-                <DataModal title="Policies" isOpen={modalOpen} onClose={() => toggleModal(false)}>
+                <DataModal
+                    title="Policies"
+                    isOpen={modalOpen}
+                    onClose={() => toggleModal(false)}
+                >
                     <DataTable
                         data={data}
                         columns={policyColumn}
@@ -42,7 +46,11 @@ export const GetPoliciesButton: React.FC<GetPoliciesButtonProps> = ({
                     />
                 </DataModal>
             )}
-            <Button size="default" variant="default" onClick={() => toggleModal(true)}>
+            <Button
+                size="default"
+                variant="default"
+                onClick={() => toggleModal(true)}
+            >
                 Policies
             </Button>
         </>

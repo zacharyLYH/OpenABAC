@@ -36,5 +36,11 @@ FROM Context;
 
 export const GET_CONTEXT_VIA_SEARCH = `
 SELECT id AS id, contextDescription AS value
-FROM Action;
+FROM Context;
+`;
+
+export const GET_ALL_CONTEXT_GIVEN_ACTION_ID = `
+SELECT contextDescription, operator, entity, textValue, timeValue1, timeValue2
+FROM Context
+JOIN ContextAction ca ON ca.actionId = ?
 `;

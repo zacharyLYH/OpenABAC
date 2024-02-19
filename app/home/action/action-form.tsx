@@ -17,18 +17,17 @@ import { Input } from '@/components/ui/input';
 import { Circle } from 'lucide-react';
 import { toast } from 'sonner';
 import useAppStore from '@/zustand/app-store';
-import { Action } from '@/lib/interface';
+import { Action } from '@/abac/interface';
 import useActionStore from '@/zustand/edit-pages/action-store';
 
 export interface ActionFormProps {
     initialData?: Action;
 }
 
-const actionSchema = z
-    .object({
-        actionName: z.string().min(1).max(255),
-        actionDescription: z.string().min(1).max(255),
-    })
+const actionSchema = z.object({
+    actionName: z.string().min(1).max(255),
+    actionDescription: z.string().min(1).max(255),
+});
 
 export const ActionForm: React.FC<ActionFormProps> = ({ initialData }) => {
     const { setCreatedAction } = useActionStore();
@@ -93,7 +92,8 @@ export const ActionForm: React.FC<ActionFormProps> = ({ initialData }) => {
                                 />
                             </FormControl>
                             <FormDescription>
-                                A unique name of the action that requires access control.
+                                A unique name of the action that requires access
+                                control.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -106,7 +106,10 @@ export const ActionForm: React.FC<ActionFormProps> = ({ initialData }) => {
                         <FormItem>
                             <FormLabel>Action Description</FormLabel>
                             <FormControl>
-                                <Input placeholder="Allows the user to access the kubernetes cluster unrestrictedly." {...field} />
+                                <Input
+                                    placeholder="Allows the user to access the kubernetes cluster unrestrictedly."
+                                    {...field}
+                                />
                             </FormControl>
                             <FormDescription>
                                 A readable and friendly description.

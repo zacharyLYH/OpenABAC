@@ -22,26 +22,25 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useState } from 'react';
-import { createContext } from '@/lib/service/context/create-context';
+import { createContext } from '@/abac/helpers/context/create-context';
 import { Circle } from 'lucide-react';
 import { toast } from 'sonner';
 import useContextStore from '@/zustand/edit-pages/context-store';
 import useAppStore from '@/zustand/app-store';
-import { Policy } from '@/lib/interface';
+import { Policy } from '@/abac/interface';
 import usePolicyStore from '@/zustand/edit-pages/policy-store';
 
 export interface PolicyFormProps {
     initialData?: Policy;
 }
 
-const policySchema = z
-    .object({
-        policyDescription: z.string().min(1).max(255),
-        policyName: z.string().min(1).max(255),
-        allow: z.string().min(1).max(255)
-    })
+const policySchema = z.object({
+    policyDescription: z.string().min(1).max(255),
+    policyName: z.string().min(1).max(255),
+    allow: z.string().min(1).max(255),
+});
 
-//Form doesn't allow Boolean type in the allow field. While in this component, allow field shall be string. Convert string to boolean if we're passing in initial data. And convert boolean to string to write out to api 
+//Form doesn't allow Boolean type in the allow field. While in this component, allow field shall be string. Convert string to boolean if we're passing in initial data. And convert boolean to string to write out to api
 export const PolicyForm: React.FC<PolicyFormProps> = ({ initialData }) => {
     const { setCreatedPolicy } = usePolicyStore();
     const { toggleModal } = useAppStore();
@@ -50,7 +49,7 @@ export const PolicyForm: React.FC<PolicyFormProps> = ({ initialData }) => {
         defaultValues: {
             policyDescription: initialData?.policyDescription ?? '',
             policyName: initialData?.policyName ?? '',
-            allow: initialData?.allow ? "true" : "false",
+            allow: initialData?.allow ? 'true' : 'false',
         },
     });
     async function onSubmit(values: z.infer<typeof policySchema>) {
@@ -105,10 +104,7 @@ export const PolicyForm: React.FC<PolicyFormProps> = ({ initialData }) => {
                         <FormItem>
                             <FormLabel>Policy Name</FormLabel>
                             <FormControl>
-                                <Input
-                                    placeholder="S3Access"
-                                    {...field}
-                                />
+                                <Input placeholder="S3Access" {...field} />
                             </FormControl>
                             <FormDescription>
                                 Unique name for policy
@@ -151,7 +147,10 @@ export const PolicyForm: React.FC<PolicyFormProps> = ({ initialData }) => {
                         <FormItem>
                             <FormLabel>Policy Description</FormLabel>
                             <FormControl>
-                                <Input placeholder="S3 bucket access policy" {...field} />
+                                <Input
+                                    placeholder="S3 bucket access policy"
+                                    {...field}
+                                />
                             </FormControl>
                             <FormDescription>
                                 Describe this policy.

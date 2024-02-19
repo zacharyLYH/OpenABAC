@@ -1,4 +1,4 @@
-import { Context } from '@/lib/interface';
+import { Context } from '@/abac/interface';
 
 interface PreviewCreateContextProps {
     context: Context;

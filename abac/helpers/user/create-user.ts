@@ -1,4 +1,4 @@
-import { CREATE_USER } from '@/query/core-queries/user/user';
+import { CREATE_USER } from '@/abac/core-queries/user/user';
 import { Query, User } from '../../interface';
 import { db } from '../../database';
 

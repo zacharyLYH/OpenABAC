@@ -1,4 +1,4 @@
-import { getContextViaSearch } from '@/lib/service/context/get-context';
+import { getContextViaSearch } from '@/abac/helpers/context/get-context';
 import { NextResponse } from 'next/server';
 
 export async function GET() {

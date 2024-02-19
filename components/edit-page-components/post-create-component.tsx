@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { SearchAndSelect, SearchAndSelectInterface } from "./search";
-import { useState } from "react";
-import axios from "axios";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { MultiSkeleton } from "@/components/ui/multi-skeleton";
-import { ArrowLeft, Link } from "lucide-react";
-import { DataTable } from "@/components/table/data-table";
-import { attachColumn } from "@/components/table/column-defs/attach-column/attach-column";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { SearchAndSelect, SearchAndSelectInterface } from './search';
+import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { MultiSkeleton } from '@/components/ui/multi-skeleton';
+import { ArrowLeft, Link } from 'lucide-react';
+import { DataTable } from '@/components/table/data-table';
+import { attachColumn } from '@/components/table/column-defs/attach-column/attach-column';
 import {
     Card,
     CardContent,
@@ -18,16 +18,16 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { TextBubble } from '@/components/ui/text-bubble';
-import { PreviewCreateContext } from "@/app/home/context/previewCreateContext";
-import { Context } from "@/lib/interface";
+import { PreviewCreateContext } from '@/app/home/context/previewCreateContext';
+import { Context } from '@/abac/interface';
 
 interface PostCreateProps<T> {
     createdObj: T | null;
     setCreatedObj: (obj: T | null) => void;
-    createdEntityName: string
-    attachToEntityName: string
-    attachToEntity_GetViaSearchEndpoint: string
-    attachToEntity_GetViaSearchEndpoint_QueryKey: string
+    createdEntityName: string;
+    attachToEntityName: string;
+    attachToEntity_GetViaSearchEndpoint: string;
+    attachToEntity_GetViaSearchEndpoint_QueryKey: string;
 }
 
 function isContext(obj: any): obj is Context {
@@ -39,7 +39,14 @@ function isContext(obj: any): obj is Context {
     );
 }
 
-export const PostCreate = <T,>({ createdEntityName, createdObj, setCreatedObj, attachToEntityName, attachToEntity_GetViaSearchEndpoint, attachToEntity_GetViaSearchEndpoint_QueryKey }: PostCreateProps<T>) => {
+export const PostCreate = <T,>({
+    createdEntityName,
+    createdObj,
+    setCreatedObj,
+    attachToEntityName,
+    attachToEntity_GetViaSearchEndpoint,
+    attachToEntity_GetViaSearchEndpoint_QueryKey,
+}: PostCreateProps<T>) => {
     const queryClient = useQueryClient();
     const [searchAndSelect, toggleSearchAndSelect] = useState(false);
     const [selectedActionsFromSearch, setSelectedActionsFromSearch] = useState<
@@ -122,16 +129,21 @@ export const PostCreate = <T,>({ createdEntityName, createdObj, setCreatedObj, a
                         <CardHeader>
                             <CardTitle>✅ Created</CardTitle>
                         </CardHeader>
-                        <CardContent>{iterateCreatedObj(createdObj)}</CardContent>
+                        <CardContent>
+                            {iterateCreatedObj(createdObj)}
+                        </CardContent>
                         <CardFooter>
-                            {isContext(createdObj) && <PreviewCreateContext context={createdObj} />}
+                            {isContext(createdObj) && (
+                                <PreviewCreateContext context={createdObj} />
+                            )}
                         </CardFooter>
                     </Card>
                     {!searchAndSelect && (
                         <>
                             <p className="mt-4 font-mono">
-                                Would you like to attach this {createdEntityName} to an{' '}
-                                {attachToEntityName} while you&apos;re here?{' '}
+                                Would you like to attach this{' '}
+                                {createdEntityName} to an {attachToEntityName}{' '}
+                                while you&apos;re here?{' '}
                             </p>
                             <div className="flex mx-2 gap-x-2">
                                 <Button
@@ -150,15 +162,17 @@ export const PostCreate = <T,>({ createdEntityName, createdObj, setCreatedObj, a
                             </div>
                         </>
                     )}
-                    {searchAndSelect && (
-                        isLoading ? (
+                    {searchAndSelect &&
+                        (isLoading ? (
                             <div className="space-y-2 mt-4">
                                 <MultiSkeleton number={5} />
                             </div>
                         ) : (
                             <div className="mt-2 space-y-2">
                                 <Button
-                                    disabled={selectedActionsFromSearch.length !== 0}
+                                    disabled={
+                                        selectedActionsFromSearch.length !== 0
+                                    }
                                     variant="outline"
                                     className="w-full"
                                     onClick={() => {
@@ -180,7 +194,9 @@ export const PostCreate = <T,>({ createdEntityName, createdObj, setCreatedObj, a
                                 />
                                 <DataTable
                                     data={selectedActionsFromSearch}
-                                    columns={attachColumn(removeFromItemsToBeAttached)}
+                                    columns={attachColumn(
+                                        removeFromItemsToBeAttached,
+                                    )}
                                     showColumnVisibilityDropdown={false}
                                     showPagination={false}
                                 />
@@ -191,10 +207,9 @@ export const PostCreate = <T,>({ createdEntityName, createdObj, setCreatedObj, a
                                     </Button>
                                 )}
                             </div>
-                        )
-                    )}
+                        ))}
                 </div>
             )}
         </>
-    )
-}
+    );
+};

@@ -1,4 +1,4 @@
-import { getUserViaSearch } from '@/lib/service/user/get-user';
+import { getUserViaSearch } from '@/abac/helpers/user/get-user';
 import { NextResponse } from 'next/server';
 
 export async function GET() {

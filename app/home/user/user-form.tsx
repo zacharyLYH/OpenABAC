@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Circle } from 'lucide-react';
 import { toast } from 'sonner';
 import useAppStore from '@/zustand/app-store';
-import { User } from '@/lib/interface';
+import { User } from '@/abac/interface';
 import useUserStore from '@/zustand/edit-pages/user-store';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -25,20 +25,22 @@ export interface UserFormProps {
     initialData?: User;
 }
 
-const userSchema = z
-    .object({
-        applicationUserId: z.string().min(1).max(255),
-        jsonCol: z.string().refine((data) => {
+const userSchema = z.object({
+    applicationUserId: z.string().min(1).max(255),
+    jsonCol: z.string().refine(
+        data => {
             try {
                 JSON.parse(data);
                 return true;
             } catch {
                 return false;
             }
-        }, {
-            message: "Invalid JSON format",
-        }),
-    })
+        },
+        {
+            message: 'Invalid JSON format',
+        },
+    ),
+});
 
 export const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
     const { setCreatedUser } = useUserStore();
@@ -47,7 +49,9 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
         resolver: zodResolver(userSchema),
         defaultValues: {
             applicationUserId: initialData?.applicationUserId ?? '',
-            jsonCol: initialData?.jsonCol ? JSON.stringify(initialData.jsonCol) : '',
+            jsonCol: initialData?.jsonCol
+                ? JSON.stringify(initialData.jsonCol)
+                : '',
         },
     });
     async function onSubmit(values: z.infer<typeof userSchema>) {
@@ -56,7 +60,9 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
                 console.log(initialData);
                 // await updateContext();
             } else {
-                const jsonColObject = values.jsonCol ? JSON.parse(values.jsonCol) : null;
+                const jsonColObject = values.jsonCol
+                    ? JSON.parse(values.jsonCol)
+                    : null;
                 const dataPayload = {
                     ...values,
                     jsonCol: jsonColObject,
@@ -121,7 +127,8 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
                         <FormItem>
                             <FormLabel>Optional JSON column</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="
+                                <Textarea
+                                    placeholder="
                                     {
                                         Location: Mars
                                         Role: SWE
@@ -130,7 +137,9 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData }) => {
                                             YOE: 5
                                         }
                                     }
-                                " {...field} />
+                                "
+                                    {...field}
+                                />
                             </FormControl>
                             <FormDescription>
                                 JSON for additional authorization,

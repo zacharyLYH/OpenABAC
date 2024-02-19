@@ -16,10 +16,10 @@ import {
 } from 'lucide-react';
 import { Suspense } from 'react';
 import { TableSuspenseSkeleton } from '@/components/table-suspense';
-import { getUserCount } from '@/lib/service/user/get-user';
-import { getContextCount } from '@/lib/service/context/get-context';
-import { getPolicyCount } from '@/lib/service/policy/get-policy';
-import { getActionCount } from '@/lib/service/action/get-action';
+import { getUserCount } from '@/abac/helpers/user/get-user';
+import { getContextCount } from '@/abac/helpers/context/get-context';
+import { getPolicyCount } from '@/abac/helpers/policy/get-policy';
+import { getActionCount } from '@/abac/helpers/action/get-action';
 
 function TabSectionCard({
     title,

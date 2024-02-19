@@ -22,13 +22,13 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useState } from 'react';
-import { createContext } from '@/lib/service/context/create-context';
+import { createContext } from '@/abac/helpers/context/create-context';
 import { Circle } from 'lucide-react';
 import { toast } from 'sonner';
 import useContextStore from '@/zustand/edit-pages/context-store';
 import useAppStore from '@/zustand/app-store';
 import { PreviewCreateContext } from './previewCreateContext';
-import { Context } from '@/lib/interface';
+import { Context } from '@/abac/interface';
 
 export interface ContextFormProps {
     initialData?: Context;
@@ -48,10 +48,21 @@ const contextSchema = z
             // console.log("data.timeValue1: ", data.timeValue1)
             // console.log("data.timeValue2: ", data.timeValue2)
             // console.log("data.textValue: ", data.textValue)
-            if (data.operator === "BETWEEN") {
-                return data.timeValue1 !== '' && data.timeValue2 !== '' && data.timeValue1 !== undefined && data.timeValue2 !== undefined && data.textValue === undefined;
+            if (data.operator === 'BETWEEN') {
+                return (
+                    data.timeValue1 !== '' &&
+                    data.timeValue2 !== '' &&
+                    data.timeValue1 !== undefined &&
+                    data.timeValue2 !== undefined &&
+                    data.textValue === undefined
+                );
             } else {
-                return data.textValue !== undefined && data.textValue !== '' && data.timeValue1 === undefined && data.timeValue2 === undefined;
+                return (
+                    data.textValue !== undefined &&
+                    data.textValue !== '' &&
+                    data.timeValue1 === undefined &&
+                    data.timeValue2 === undefined
+                );
             }
         },
         {

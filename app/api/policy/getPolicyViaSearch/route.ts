@@ -1,4 +1,4 @@
-import { getPolicyViaSearch } from '@/lib/service/policy/get-policy';
+import { getPolicyViaSearch } from '@/abac/helpers/policy/get-policy';
 import { NextResponse } from 'next/server';
 
 export async function GET() {

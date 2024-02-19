@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { RQ_GET_CONTEXT_VIA_SEARCH } from '@/query/react-query/query-keys';
+import { RQ_GET_CONTEXT_VIA_SEARCH } from '@/react-query/query-keys';
 
 interface DeleteRowButtonProps {
     itemId?: string;

@@ -1,4 +1,4 @@
-import { getAllContext } from '@/lib/service/context/get-context';
+import { getAllContext } from '@/abac/helpers/context/get-context';
 import { NextResponse } from 'next/server';
 
 export async function GET() {

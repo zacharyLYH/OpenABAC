@@ -1,4 +1,4 @@
-import { getAllActions } from '@/lib/service/action/get-action';
+import { getAllActions } from '@/abac/helpers/action/get-action';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
