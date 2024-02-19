@@ -35,6 +35,7 @@ export interface ContextFormProps {
 
 const contextSchema = z
     .object({
+        contextName: z.string().min(1).max(255),
         contextDescription: z.string().min(2).max(255),
         operator: z.string().min(1).max(255),
         entity: z.string().min(1).max(255),
@@ -77,6 +78,7 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
     const form = useForm<z.infer<typeof contextSchema>>({
         resolver: zodResolver(contextSchema),
         defaultValues: {
+            contextName: initialData?.contextName ?? '',
             contextDescription: initialData?.contextDescription ?? '',
             operator: initialData?.operator ?? '<',
             entity: initialData?.entity ?? '',
@@ -118,6 +120,7 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
     // console.log("INIT: ", initialData)
     const onError = (
         errors: FieldErrors<{
+            contextName: string;
             contextDescription: string;
             operator: string;
             entity: string;
@@ -138,6 +141,25 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                 onSubmit={form.handleSubmit(onSubmit, onError)}
                 className="space-y-8"
             >
+                <FormField
+                    control={form.control}
+                    name="contextName"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Context Name</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="AccessBefore10PMOnly"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormDescription>
+                                Unique name that describes this context.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <FormField
                     control={form.control}
                     name="contextDescription"
@@ -315,6 +337,7 @@ export const ContextForm: React.FC<ContextFormProps> = ({ initialData }) => {
                                 timeValue2: timeValue2,
                                 textValue: textValue,
                                 contextDescription: '',
+                                contextName: '',
                             }}
                         />
                     )}

@@ -14,6 +14,7 @@ const useContextStore = create<ContextStore>(set => ({
     // createdContext: null,
     createdContext: {
         id: 'uuid-1',
+        contextName: 'fakecontext1',
         contextDescription: 'Context Desc 1',
         operator: 'equals',
         entity: 'Entity1',

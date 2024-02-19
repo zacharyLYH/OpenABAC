@@ -63,6 +63,7 @@ export const getContextViaSearch = async () => {
 const mockData = [
     {
         id: '0000001',
+        contextName: 'ServerRoomBusinessHours',
         contextDescription: 'Access to server room during business hours',
         operator: 'BETWEEN',
         entity: 'ServerRoomAccess',
@@ -73,6 +74,7 @@ const mockData = [
     },
     {
         id: '0000002',
+        contextName: 'DevServerNoMaintenanceAccess',
         contextDescription:
             'No access to development servers during maintenance',
         operator: 'NOT BETWEEN',
@@ -84,6 +86,7 @@ const mockData = [
     },
     {
         id: '0000003',
+        contextName: 'ProjectResourcesMainOfficeAccess',
         contextDescription: 'Access to project resources from main office',
         operator: 'IN',
         entity: 'ProjectLocationAccess',
@@ -93,6 +96,7 @@ const mockData = [
     },
     {
         id: '0000004',
+        contextName: 'ProjectSpecificRegionsAccess',
         contextDescription: 'Project access restricted to specific regions',
         operator: 'IN',
         entity: 'ProjectRegionalAccess',
@@ -102,6 +106,7 @@ const mockData = [
     },
     {
         id: '0000005',
+        contextName: 'UserDataAccessForAdmins',
         contextDescription: 'Only administrators can access user data',
         operator: '==',
         entity: 'UserDataAccess',
@@ -111,6 +116,7 @@ const mockData = [
     },
     {
         id: '0000006',
+        contextName: 'FinancialRecordsNoInternAccess',
         contextDescription: 'Interns cannot access financial records',
         operator: '!=',
         entity: 'FinancialRecordAccess',
@@ -120,6 +126,7 @@ const mockData = [
     },
     {
         id: '0000007',
+        contextName: 'ConfidentialProjectDocsReadAccess',
         contextDescription: 'Read access to confidential project documents',
         operator: '==',
         entity: 'ProjectDocType',
@@ -129,6 +136,7 @@ const mockData = [
     },
     {
         id: '0000008',
+        contextName: 'PublicDocsEditAccess',
         contextDescription: 'Edit access to public documentation',
         operator: '==',
         entity: 'PublicDocEdit',
@@ -138,6 +146,7 @@ const mockData = [
     },
     {
         id: '0000009',
+        contextName: 'HighSensitivityDBAccess',
         contextDescription: 'Access to highly sensitive database',
         operator: '==',
         entity: 'DatabaseSensitivity',
@@ -147,6 +156,7 @@ const mockData = [
     },
     {
         id: '0000010',
+        contextName: 'LowSensitivityDBAccess',
         contextDescription: 'Access to less sensitive database',
         operator: '==',
         entity: 'DatabaseSensitivity',
@@ -156,6 +166,7 @@ const mockData = [
     },
     {
         id: '000011',
+        contextName: 'RegularEmployeeExpenseLimit',
         contextDescription: 'Expense approval limit for regular employees',
         operator: '<=',
         entity: 'ExpenseLimit',
@@ -165,6 +176,7 @@ const mockData = [
     },
     {
         id: '000012',
+        contextName: 'ManagerExpenseLimit',
         contextDescription: 'Expense approval limit for managers',
         operator: '<=',
         entity: 'ExpenseLimit',
@@ -174,6 +186,7 @@ const mockData = [
     },
     {
         id: '000013',
+        contextName: 'ActiveEmployeeAccountAccess',
         contextDescription: 'System access for active employee accounts',
         operator: '==',
         entity: 'EmployeeAccountStatus',
@@ -183,6 +196,7 @@ const mockData = [
     },
     {
         id: '000014',
+        contextName: 'SuspendedEmployeeAccountNoAccess',
         contextDescription: 'No system access for suspended employee accounts',
         operator: '==',
         entity: 'EmployeeAccountStatus',
@@ -192,6 +206,7 @@ const mockData = [
     },
     {
         id: '000015',
+        contextName: 'CompanyDeviceAppAccess',
         contextDescription: 'Application access from company-issued devices',
         operator: 'IN',
         entity: 'DeviceTypeAccess',
@@ -201,9 +216,10 @@ const mockData = [
     },
     {
         id: '000016',
+        contextName: 'PersonalMobileDeviceAppRestriction',
         contextDescription:
-            'Restrict application access from personal mobile devices',
-        operator: 'NOT IN',
+            'Restrict application access for personal mobile devices',
+        operator: 'IN',
         entity: 'DeviceTypeAccess',
         textValue: 'Smartphone,Tablet',
         modifiedDate: new Date('2023-01-01'),
@@ -211,6 +227,7 @@ const mockData = [
     },
     {
         id: '000017',
+        contextName: 'AppVersion5FeatureAccess',
         contextDescription: 'Feature available in app version 5.0 and above',
         operator: '>=',
         entity: 'FeatureAppVersion',
@@ -220,6 +237,7 @@ const mockData = [
     },
     {
         id: '000018',
+        contextName: 'BelowAppVersion5FeatureNoAccess',
         contextDescription: 'Feature not available in app versions below 5.0',
         operator: '<',
         entity: 'FeatureAppVersion',
@@ -229,6 +247,7 @@ const mockData = [
     },
     {
         id: '000019',
+        contextName: 'UserActivityLastMonthAccess',
         contextDescription:
             'Project access for users active within the last month',
         operator: '>',
@@ -239,6 +258,7 @@ const mockData = [
     },
     {
         id: '000020',
+        contextName: 'UserInactivityOver6MonthsNoAccess',
         contextDescription:
             'No project access for users inactive for over 6 months',
         operator: '<',
@@ -249,6 +269,7 @@ const mockData = [
     },
     {
         id: '000021',
+        contextName: 'EngineeringProductTeamToolAccess',
         contextDescription: 'Tool access for engineering and product teams',
         operator: 'IN',
         entity: 'UserGroupToolAccess',
@@ -258,8 +279,9 @@ const mockData = [
     },
     {
         id: '000022',
-        contextDescription: 'No tool access for external consultant groups',
-        operator: 'NOT IN',
+        contextName: 'ConsultantGroupToolAccess',
+        contextDescription: 'Tool access for external consultant groups',
+        operator: 'IN',
         entity: 'UserGroupToolAccess',
         textValue: 'Consultants',
         modifiedDate: new Date('2023-01-01'),
@@ -267,6 +289,7 @@ const mockData = [
     },
     {
         id: '000023',
+        contextName: 'ProjectAlphaResourceAccess',
         contextDescription: 'Access to resources for Project Alpha',
         operator: '==',
         entity: 'ProjectResourceAccess',
@@ -276,6 +299,7 @@ const mockData = [
     },
     {
         id: '000024',
+        contextName: 'ProjectBetaResourceNoAccess',
         contextDescription: 'No access to resources for Project Beta',
         operator: '!=',
         entity: 'ProjectResourceAccess',
@@ -285,6 +309,7 @@ const mockData = [
     },
     {
         id: '000025',
+        contextName: 'PermanentEmployeeFullToolAccess',
         contextDescription: 'Full tool access for permanent employees',
         operator: '==',
         entity: 'EmployeeContractType',
@@ -294,6 +319,7 @@ const mockData = [
     },
     {
         id: '000026',
+        contextName: 'NonEnterpriseContractUserRestriction',
         contextDescription: 'Restriction for non-enterprise contract users',
         operator: '!=',
         entity: 'ContractType',
@@ -303,6 +329,7 @@ const mockData = [
     },
     {
         id: '000027',
+        contextName: 'HighSecurityClearanceAccess',
         contextDescription: 'Access for high-security clearance',
         operator: '>=',
         entity: 'SecurityClearance',
@@ -312,6 +339,7 @@ const mockData = [
     },
     {
         id: '000028',
+        contextName: 'LowSecurityClearanceRestriction',
         contextDescription: 'Restriction for low-security clearance',
         operator: '<',
         entity: 'SecurityClearance',
@@ -321,6 +349,7 @@ const mockData = [
     },
     {
         id: '000029',
+        contextName: 'CloudInfrastructureManagementAccess',
         contextDescription: 'Access for cloud infrastructure management',
         operator: '==',
         entity: 'InfrastructureRole',
@@ -330,6 +359,7 @@ const mockData = [
     },
     {
         id: '000030',
+        contextName: 'CriticalServerAccessRestriction',
         contextDescription: 'Restriction from critical server access',
         operator: '!=',
         entity: 'ServerAccess',
@@ -339,6 +369,7 @@ const mockData = [
     },
     {
         id: '000031',
+        contextName: 'DevEnvAccess',
         contextDescription: 'Access to development environment',
         operator: 'IN',
         entity: 'EnvironmentAccess',
@@ -348,6 +379,7 @@ const mockData = [
     },
     {
         id: '000032',
+        contextName: 'ProdEnvAccessRestriction',
         contextDescription: 'Restriction from production environment',
         operator: '!=',
         entity: 'EnvironmentAccess',
@@ -357,6 +389,7 @@ const mockData = [
     },
     {
         id: '000033',
+        contextName: 'TeamLeadAccess',
         contextDescription: 'Access for team leads',
         operator: '==',
         entity: 'UserRole',
@@ -366,6 +399,7 @@ const mockData = [
     },
     {
         id: '000034',
+        contextName: 'EmploymentDurationAccess',
         contextDescription: 'Access based on employment duration',
         operator: '>=',
         entity: 'EmploymentDuration',
@@ -375,6 +409,7 @@ const mockData = [
     },
     {
         id: '000035',
+        contextName: 'FinancialRecordsAccess',
         contextDescription: 'Access to financial records',
         operator: '==',
         entity: 'DataAccess',
@@ -384,6 +419,7 @@ const mockData = [
     },
     {
         id: '000036',
+        contextName: 'HRRecordsRestriction',
         contextDescription: 'Restriction from HR records',
         operator: '!=',
         entity: 'DataAccess',
@@ -393,6 +429,7 @@ const mockData = [
     },
     {
         id: '000037',
+        contextName: 'OnSiteEmployeeAccess',
         contextDescription: 'Access for on-site employees',
         operator: '==',
         entity: 'EmployeeType',
@@ -402,6 +439,7 @@ const mockData = [
     },
     {
         id: '000038',
+        contextName: 'RemoteEmployeeRestriction',
         contextDescription: 'Restriction for remote employees',
         operator: '==',
         entity: 'EmployeeType',

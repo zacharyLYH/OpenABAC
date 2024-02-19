@@ -7,6 +7,12 @@ import { copyColumn } from '../column-template';
 
 export const contextColumn: ColumnDef<Context>[] = [
     {
+        accessorKey: 'contextName',
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Context Name" />
+        ),
+    },
+    {
         accessorKey: 'contextDescription',
         header: ({ column }) => (
             <DataTableColumnHeader

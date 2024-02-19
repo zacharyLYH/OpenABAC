@@ -1,5 +1,5 @@
 export const GET_CONTEXT_GIVEN_ID = `
-SELECT id, contextDescription, operator, entity, textValue, timeValue1, timeValue2
+SELECT id, contextName, contextDescription, operator, entity, textValue, timeValue1, timeValue2
 FROM Context
 WHERE id = ?;
 `;
@@ -25,7 +25,7 @@ WHERE id = ?;
 `;
 
 export const GET_ALL_CONTEXT = `
-SELECT id, contextDescription, operator, entity, textValue, timeValue1, timeValue2
+SELECT id, contextName, contextDescription, operator, entity, textValue, timeValue1, timeValue2
 FROM Context;
 `;
 
@@ -35,7 +35,7 @@ FROM Context;
 `;
 
 export const GET_CONTEXT_VIA_SEARCH = `
-SELECT id AS id, contextDescription AS value
+SELECT id AS id, contextName AS value
 FROM Context;
 `;
 

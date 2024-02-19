@@ -37,6 +37,7 @@ export interface Action {
 export interface Context {
     id?: string;
     contextDescription: string;
+    contextName: string;
     operator: string;
     entity: string;
     textValue?: string | undefined;

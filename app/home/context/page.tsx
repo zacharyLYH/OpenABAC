@@ -111,7 +111,7 @@ export default function ContextPage() {
                 <DataTable
                     data={query.data.message}
                     columns={contextColumn}
-                    searchColumnName="contextDescription"
+                    searchColumnName="contextName"
                 />
             ) : (
                 <TableSuspenseSkeleton />
