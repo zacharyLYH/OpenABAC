@@ -81,38 +81,63 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 
 ### Authorization
 
-#### `GET /api/abac/authorize/:actionName`
+#### `GET /api/abac/authorize/:applicationUserId/:actionName`
 
 -   The main authorization API
--   `actionName` is the unique action name that your user is requesting access for
--   `Contexts` conditions associated with the action has to be satisfied, otherwise it will fail.
--   Returns
+-   Params:
+    -   `applicationUserId` is the unique id from your app of this user
+    -   `actionName` is the unique action name that your user is requesting access for
+-   Note:
+    -   `Contexts` conditions associated with the action has to be satisfied, otherwise it will fail.
+-   Returns:
     -   `authorized`: boolean. True if authorized, false otherwise.
     -   `message`: string. An additional message if request is unauthorized.
 
-#### `GET /api/abac/getAllActions`
+#### `GET /api/abac/getAllActions/:applicationUserId`
 
 -   Gets all the actions associated with this user
--   Returns
+-   Params:
+    -   `applicationUserId` is the unique id from your app of this user
+-   Returns:
     -   `actions`: string[]. A list of action all names that this user is allowed to do.
 
 ### CRUD User & UserPolicy
 
-#### `GET /api/abac/user/getUser`
+#### `GET /api/abac/user/getUser/:applicationUserId`
 
-#### `POST /api/abac/user/createUser`
+-   Gets the entire user object including its associated policy names.
+-   Params:
+    -   `applicationUserId` is the unique id from your app of this user
+-   Returns:
+    -   `success`: boolean. Indication of successful update of the user.
+    -   `data`: string of json objects
+        -   `id` (from ABAC), `jsonCol`, list of `policyName`
 
--   Creates ABAC `Users`. Commonly used when a new user signs up onto the system.
--   Body needs to contain a unique `applicationUserId` and optional `jsonCol`.
--   Returns
-    -   `success`: boolean. Indication of successful creation of the user.
+#### `PUT /api/abac/user/upsertUser`
+
+-   Upserts info on the user object itself - not this user's associated policies (for that check the next api).
+-   Body:
+    -   `applicationUserId`: the unique id from your app of this user
+    -   `jsonCol`: additional metadata that will only be used in verifying `Context`. Note that `Context` may only be checked via data from this jsonCol.
+-   Returns:
+    -   `success`: boolean. Indication of successful update of the user.
     -   `data`: string. If this endpoint suceeds, the ABAC User ID will be returned as `id`
 
-#### `PUT /api/abac/user/updateUser`
+### `PUT /api/abac/edit/UserPolicyMapping`
 
-#### `DELETE /api/abac/user/deleteUser`
+-   **Upserts** the UserPolicy mapping.
+-   Body:
+    -   `applicationUserId`: the unique id from your app of this user
+    -   `policyNames`: A list of `policyName`
+-   Returns:
+    -   `success`: boolean. Indication of successful update of the user.
+    -   `data`: string. If this endpoint suceeds, the list of `policyNames` is returned here.
+
+#### `DELETE /api/abac/user/deleteUser/:applicationUserId`
 
 -   At the time of deletion, the `User` can't have any `Policy` attached.
+-   Params:
+    -   `applicationUserId` is the unique id from your app of this user
 
 ### CRUD Policy & PolicyAction
 
@@ -146,8 +171,10 @@ body.listOfPolicies: [
 
 #### `PUT /api/abac/edit/PolicyActionMapping`
 
--   Used to attach or remove actions in a policy. The entire list of wanted `actionName`s must be provided. This is essentially a `PUT` operation.
--   The body should have a list of `actionName` and `policyName`.
+-   Used to attach or remove actions in a policy. The entire list of wanted `actionName`s must be provided. This is essentially a **upsert** operation.
+-   Body
+    -   `actionNames`: List of `actionName` to be set into a policy
+    -   `policyName`: Name of policy to set actions into.
 -   Returns
     -   `success`: boolean. Indication of successful attachment of all `actionName` into `policyName`
     -   `message`: string. An additional message in case any action fails to be attached to the policy.
