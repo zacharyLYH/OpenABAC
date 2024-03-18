@@ -138,6 +138,9 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 -   At the time of deletion, the `User` can't have any `Policy` attached.
 -   Params:
     -   `applicationUserId` is the unique id from your app of this user
+-   Returns:
+    -   `success`: boolean. Indication of successful update of the user.
+    -   `data`: string. If this endpoint suceeds, the `applicationUserId` is returned here.
 
 ### CRUD Policy & PolicyAction
 
