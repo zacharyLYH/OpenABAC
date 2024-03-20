@@ -88,18 +88,3 @@ CREATE TABLE Statistics (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Lucia_User (
-    id CHAR(36) NOT NULL,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id),
-    UNIQUE INDEX username_idx (username)
-);
-
-CREATE TABLE Lucia_User_Session (
-    id CHAR(255) NOT NULL,
-    expires_at DATETIME NOT NULL,
-    user_id VARCHAR(36) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES Lucia_User(id)
-);
