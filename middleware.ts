@@ -1,28 +1,73 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-//https://nextjs.org/docs/app/building-your-application/routing/middleware#producing-a-response
-
-/*
-This middleware is only used in abac authorization requests. OpenABAC UI's authorization method uses NextAuth's built in authorizer. 
-
-This middleware reads the cookies for "abac-access-token" then sets the "header:applicationUserId" header field for consumption in the api handler. 
-*/
+import jwt from 'jsonwebtoken';
 
 export const config = {
     matcher: '/api/abac/:function*',
 };
 
+const corsOptions = {
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+const allowedOrigins = ['http://localhost:3000'];
+
 export function middleware(request: NextRequest) {
-    if (process.env.USING_INTERNAL_AUTH === 'false') {
-        console.log('MIDDLEWARE IS WORKING');
-        const response = NextResponse.next();
-        response.headers.set('header-applicationUserId', 'sudo');
-        return response;
-    } else {
-        let cookie = request.cookies.get('abac-access-token');
-        return NextResponse.json(
-            { success: false, message: 'authentication failed' },
-            { status: 401 },
-        );
+    const origin = request.headers.get('origin') ?? '';
+    const isAllowedOrigin = allowedOrigins.includes(origin);
+
+    const isPreflight = request.method === 'OPTIONS';
+
+    const corsHeaders = {
+        ...(isAllowedOrigin && { 'Access-Control-Allow-Origin': origin }),
+        ...corsOptions,
+    };
+
+    if (isPreflight) {
+        return NextResponse.json({}, { headers: corsHeaders });
+    }
+
+    if (!isAllowedOrigin) {
+        return new Response(JSON.stringify({ error: 'Origin not allowed' }), {
+            status: 403,
+            headers: {
+                'Content-Type': 'application/json',
+                ...corsHeaders,
+            },
+        });
+    }
+
+    if (isAllowedOrigin) {
+        const token = request.headers.get('authorization')?.split(' ')[1];
+
+        if (!token) {
+            return new Response(
+                JSON.stringify({ error: 'Authorization token required' }),
+                {
+                    status: 401,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...corsHeaders,
+                    },
+                },
+            );
+        }
+
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET!); //TODO: add validation to the applicationUserId
+            return NextResponse.next();
+        } catch (error) {
+            return new Response(
+                JSON.stringify({ error: 'Invalid or expired token' }),
+                {
+                    status: 403,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...corsHeaders,
+                    },
+                },
+            );
+        }
     }
 }
