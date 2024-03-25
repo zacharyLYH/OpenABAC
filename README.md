@@ -55,7 +55,7 @@ In advanced implementations, if your applciation runs on Typescript and you don'
 
 ## OpenABAC concepts
 
-The authorization model in OpenABAC is simple. Whenever you need to know if a particular user of your application is allowed to perform a requested action, just send over the `actionName` and the `appliactionUserId`. In the background, OpenABAC will efficiently lookup this `actionName` among all the possible actions this `applicationUserId` has a policy for, and if there's a match, an authorized message is sent back to the authorization caller (usually your apis).
+The authorization model in OpenABAC is simple. Whenever you need to know if a particular user of your application is allowed to perform a requested action, just send over the `actionName` and the `applicationUserId`. In the background, OpenABAC will efficiently lookup this `actionName` among all the possible actions this `applicationUserId` has a policy for, and if there's a match, an authorized message is sent back to the authorization caller (usually your apis).
 
 An action is the smallest unit of work that your application will perform. To decide what should be an action and what shouldn't, consider whether the action in question needs to be restricted. If yes, it should be included, otherwise, it should be assumed that the public has access to this action. A detail that is often underdiscussed is the maintenance of these actions. Indeed, your application needs to be aware of these `actionName`s - the authorization model assumes you pass in the requisite `actionName`, so it implies your application is aware of these `actionName`s. Smartly maintaining this is key to reducing bugs in your authorization scheme.
 
@@ -354,6 +354,7 @@ DATABASE_PASSWORD_DEV=password1
 DATABASE_NAME_DEV=openabac
 IS_PRODUCTION=false (Set to true in production)
 USE_PRODUCTION_DB=false (Set to true if using Docker MySQL or in production)
+JWT_SECRET=0aJFfCNpsvvlcIJ2DXlPjnZN8BD2OUXe0sgdfhR1IGp8jrH84kGCuZmGkV41vFW
 ```
 
 First, set up a local database:
@@ -378,7 +379,6 @@ yarn run db:down
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Login password test
+### Usable JWT for testing
 
-username: sudo
-password: sudo1234
+`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvblVzZXJJZCI6IjEyMzQ1Njc4OTAiLCJleHAiOjE3NDI5NDU2MDMuNzQ1OTY2fQ.NpzKHrobl3BIrlt92yKYnQ8z95KO-DferZSgOugK5zU`
