@@ -49,7 +49,7 @@ This project is **not** for you if:
 
 To use OpenABAC, you will host a copy of OpenABAC. You'll also have your application. Imporatantly, it is extremely common for applications to have a method to identify users. By far, the most common method is [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier).
 
-In the simplest implementation, when your user requests for some sensitive data from your application, your application will make an external api call to your hosted OpenABAC service for authorization. **That external API call needs to contain a JWT signed Bearer token of the user's unique identifier**, and in the url, the unique `actionName` your user is trying to perform. Between these 2 components, you'll tell OpenABAC the action your user is requesting to perform, and a non-fraudulent identification of the user. OpenABAC will then return a response telling you if your user has a policy that includes the `actionName`.
+In the simplest implementation, when your user requests for some sensitive data from your application, your application will make an external api call to your hosted OpenABAC service for authorization. **That external API call needs to contain a JWT signed Bearer token of the user's unique identifier**, and in the url, the unique `actionName` your user is trying to perform. Between these 2 components, you'll tell OpenABAC the action your user is requesting to perform, and a non-fraudulent identification of the user. OpenABAC will then return a response telling you if your user has a policy that includes the `actionName`. Since the JWT was cryptographically signed by a private key only your server and your copy of OpenABAC knows, any successful JWT decoding on the ABAC side can be assumed to come from your server. To ensure that your JWT encoding stays secret, be sure to communicate via HTTPS and to rotate private keys regularly.
 
 In advanced implementations, if your applciation runs on Typescript and you don't mind starting a MySQL data connection, you may copy the folder from `/abac`and all of its contents into your project. This folder contains all the logic for authorization. Doing so, your application will reduce some latency since you won't be making an authorization request from a separately hosted service.
 
@@ -79,7 +79,7 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 
 > Note: All APIs assume the initial JWT signature check passed. If it didn't, OpenABAC will immediately return a `403: Forbidden Error`. Recall, every request needs to contain the user's application id in the JWT.
 
-### Authorization
+### Authorization APIs
 
 #### `GET /api/abac/authorize/:applicationUserId/:actionName`
 
@@ -101,7 +101,7 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 -   Returns:
     -   `actions`: string[]. A list of action all names that this user is allowed to do.
 
-### CRUD User & UserPolicy
+### CRUD User & UserPolicy APIs
 
 #### `GET /api/abac/user/getUser/:applicationUserId`
 
@@ -142,11 +142,13 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
     -   `success`: boolean. Indication of successful update of the user.
     -   `data`: string. If this endpoint suceeds, the `applicationUserId` is returned here.
 
-### CRUD Policy & PolicyAction
+### CRUD Policy & PolicyAction APIs
 
 #### `POST /api/abac/policy/createPolicy`
 
 -   Creates policies. Commonly used in immediately with `/abac/createAction` to create policies out of newly created actions. This endpoint is a transaction behind the scenes. Meaning, either all your policies get created or none.
+-   Body:
+    > Note that `policyName` has to be unique. If either one isn't, a 409 conflict is returned
 
 ```
 body.listOfPolicies: [
@@ -154,27 +156,53 @@ body.listOfPolicies: [
         policyName : string
         policyDescription: string
         allow: boolean
+    },
+    {
+        ...
     }
 ]
 ```
 
--   Returns
+-   Returns:
     -   `success`: boolean. Indication of successful creation of **ALL** policies from `body.listOfPolicies`.
     -   `message`: string. An additional message in case a policy fails to get created.
 
-#### `GET /api/abac/policy/getPolicy`
+#### `GET /api/abac/policy/getPolicy/:policyName`
 
--   Returns the policy and the actions associated with this policy
+-   Returns the policy object and the actions associated with this policy. Commonly used if you have a use case for reading more about the policy and or the policy's associated actions.
+-   Params:
+    -   `policyName`: Name of the policy you want to read
+-   Return:
+    -   `data`:
+        -   `actionsAssociated`: list of `actionName`s
+        -   `policy`: The entire policy object
 
-#### `PUT /api/abac/policy/editPolicy`
+#### `PUT /api/abac/policy/editPolicy/:policyName`
 
-#### `DELETE /api/abac/policy/deletePolicy`
+-   Updates the policy object, not the PolicyActionMapping (that comes later). Must provide all the fields of a policy, not just the one you want to patch.
+-   Params:
+    -   `policyName`: Name of the policy you want to update
+-   Body:
+    -   `policyName`: Has to be a unique name, otherwise a 409 conflict error is returned
+    -   `policyDescription`: Description of the policy
+    -   `allow`: boolean
+-   Returns:
+    -   `success`: boolean. Indication of successful update.
+    -   `message`: string. An additional message in case a policy fails to get updated.
+    -   `data`: The updated policy object
 
--   No action can be attached to the policy at the time of deletion.
+#### `DELETE /api/abac/policy/deletePolicy/:policyName`
+
+-   Deletes a policy. No action can be attached to the policy at the time of deletion, otherwise a 400 error is returned
+-   Params:
+    -   `policyName`: Name of the policy you want to delete
+-   Returns:
+    -   `success`: boolean. Indication of successful deletion.
+    -   `message`: string. An additional message in case a policy fails to get deleted.
 
 #### `PUT /api/abac/edit/PolicyActionMapping`
 
--   Used to attach or remove actions in a policy. The entire list of wanted `actionName`s must be provided. This is essentially a **upsert** operation.
+-   Used to attach or remove actions in a policy (Upsert). The entire list of wanted `actionName`s must be provided. This is essentially an **upsert** operation.
 -   Body
     -   `actionNames`: List of `actionName` to be set into a policy
     -   `policyName`: Name of policy to set actions into.
@@ -182,17 +210,21 @@ body.listOfPolicies: [
     -   `success`: boolean. Indication of successful attachment of all `actionName` into `policyName`
     -   `message`: string. An additional message in case any action fails to be attached to the policy.
 
-### CRUD Action & ActionContext
+### CRUD Action & ActionContext APIs
 
 #### `POST /api/abac/action/createAction`
 
 -   Creates actions. Commonly used when a new resource is created and provisioning some actions is required. This endpoint is a transaction behind the scenes. Meaning, either all your actions get created or none.
+    > Note that `actionName` has to be unique. If either one isn't, a 409 conflict is returned
 
 ```
 body.listOfActions: [
     {
         actionName : string
         actionDescription: string
+    },
+    {
+        ...
     }
 ]
 ```
@@ -201,24 +233,56 @@ body.listOfActions: [
     -   `success`: boolean. Indication of successful creation of **ALL** actions from `body.listOfActions`.
     -   `message`: string. An additional message in case an action fails to get created.
 
-#### `GET /api/abac/action/getAction`
+#### `GET /api/abac/action/getAction/:actionName`
 
 -   Returns the action, policies associated with this action, and contexts associated with this action.
+-   Params:
+    -   `actionName`: Name of the action to read
+-   Returns
+    -   `success`: boolean. Indication of successful read
+    -   `data`:
+        -   `policyList`: List of `policyName`
+        -   `action`: The action object
+        -   `contextList`: List of `contextName`
 
-#### `PUT /api/abac/action/editAction`
+#### `PUT /api/abac/action/editAction/:actionName`
 
-#### `DELETE /api/abac/action/deleteAction`
+-   Updates an action object - not the action-context mappings nor the policy-action mappings. Provide the entire action object since this is a PUT request
+-   Params:
+    -   `actionName`: Name of the action to update
+-   Body:
+    -   `actionName`: Updated action name
+    -   `actionDescription`: Updated action description
+-   Returns:
+    -   `success`: boolean. Indication of successful update
+    -   `message`: string of error logs if any
+    -   `data`: updated action object
 
--   This action must not be attached to any policy in order for this to succeed.
+#### `DELETE /api/abac/action/deleteAction/:actionName`
+
+-   Deletes the action. This action must not be attached to any policy and context to succeed.
+-   Params:
+    -   `actionName`: Name of the action to delete
+-   Returns:
+    -   `success`: boolean. Indication of successful delete
+    -   `message`: string of error logs if any
 
 #### `PUT /api/abac/edit/ContextActionMapping`
 
-### CRUD Context
+-   Used to attach or remove context in an action (Upsert). The entire list of wanted `contextName`s must be provided. This is essentially an **upsert** operation.
+-   Body
+    -   `contextNames`: List of `contextName` to be set into an action
+    -   `actionName`: Name of action to set contexts into.
+-   Returns
+    -   `success`: boolean. Indication of successful attachment of all `contextNames` into `actionName`
+    -   `message`: string. An additional message in case any action fails to be attached to the policy.
 
-#### `POST /api/abac/context/createContext`
+### CRUD Context APIs
+
+#### `POST /api/abac/context/createContext/:contextName`
 
 -   Creates ABAC `Context`. Usage pattern varies.
--   Body must contain
+-   Body:
     -   `contextName`
         -   Unique across the entire system.
     -   `contextDescription`
@@ -235,20 +299,42 @@ body.listOfActions: [
             -   `!=`
     -   `entity`
         -   This refers to a field from the `jsonCol` field from the User object
--   Depending on the operator, different values are used. The special cases are
+    -   Depending on the operator, different values are used. The special cases are
     -   `BETWEEN`
         -   In this case, `timeValue1` and `timeValue2` must be filled in and `textValue` must remain empty
     -   `IN`
         -   In this case, `textValue` must not be empty and if this clause needs to contain multiple items, the items should be comma separated. **DO NOT** place square brackets or any other indication this is an array. The `textValue` field is stored as a string.
     -   With every other operator, only `textValue` or `timeValue1` can be used.
+-   Return:
+    -   `success`: boolean. Indication of successful creation of context.
+    -   `data`: a json object of the created context.
 
-#### `GET /api/abac/context/getContext`
+#### `GET /api/abac/context/getContext/:contextName`
 
-#### `PUT /api/abac/context/updateContext`
+-   Param
+    -   `contextName`: The unique name of the context
+-   Gets the context and all the actions associated with it.
+-   Return
+    -   `data`
+        -   `context`: The context object
+        -   `actions`: A list of actions attaching the context
 
-#### `DELETE /api/abac/context/deleteContext`
+#### `PUT /api/abac/context/updateContext/:contextName`
 
+-   Body
+    -   `context`: The full context object since this is not a patch operation. If the intent is to update `contextName`, if its not unique, an error will be thrown.
+-   Return
+    -   `success`: Indication of successful update
+    -   `message`: Additional message incase update fails
+
+#### `DELETE /api/abac/context/deleteContext/:contextName`
+
+-   Param
+    -   `contextName`: The unique name of the context
 -   This `Context` cannot be attached to any `Action` at the time of deletion
+-   Return
+    -   `success`: Indication of successful update
+    -   `message`: Additional message incase update fails
 
 ## Contribute
 
