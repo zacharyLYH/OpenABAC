@@ -7,7 +7,7 @@ export async function GET(
     { params }: { params: { actionName: string } },
 ) {
     const headersList = headers();
-    const userId = headersList.get('header-applicationUserId');
+    const userId = headersList.get('applicationUserId');
     if (!userId) {
         return NextResponse.json(
             {
