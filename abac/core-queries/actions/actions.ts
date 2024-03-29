@@ -100,8 +100,6 @@ SELECT
     a.actionName, a.actionDescription
 FROM
     Action a
-    JOIN PolicyAction pa ON a.id = pa.actionId
-    JOIN Policy p ON pa.policyId = p.id
 WHERE
-    p.allow = true AND a.actionName = ?
+    a.actionName = ?
 `;
