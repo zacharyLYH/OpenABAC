@@ -9,7 +9,7 @@
         "lint": "next lint --fix && prettier --write .",
         "dev:up": "docker-compose up -d openabac-dev",
         "test:up": "docker-compose up -d openabac-test",
-        "db:down": "docker-compose down"
+        "dev:down": "docker-compose down"
     },
     "dependencies": {
         "@hookform/resolvers": "^3.3.4",
@@ -31,7 +31,6 @@
         "axios": "^1.6.5",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.0.0",
-        "jsonwebtoken": "^9.0.2",
         "lucide-react": "^0.302.0",
         "mysql2": "^3.6.5",
         "next": "14.0.4",
