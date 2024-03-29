@@ -81,11 +81,10 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 
 ### Authorization APIs
 
-#### `GET /api/abac/authorize/:applicationUserId/:actionName`
+#### `GET /api/abac/authorize/:actionName`
 
 -   The main authorization API
 -   Params:
-    -   `applicationUserId` is the unique id from your app of this user
     -   `actionName` is the unique action name that your user is requesting access for
 -   Note:
     -   `Contexts` conditions associated with the action has to be satisfied, otherwise it will fail.
@@ -93,21 +92,17 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
     -   `authorized`: boolean. True if authorized, false otherwise.
     -   `message`: string. An additional message if request is unauthorized.
 
-#### `GET /api/abac/getAllActions/:applicationUserId`
+#### `GET /api/abac/getAllActions`
 
 -   Gets all the actions associated with this user
--   Params:
-    -   `applicationUserId` is the unique id from your app of this user
 -   Returns:
     -   `actions`: string[]. A list of action all names that this user is allowed to do.
 
 ### CRUD User & UserPolicy APIs
 
-#### `GET /api/abac/user/getUser/:applicationUserId`
+#### `GET /api/abac/user/getUser`
 
 -   Gets the entire user object including its associated policy names.
--   Params:
-    -   `applicationUserId` is the unique id from your app of this user
 -   Returns:
     -   `success`: boolean. Indication of successful update of the user.
     -   `data`: string of json objects
@@ -117,7 +112,6 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 
 -   Upserts info on the user object itself - not this user's associated policies (for that check the next api).
 -   Body:
-    -   `applicationUserId`: the unique id from your app of this user
     -   `jsonCol`: additional metadata that will only be used in verifying `Context`. Note that `Context` may only be checked via data from this jsonCol.
 -   Returns:
     -   `success`: boolean. Indication of successful update of the user.
@@ -127,7 +121,6 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 
 -   **Upserts** the UserPolicy mapping.
 -   Body:
-    -   `applicationUserId`: the unique id from your app of this user
     -   `policyNames`: A list of `policyName`
 -   Returns:
     -   `success`: boolean. Indication of successful update of the user.
@@ -136,8 +129,6 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 #### `DELETE /api/abac/user/deleteUser/:applicationUserId`
 
 -   At the time of deletion, the `User` can't have any `Policy` attached.
--   Params:
-    -   `applicationUserId` is the unique id from your app of this user
 -   Returns:
     -   `success`: boolean. Indication of successful update of the user.
     -   `data`: string. If this endpoint suceeds, the `applicationUserId` is returned here.
@@ -381,4 +372,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Usable JWT for testing
 
-`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvblVzZXJJZCI6IjEyMzQ1Njc4OTAiLCJleHAiOjE3NDI5NDU2MDMuNzQ1OTY2fQ.NpzKHrobl3BIrlt92yKYnQ8z95KO-DferZSgOugK5zU`
+`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvblVzZXJJZCI6InN1ZG8iLCJleHAiOjE3NDI5NDU2MDMuNzQ1OTY2fQ.62v6FoEV3NCIKFYF7KB1rlRpyCzt219HLfE5PvXkiV0`
