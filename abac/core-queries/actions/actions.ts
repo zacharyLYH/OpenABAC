@@ -77,7 +77,7 @@ FROM Action
 WHERE ID = ?;
 `;
 
-export const AUTHORIZE_ACTIONS_WITH_CONTEXT_CHECK = `
+export const CHECK_IF_USER_HAS_THIS_ACTION = `
 SELECT 
     a.actionName, a.actionDescription
 FROM
@@ -90,9 +90,8 @@ FROM
     PolicyAction pa ON p.id = pa.policyId
         JOIN
     Action a ON pa.actionId = a.id
-        JOIN
 WHERE
-    (u.applicationUserId = ? AND p.allow = true AND a.actionName = ?)
+    u.applicationUserId = ? AND p.allow = true AND a.actionName = ?;
 `;
 
 export const AUTHORIZE_ACTIONS_SUDO = `
@@ -101,5 +100,5 @@ SELECT
 FROM
     Action a
 WHERE
-    a.actionName = ?
+    a.actionName = ?;
 `;
