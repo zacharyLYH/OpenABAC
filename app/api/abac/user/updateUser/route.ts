@@ -3,7 +3,7 @@ import {
     catchStandardError,
     returnApplicationUserIdViaHeader,
 } from '@/app/api/_utils';
-import { upsertUserObject } from '@/abac/core-services/user/upsertUser/route';
+import { updateUserObject } from '@/abac/core-services/user/updateUser/route';
 
 export async function PUT(request: Request) {
     try {
@@ -18,7 +18,7 @@ export async function PUT(request: Request) {
             );
         }
         const userId = returnApplicationUserIdViaHeader();
-        const response = await upsertUserObject(
+        const response = await updateUserObject(
             userId,
             res.jsonCol,
             res.applicationUserID,

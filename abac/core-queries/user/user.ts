@@ -27,7 +27,7 @@ WHERE id = ?;
 
 export const UPDATE_USER_GIVEN_APPLICATIONUSERID = `
 UPDATE User
-SET jsonCol = ?
+SET jsonCol = ?, applicationUserId = ?
 WHERE applicationUserId = ?;
 `;
 

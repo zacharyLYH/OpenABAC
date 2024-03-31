@@ -108,7 +108,17 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
     -   `data`: string of json objects
         -   `id` (from ABAC), `jsonCol`, list of `policies`
 
-#### `PUT /api/abac/user/upsertUser`
+#### `POST /api/abac/user/createUser`
+
+-   Creates the user object itself
+-   Body:
+    -   `applicationUserId`: new application user id to use. Even if not updating this, must include in payload.
+    -   `jsonCol`: additional metadata that will only be used in verifying `Context`. Note that `Context` may only be checked via data from this jsonCol.
+-   Returns:
+    -   `success`: boolean. Indication of successful creation of the user.
+    -   `data`: string. If this endpoint suceeds the payload to this API is returned, otherwise error message found here.
+
+#### `PUT /api/abac/user/updateUser`
 
 -   Upserts info on the user object itself - not this user's associated policies (for that check the next api).
 -   Body:
