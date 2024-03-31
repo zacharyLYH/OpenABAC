@@ -1,31 +1,28 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
 import { authorizeActionNameGivenApplicationUserId } from '@/abac/core-services/authorize/[actionName]/route';
+import {
+    catchStandardError,
+    returnApplicationUserIdViaHeader,
+} from '@/app/api/_utils';
 
 export async function GET(
-    request: Request,
+    req: Request,
     { params }: { params: { actionName: string } },
 ) {
-    const headersList = headers();
-    const userId = headersList.get('applicationUserId');
-    if (!userId) {
-        return NextResponse.json(
-            {
-                message:
-                    'The userId is missing from the headers - this is not supposed to happen. The MW should handle any errors already.',
-            },
-            { status: 500 },
+    try {
+        const userId = returnApplicationUserIdViaHeader();
+        const response = await authorizeActionNameGivenApplicationUserId(
+            userId,
+            params.actionName,
         );
+        if (response.authorized === false) {
+            return NextResponse.json(
+                { message: response.message },
+                { status: response.statusCode },
+            );
+        }
+        return NextResponse.json({ message: 'Success' }, { status: 200 });
+    } catch (e) {
+        return catchStandardError(e);
     }
-    const response = await authorizeActionNameGivenApplicationUserId(
-        userId,
-        params.actionName,
-    );
-    if (response.authorized === false) {
-        return NextResponse.json(
-            { message: response.message },
-            { status: response.statusCode },
-        );
-    }
-    return NextResponse.json({ message: 'Success' }, { status: 200 });
 }
