@@ -10,7 +10,7 @@ class Database {
     private static instance: Database;
     private connection: Connection | null = null;
 
-    private constructor() { }
+    private constructor() {}
 
     public static getInstance(): Database {
         if (!Database.instance) {
@@ -38,8 +38,8 @@ class Database {
                         database: process.env.DATABASE_NAME,
                         port: parseInt(process.env.DATABASE_PORT || '3306'),
                         ssl: {
-                            rejectUnauthorized: true
-                        }
+                            rejectUnauthorized: true,
+                        },
                     });
                 }
             } catch (error) {
@@ -63,28 +63,41 @@ class Database {
         return plainResults as T;
     }
 
-    public async executeTransaction(
-        queries: TransactionQueries,
-    ): Promise<void> {
-        const connection = await this.getConnection();
+    public async executeTransaction<T>(
+        queries: Query[],
+        connection?: any,
+    ): Promise<T> {
         try {
-            await connection.beginTransaction();
-            for (const query of queries) {
-                await connection.execute<
-                    | ResultSetHeader
-                    | RowDataPacket[]
-                    | RowDataPacket[][]
-                    | ResultSetHeader[]
-                    | ProcedureCallPacket
-                >(query.sql, query.params);
+            if (!connection) {
+                connection = await this.getConnection();
             }
+            await connection.beginTransaction();
+
+            let result: T | null = null;
+            for (let i = 0; i < queries.length; i++) {
+                const query = queries[i];
+
+                const [rows] = (await connection.execute(
+                    query.sql,
+                    query.params,
+                )) as any;
+
+                if (i === queries.length - 1) {
+                    result = rows as T;
+                }
+            }
+
             await connection.commit();
+            if (result === null) {
+                throw new Error('Expected result, but none was found.');
+            }
+            return result;
         } catch (error) {
             await connection.rollback();
             console.error('Transaction failed:', error);
             throw error;
         } finally {
-            connection.end();
+            await connection.end();
         }
     }
 }
