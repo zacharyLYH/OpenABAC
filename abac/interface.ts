@@ -52,4 +52,6 @@ export interface ABACRequestResponse {
     data?: any;
     message?: string;
     statusCode?: number;
+    actions?: string[];
+    success?: boolean;
 }
