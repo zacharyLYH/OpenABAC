@@ -3,7 +3,7 @@ name: CI
 on:
     push:
         branches:
-            - "**"
+            - '**'
 
 jobs:
     build:
@@ -16,7 +16,7 @@ jobs:
             - name: Use Node.js
               uses: actions/setup-node@v2
               with:
-                  node-version: "20.10.0"
+                  node-version: '20.10.0'
 
             - name: Install dependencies
               run: yarn install
@@ -34,3 +34,4 @@ jobs:
                   DATABASE_NAME_DEV: ${{ secrets.DATABASE_NAME_DEV }}
                   IS_PRODUCTION: ${{ secrets.IS_PRODUCTION }}
                   USE_PRODUCTION_DB: ${{ secrets.USE_PRODUCTION_DB }}
+                  JWT_SECRET: ${{ secrets.JWT_SECRET }}
