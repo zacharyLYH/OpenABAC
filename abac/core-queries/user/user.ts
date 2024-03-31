@@ -51,3 +51,9 @@ SELECT applicationUserId, jsonCol, modifiedDate
 FROM User
 WHERE ID = ?;
 `;
+
+export const GET_ID_USING_APPLICATIONUSERID = `
+SELECT id
+FROM User
+WHERE applicationUserId = ?;
+`;
