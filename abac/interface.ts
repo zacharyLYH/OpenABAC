@@ -5,7 +5,7 @@ export interface Query {
 
 export type TransactionQueries = Query[];
 
-export interface Count {
+export interface QueryCount {
     count: number;
 }
 
