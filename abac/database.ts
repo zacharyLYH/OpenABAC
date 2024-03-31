@@ -20,34 +20,38 @@ class Database {
     }
 
     public async getConnection(): Promise<Connection> {
-        if (this.connection === null) {
-            try {
-                if (process.env.USE_PRODUCTION_DB === 'false') {
-                    this.connection = await mysql.createConnection({
-                        host: process.env.DATABASE_HOST_DEV,
-                        user: process.env.DATABASE_USER_DEV,
-                        password: process.env.DATABASE_PASSWORD_DEV,
-                        database: process.env.DATABASE_NAME_DEV,
-                        port: parseInt(process.env.DATABASE_PORT_DEV || '3306'),
-                    });
-                } else {
-                    this.connection = await mysql.createConnection({
-                        host: process.env.DATABASE_HOST,
-                        user: process.env.DATABASE_USER,
-                        password: process.env.DATABASE_PASSWORD,
-                        database: process.env.DATABASE_NAME,
-                        port: parseInt(process.env.DATABASE_PORT || '3306'),
-                        ssl: {
-                            rejectUnauthorized: true,
-                        },
-                    });
-                }
-            } catch (error) {
-                console.error('Error connecting to database:', error);
-                throw error;
+        if (this.connection) {
+            const pingResult = await this.connection.ping().catch(() => [null]);
+            if (pingResult === undefined) {
+                return this.connection;
             }
         }
-        return this.connection;
+        try {
+            if (process.env.USE_PRODUCTION_DB === 'false') {
+                this.connection = await mysql.createConnection({
+                    host: process.env.DATABASE_HOST_DEV,
+                    user: process.env.DATABASE_USER_DEV,
+                    password: process.env.DATABASE_PASSWORD_DEV,
+                    database: process.env.DATABASE_NAME_DEV,
+                    port: parseInt(process.env.DATABASE_PORT_DEV || '3306'),
+                });
+            } else {
+                this.connection = await mysql.createConnection({
+                    host: process.env.DATABASE_HOST,
+                    user: process.env.DATABASE_USER,
+                    password: process.env.DATABASE_PASSWORD,
+                    database: process.env.DATABASE_NAME,
+                    port: parseInt(process.env.DATABASE_PORT || '3306'),
+                    ssl: {
+                        rejectUnauthorized: true,
+                    },
+                });
+            }
+            return this.connection;
+        } catch (error) {
+            console.error('Error connecting to database:', error);
+            throw error;
+        }
     }
 
     public async query<T>(query: Query): Promise<T> {
@@ -64,7 +68,7 @@ class Database {
     }
 
     public async executeTransaction<T>(
-        queries: Query[],
+        queries: TransactionQueries,
         connection?: any,
     ): Promise<T> {
         try {
