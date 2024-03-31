@@ -1,11 +1,7 @@
 export const GET_USER_GIVEN_APPLICATIONUSERID = `
 SELECT id, jsonCol
+from User
 WHERE applicationUserId = ?;
-`;
-
-export const GET_USER_GIVEN_ID = `
-SELECT applicationUserId, jsonCol
-WHERE id = ?;
 `;
 
 export const IS_USER_APPLICATIONUSERID_UNIQUE = `
@@ -15,7 +11,8 @@ WHERE applicationUserId = ?;
 `;
 
 export const CREATE_USER = `
-INSERT INTO User (id, applicationUserId, jsonCol) VALUES (UUID(), ?, ?);
+INSERT INTO User (id, applicationUserId, jsonCol)
+VALUES (UUID(), ?, ?);
 `;
 
 export const DELETE_USER_GIVEN_APPLICATIONUSERID = `
@@ -51,6 +48,6 @@ FROM User;
 
 export const GET_USER_BY_ID = `
 SELECT applicationUserId, jsonCol, modifiedDate
-FROM Action
+FROM User
 WHERE ID = ?;
 `;

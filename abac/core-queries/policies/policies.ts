@@ -8,7 +8,7 @@ UserPolicy up ON u.id = up.abacId
     JOIN
 Policy p ON up.policyId = p.id
 WHERE
-u.applicationUserId = ?, p.allow = ?;
+u.id = ? and p.allow = ?;
 `;
 
 export const IS_POLICYNAME_UNIQUE = `
@@ -57,7 +57,7 @@ FROM Policy;
 export const GET_POLICY_VIA_SEARCH = `
 SELECT id AS id, policyName AS value
 FROM Policy;
-`
+`;
 
 export const GET_POLICY_BY_ID = `
 SELECT policyName, policyDescription, allow, modifiedDate
