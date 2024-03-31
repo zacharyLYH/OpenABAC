@@ -29,17 +29,18 @@ export const CopyButton: React.FC<CellActionInterface> = ({ data }) => {
             onClick={() => onCopy(objectToString(data))}
             className={
                 copyClicked
-                    ? "min-w-[80px] transition-background bg-green-500 text-white duration-1000"
-                    : "min-w-[80px]"
+                    ? 'min-w-[80px] transition-background bg-green-500 text-white duration-1000'
+                    : 'min-w-[80px]'
             }
         >
-            {copyClicked ?
-                <CheckCircle className='h-4 w-4' /> :
+            {copyClicked ? (
+                <CheckCircle className="h-4 w-4" />
+            ) : (
                 <>
                     <Copy className="mr-2 h-4 w-4" />
                     Copy
                 </>
-            }
+            )}
         </Button>
     );
 };

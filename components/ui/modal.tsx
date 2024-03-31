@@ -17,7 +17,7 @@ interface ModalProps {
     isOpen: boolean;
     children?: React.ReactNode;
     contentClassName?: string;
-    onClose?: () => void
+    onClose?: () => void;
 }
 
 export const DataModal: React.FC<ModalProps> = ({
@@ -26,14 +26,14 @@ export const DataModal: React.FC<ModalProps> = ({
     isOpen,
     children,
     contentClassName,
-    onClose
+    onClose,
 }) => {
     const { toggleModal } = useAppStore();
 
     const onChange = (open: boolean) => {
         if (!open) {
             if (onClose) {
-                onClose()
+                onClose();
             } else {
                 toggleModal();
             }

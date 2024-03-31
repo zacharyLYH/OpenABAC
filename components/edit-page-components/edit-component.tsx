@@ -15,8 +15,8 @@ interface EditComponentInterface {
     editClickedIndicator: boolean;
     setEditClickedIndicator: (clicked: boolean) => void;
     renderEditForm: (data?: any) => JSX.Element;
-    getContextByIdQueryKey: string[]
-    getContextViaSearchQueryKey: string[]
+    getContextByIdQueryKey: string[];
+    getContextViaSearchQueryKey: string[];
 }
 
 export const EditComponent: React.FC<EditComponentInterface> = ({
@@ -27,7 +27,7 @@ export const EditComponent: React.FC<EditComponentInterface> = ({
     editClickedIndicator,
     renderEditForm,
     getContextByIdQueryKey,
-    getContextViaSearchQueryKey
+    getContextViaSearchQueryKey,
 }) => {
     const [selected, setSelected] = useState<SearchAndSelectInterface[]>([]);
     const { modalOpen, toggleModal } = useAppStore();
@@ -62,7 +62,7 @@ export const EditComponent: React.FC<EditComponentInterface> = ({
 
     const getDataEndpointFetch = async () => {
         const resp = await axios.get(getDataEndpoint);
-        console.log(resp.data)
+        console.log(resp.data);
         return resp.data;
     };
 

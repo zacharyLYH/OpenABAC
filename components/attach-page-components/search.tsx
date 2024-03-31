@@ -1,23 +1,36 @@
-import { SearchAndSelect, SearchAndSelectInterface } from "../edit-page-components/search"
-import { deleteItemColumn } from "../table/column-defs/delete-items/delete-items-column";
-import { DataTable } from "../table/data-table";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { MultiSkeleton } from "@/components/ui/multi-skeleton";
+import {
+    SearchAndSelect,
+    SearchAndSelectInterface,
+} from '../edit-page-components/search';
+import { deleteItemColumn } from '../table/column-defs/delete-items/delete-items-column';
+import { DataTable } from '../table/data-table';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { MultiSkeleton } from '@/components/ui/multi-skeleton';
 
 export interface AttachPageSearchProps {
-    addOrRemove: string
+    addOrRemove: string;
     entity: string;
     selected: SearchAndSelectInterface[] | [];
     setSelected: (obj: SearchAndSelectInterface[] | []) => void;
-    mountIndicator: boolean
-    maxAllowSelect?: number
-    placeholder: string
+    mountIndicator: boolean;
+    maxAllowSelect?: number;
+    placeholder: string;
 }
 
-const AttachPageSearch: React.FC<AttachPageSearchProps> = ({ addOrRemove, entity, selected, setSelected, mountIndicator, placeholder, maxAllowSelect }) => {
+const AttachPageSearch: React.FC<AttachPageSearchProps> = ({
+    addOrRemove,
+    entity,
+    selected,
+    setSelected,
+    mountIndicator,
+    placeholder,
+    maxAllowSelect,
+}) => {
     const fetchData = async () => {
-        const resp = await axios.get(`/api/${entity.toLowerCase()}/get${entity}ViaSearch`);
+        const resp = await axios.get(
+            `/api/${entity.toLowerCase()}/get${entity}ViaSearch`,
+        );
         return resp.data;
     };
 
@@ -46,21 +59,21 @@ const AttachPageSearch: React.FC<AttachPageSearchProps> = ({ addOrRemove, entity
                         data={data.message}
                         setContainer={setSelected}
                         container={selected}
-                        disabled={maxAllowSelect !== undefined && selected.length >= maxAllowSelect}
+                        disabled={
+                            maxAllowSelect !== undefined &&
+                            selected.length >= maxAllowSelect
+                        }
                     />
                     <DataTable
                         data={selected}
-                        columns={deleteItemColumn(
-                            removeFromList,
-                            addOrRemove
-                        )}
+                        columns={deleteItemColumn(removeFromList, addOrRemove)}
                         showColumnVisibilityDropdown={false}
                         showPagination={false}
                     />
                 </div>
             )}
         </>
-    )
-}
+    );
+};
 
-export default AttachPageSearch
+export default AttachPageSearch;

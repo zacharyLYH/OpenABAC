@@ -2,7 +2,7 @@
 
 import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { db } from '@/abac/database';
-import { Count, Policy, Query } from '@/abac/interface';
+import { Policy, Query, QueryCount } from '@/abac/interface';
 import {
     GET_ALL_POLICIES,
     GET_POLICY_BY_ID,
@@ -36,7 +36,7 @@ export const getPolicyCount = async () => {
         const query: Query = {
             sql: GET_POLICY_COUNT,
         };
-        const results = await db.query<Count[]>(query);
+        const results = await db.query<QueryCount[]>(query);
         return results[0].count;
     }
 };

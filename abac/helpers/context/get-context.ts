@@ -1,6 +1,6 @@
 import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { db } from '@/abac/database';
-import { Context, Count, Query } from '@/abac/interface';
+import { Context, Query, QueryCount } from '@/abac/interface';
 import {
     GET_ALL_CONTEXT,
     GET_CONTEXT_COUNT,
@@ -27,7 +27,7 @@ export const getContextCount = async () => {
         const query: Query = {
             sql: GET_CONTEXT_COUNT,
         };
-        const results = await db.query<Count[]>(query);
+        const results = await db.query<QueryCount[]>(query);
         return results[0].count;
     }
 };

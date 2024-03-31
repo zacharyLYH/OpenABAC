@@ -1,6 +1,6 @@
 import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { db } from '@/abac/database';
-import { Action, Count, Query } from '@/abac/interface';
+import { Action, Query, QueryCount } from '@/abac/interface';
 import {
     GET_ACTION_BY_ID,
     GET_ACTION_COUNT,
@@ -27,7 +27,7 @@ export const getActionCount = async () => {
         const query: Query = {
             sql: GET_ACTION_COUNT,
         };
-        const results = await db.query<Count[]>(query);
+        const results = await db.query<QueryCount[]>(query);
         return results[0].count;
     }
 };

@@ -1,6 +1,6 @@
 import { SearchAndSelectInterface } from '@/components/edit-page-components/search';
 import { db } from '@/abac/database';
-import { Count, Query, User } from '@/abac/interface';
+import { QueryCount, Query, User } from '@/abac/interface';
 import {
     GET_ALL_USERS,
     GET_NUMBER_OF_USERS,
@@ -28,7 +28,7 @@ export const getUserCount = async () => {
         const query: Query = {
             sql: GET_NUMBER_OF_USERS,
         };
-        const results = await db.query<Count[]>(query);
+        const results = await db.query<QueryCount[]>(query);
         return results[0].count;
     }
 };

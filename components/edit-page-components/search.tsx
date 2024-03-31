@@ -26,7 +26,7 @@ interface SearchAndSelectProps {
     data: SearchAndSelectInterface[];
     container: SearchAndSelectInterface[] | [];
     setContainer: (obj: SearchAndSelectInterface[] | []) => void;
-    disabled?: boolean
+    disabled?: boolean;
 }
 
 export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
@@ -35,15 +35,16 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
     data,
     setContainer,
     container,
-    disabled = false
+    disabled = false,
 }) => {
     const [query, setQuery] = useState('');
 
     const filteredData: SearchAndSelectInterface[] = useMemo(() => {
         return data.filter(
             item =>
-                !container.some(containerItem => containerItem.id === item.id) &&
-                item.value.toLowerCase().includes(query.toLowerCase()),
+                !container.some(
+                    containerItem => containerItem.id === item.id,
+                ) && item.value.toLowerCase().includes(query.toLowerCase()),
         );
     }, [data, container, query]);
 
@@ -63,7 +64,7 @@ export const SearchAndSelect: React.FC<SearchAndSelectProps> = ({
                 id={objName}
                 placeholder={placeholder}
                 className="w-full rounded-lg px-8 py-2 text-full"
-                value={!disabled ? query : "Remove selected to search..."}
+                value={!disabled ? query : 'Remove selected to search...'}
                 onChange={e => setQuery(e.target.value)}
                 disabled={disabled}
             />
@@ -150,8 +151,15 @@ const QuickView = ({ id, entity }: { id: string; entity: string }) => {
                                         value !== undefined && (
                                             <li key={key}>
                                                 <strong>{key}:</strong>{' '}
-                                                {typeof value === 'object' && value !== null ? (
-                                                    <pre>{JSON.stringify(value, null, 2)}</pre> // Pretty print the JSON
+                                                {typeof value === 'object' &&
+                                                value !== null ? (
+                                                    <pre>
+                                                        {JSON.stringify(
+                                                            value,
+                                                            null,
+                                                            2,
+                                                        )}
+                                                    </pre> // Pretty print the JSON
                                                 ) : (
                                                     value.toString()
                                                 )}
