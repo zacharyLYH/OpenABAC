@@ -92,7 +92,7 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
     -   `authorized`: boolean. True if authorized, false otherwise.
     -   `message`: string. An additional message if request is unauthorized.
 
-#### `GET /api/abac/getAllActions`
+#### `GET /api/abac/authorize/getAllActions`
 
 -   Gets all the actions associated with this user
 -   Returns:
@@ -102,22 +102,23 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 
 #### `GET /api/abac/user/getUser`
 
--   Gets the entire user object including its associated policy names.
+-   Gets the entire user object including its associated policy names that are allowed policy type.
 -   Returns:
     -   `success`: boolean. Indication of successful update of the user.
     -   `data`: string of json objects
-        -   `id` (from ABAC), `jsonCol`, list of `policyName`
+        -   `id` (from ABAC), `jsonCol`, list of `policies`
 
 #### `PUT /api/abac/user/upsertUser`
 
 -   Upserts info on the user object itself - not this user's associated policies (for that check the next api).
 -   Body:
+    -   `applicationUserId`: new application user id to use. Even if not updating this, must include in payload.
     -   `jsonCol`: additional metadata that will only be used in verifying `Context`. Note that `Context` may only be checked via data from this jsonCol.
 -   Returns:
     -   `success`: boolean. Indication of successful update of the user.
-    -   `data`: string. If this endpoint suceeds, the ABAC User ID will be returned as `id`
+    -   `data`: string. If this endpoint suceeds the payload to this API is returned, otherwise error message found here.
 
-### `PUT /api/abac/edit/UserPolicyMapping`
+#### `PUT /api/abac/edit/UserPolicyMapping`
 
 -   **Upserts** the UserPolicy mapping.
 -   Body:
@@ -126,7 +127,7 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
     -   `success`: boolean. Indication of successful update of the user.
     -   `data`: string. If this endpoint suceeds, the list of `policyNames` is returned here.
 
-#### `DELETE /api/abac/user/deleteUser/:applicationUserId`
+#### `DELETE /api/abac/user/deleteUser`
 
 -   At the time of deletion, the `User` can't have any `Policy` attached.
 -   Returns:
