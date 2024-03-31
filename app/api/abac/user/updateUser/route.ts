@@ -3,7 +3,7 @@ import {
     catchStandardError,
     returnApplicationUserIdViaHeader,
 } from '@/app/api/_utils';
-import { updateUserObject } from '@/abac/core-services/user/updateUser/route';
+import { updateUserObject } from '@/abac/core-services/user/updateUser';
 
 export async function PUT(request: Request) {
     try {

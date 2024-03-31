@@ -3,7 +3,7 @@ import {
     catchStandardError,
     returnApplicationUserIdViaHeader,
 } from '@/app/api/_utils';
-import { createUserObject } from '@/abac/core-services/user/createUser/route';
+import { createUserObject } from '@/abac/core-services/user/createUser';
 
 export async function POST(request: Request) {
     try {

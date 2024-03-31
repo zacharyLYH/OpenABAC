@@ -3,7 +3,7 @@ import {
     catchStandardError,
     returnApplicationUserIdViaHeader,
 } from '@/app/api/_utils';
-import { getEntireUserObjProvidedApplicaionUserId } from '@/abac/core-services/user/getUser/route';
+import { getEntireUserObjProvidedApplicaionUserId } from '@/abac/core-services/user/getUser';
 
 export async function GET() {
     try {

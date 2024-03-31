@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { authorizeActionNameGivenApplicationUserId } from '@/abac/core-services/authorize/[actionName]/route';
 import {
     catchStandardError,
     returnApplicationUserIdViaHeader,
 } from '@/app/api/_utils';
+import { authorizeActionNameGivenApplicationUserId } from '@/abac/core-services/authorize/[actionName]';
 
 export async function GET(
     req: Request,

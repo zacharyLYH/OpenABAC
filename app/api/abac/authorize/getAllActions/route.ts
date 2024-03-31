@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { getAllAllowedActionsProvidedApplicationUserId } from '@/abac/core-services/authorize/getAllActions/route';
 import {
     catchStandardError,
     returnApplicationUserIdViaHeader,
 } from '@/app/api/_utils';
+import { getAllAllowedActionsProvidedApplicationUserId } from '@/abac/core-services/authorize/getAllActions';
 
 export async function GET() {
     try {
