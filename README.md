@@ -116,7 +116,7 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
     -   `jsonCol`: additional metadata that will only be used in verifying `Context`. Note that `Context` may only be checked via data from this jsonCol.
 -   Returns:
     -   `success`: boolean. Indication of successful creation of the user.
-    -   `data`: string. If this endpoint suceeds the payload to this API is returned, otherwise error message found here.
+    -   `data`: string. If this endpoint suceeds the created user is returned, otherwise error message found here.
 
 #### `PUT /api/abac/user/updateUser`
 
@@ -383,4 +383,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Usable JWT for testing
 
+With applicationUserId:
 `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvblVzZXJJZCI6InN1ZG8iLCJleHAiOjE3NDI5NDU2MDMuNzQ1OTY2fQ.62v6FoEV3NCIKFYF7KB1rlRpyCzt219HLfE5PvXkiV0`
+
+```
+{
+  "applicationUserId": "sudo123",
+  "exp": 1742945603.745966
+}
+```
+
+Without applicationUserId:
+`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDI5NDU2MDMuNzQ1OTY2fQ.egLrzcD3P3OYQlmpQBDTg8xGkMrPTn6zQ1iKL-Df0Ms`

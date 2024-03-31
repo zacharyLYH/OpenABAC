@@ -68,6 +68,12 @@ export async function middleware(request: NextRequest) {
                 });
                 return NextResponse.next(updatedRequest);
             } else {
+                /*
+                There will be 'applicationUserId' in the JWT for this endpoint. But the fact that verifyJWT() worked, means that the request came from an authorized source, so in the event we see some priviledged endpoints, we can just forward.
+                */
+                if (request.nextUrl.pathname === '/api/abac/user/createUser') {
+                    return NextResponse.next();
+                }
                 return new Response(
                     JSON.stringify({ error: 'Invalid token structure' }),
                     {
