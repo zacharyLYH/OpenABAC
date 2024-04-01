@@ -11,11 +11,16 @@ WHERE
 u.id = ? and p.allow = ?;
 `;
 
-export const IS_POLICYNAME_UNIQUE = `
+export function ARE_POLICYNAMES_UNIQUE(paramNumber: number) {
+    let base = `
 SELECT COUNT(*) AS count
 FROM Policy
-WHERE policyName = ?;
+WHERE policyName in
 `;
+    const placeholders = Array(paramNumber).fill('?').join(', ');
+    const query = `${base}(${placeholders})`;
+    return query;
+}
 
 export const GET_POLICY_GIVEN_ID = `
 SELECT policyName, policyDescription
