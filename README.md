@@ -130,9 +130,9 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 
 #### `PUT /api/abac/edit/UserPolicyMapping`
 
--   **Upserts** the UserPolicy mapping.
+-   **Upserts** the UserPolicy mapping. Note that if any one of the policies don't exist, or any error in general, the upsert doesn't perform.
 -   Body:
-    -   `policyNames`: A list of `policyName`
+    -   `policyNames`: A list of `policyName`. It takes care of traditional create, update, and delete endpoints. Include existing and new policies in the payload since this is an upsert operation.
 -   Returns:
     -   `success`: boolean. Indication of successful update of the user.
     -   `data`: string. If this endpoint suceeds, the list of `policyNames` is returned here.
