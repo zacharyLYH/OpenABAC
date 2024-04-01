@@ -64,3 +64,13 @@ SELECT policyName, policyDescription, allow, modifiedDate
 FROM Action
 WHERE ID = ?;
 `;
+
+export function CHECK_POLICIES_EXIST_BY_POLICYNAME(paramNumber: number) {
+    let base = `
+SELECT count(*) as count from Policy where 
+policyName in 
+`;
+    const placeholders = Array(paramNumber).fill('?').join(', ');
+    const query = `${base}(${placeholders})`;
+    return query;
+}
