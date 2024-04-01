@@ -1,7 +1,3 @@
-export const CREATE_USER_POLICY = `
-INSERT INTO UserPolicy (abacId, policyId) VALUES (?, ?);
-`;
-
 export const GET_POLICIES_GIVEN_ABACID = `
 SELECT policyId
 FROM UserPolicy
