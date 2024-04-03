@@ -79,3 +79,11 @@ policyName in
     const query = `${base}(${placeholders})`;
     return query;
 }
+
+export const GET_POLICY_AND_ACTION_VIA_POLICYNAME = `
+SELECT P.id, P.policyName, P.policyDescription, P.allow, A.actionName
+FROM Policy P
+JOIN PolicyAction Pa on Pa.policyId = P.id
+JOIN Action A on A.id = Pa.actionId
+WHERE P.policyName = ?
+`;
