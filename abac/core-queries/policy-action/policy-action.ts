@@ -15,3 +15,9 @@ SELECT actionId
 FROM PolicyAction
 WHERE policyId = ?;
 `;
+
+export const DOES_POLICY_HAVE_ANY_ACTION_ATTACHED = `
+SELECT count(*) as count
+FROM PolicyAction
+WHERE policyId = ?;
+`;

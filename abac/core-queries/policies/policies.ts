@@ -28,9 +28,18 @@ FROM Policy
 WHERE id = ?;
 `;
 
-export const DELETE_POLICIES_GIVEN_ID = `
-DELETE FROM Policy WHERE id = ?;
+export const DELETE_SINGLE_POLICY_GIVEN_NAME = `
+DELETE FROM Policy WHERE policyName = ?;
 `;
+
+export function DELETE_POLICIES_GIVEN_NAME(paramNumber: number) {
+    const base = `
+DELETE FROM Policy WHERE policyName in (?);
+`;
+    const placeholders = Array(paramNumber).fill('?').join(', ');
+    const query = `${base}(${placeholders})`;
+    return query;
+}
 
 export const CREATE_POLICIES = `
 INSERT INTO Policy (id, policyName, policyDescription, allow) VALUES (UUID(), ?, ?, ?);
@@ -101,5 +110,11 @@ WHERE P.policyName = ?;
 export const UPDATE_QUERY_GIVEN_POLICYNAME = `
 UPDATE Policy
 SET policyName = ?, policyDescription = ?, allow = ?
+WHERE policyName = ?;
+`;
+
+export const GET_POLICY_GIVEN_POLICYNAME = `
+SELECT id, policyDescription
+FROM Policy
 WHERE policyName = ?;
 `;
