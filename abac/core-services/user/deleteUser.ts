@@ -1,29 +1,17 @@
 import { COUNT_NUMBER_OF_POLICY_USING_ABACID } from '@/abac/core-queries/user-policies/user-policy';
-import {
-    DELETE_USER_GIVEN_APPLICATIONUSERID,
-    GET_ID_USING_APPLICATIONUSERID,
-} from '@/abac/core-queries/user/user';
+import { DELETE_USER_GIVEN_APPLICATIONUSERID } from '@/abac/core-queries/user/user';
 import { db } from '@/abac/database';
-import { ABACRequestResponse, Query, QueryCount, User } from '@/abac/interface';
+import { ABACRequestResponse, Query, QueryCount } from '@/abac/interface';
 import { ResultSetHeader } from 'mysql2/promise';
+import { getAndCheckAbacId } from '../core-services-utils';
 
 export async function deleteUserObject(
     applicationUserId: string,
 ): Promise<ABACRequestResponse> {
-    const getAbacIdUsingApplicationId: Query = {
-        sql: GET_ID_USING_APPLICATIONUSERID,
-        params: [applicationUserId],
-    };
-    const idResult = await db.query<User[]>(getAbacIdUsingApplicationId);
-    if (idResult.length !== 1) {
-        return {
-            success: false,
-            data: `Can't find the id belonging to ${applicationUserId}. Is this a real id?`,
-        };
-    }
+    const idResult = await getAndCheckAbacId(applicationUserId);
     const anyPolicyAttachedQuery: Query = {
         sql: COUNT_NUMBER_OF_POLICY_USING_ABACID,
-        params: [idResult[0].id],
+        params: [idResult],
     };
     const anyPolicyAttachedResult = await db.query<QueryCount[]>(
         anyPolicyAttachedQuery,
