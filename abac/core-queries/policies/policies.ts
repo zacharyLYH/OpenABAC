@@ -80,6 +80,16 @@ policyName in
     return query;
 }
 
+export function GET_POLICY_ID_GIVEN_NAME(paramNumber: number) {
+    const base = `
+        SELECT policyName, id from Policy where
+        policyName in
+    `;
+    const placeholders = Array(paramNumber).fill('?').join(', ');
+    const query = `${base}(${placeholders})`;
+    return query;
+}
+
 export const GET_POLICY_AND_ACTION_VIA_POLICYNAME = `
 SELECT P.id, P.policyName, P.policyDescription, P.allow, A.actionName
 FROM Policy P

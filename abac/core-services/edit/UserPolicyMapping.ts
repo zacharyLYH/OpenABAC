@@ -1,6 +1,6 @@
-import { CHECK_POLICIES_EXIST_BY_POLICYNAME } from '@/abac/core-queries/policies/policies';
+import { GET_POLICY_ID_GIVEN_NAME } from '@/abac/core-queries/policies/policies';
 import { db } from '@/abac/database';
-import { ABACRequestResponse, Query, QueryCount, User } from '@/abac/interface';
+import { ABACRequestResponse, Policy, Query } from '@/abac/interface';
 import { getAndCheckAbacId } from '../core-services-utils';
 import {
     CREATE_USER_POLICY_GIVEN_ABACID,
@@ -19,18 +19,24 @@ export async function userPolicyMapping(
     }
     const abacId = await getAndCheckAbacId(applicationUserId);
     const checkAllPoliciesExist: Query = {
-        sql: CHECK_POLICIES_EXIST_BY_POLICYNAME(policyNames.length),
+        sql: GET_POLICY_ID_GIVEN_NAME(policyNames.length),
         params: policyNames,
     };
-    const checkAllPoliciesQuery = await db.query<QueryCount[]>(
+    const checkAllPoliciesQuery = await db.query<Policy[]>(
         checkAllPoliciesExist,
     );
-    if (checkAllPoliciesQuery[0].count !== policyNames.length) {
+    if (checkAllPoliciesQuery.length !== policyNames.length) {
         return {
             success: false,
             data: `One or more policies don't exist. Make sure those policies exist before assigning them.`,
         };
     }
+    const policyNameToIdMap: Map<string, string> = new Map();
+
+    checkAllPoliciesQuery.forEach(policy => {
+        policyNameToIdMap.set(policy.policyName, policy.id);
+    });
+
     const upsertUserPolicyTxn: Query[] = [
         {
             sql: DELETE_USER_POLICY_GIVEN_ABACID,
@@ -40,7 +46,7 @@ export async function userPolicyMapping(
     for (const name of policyNames) {
         upsertUserPolicyTxn.push({
             sql: CREATE_USER_POLICY_GIVEN_ABACID,
-            params: [abacId, name],
+            params: [abacId, policyNameToIdMap.get(name)],
         });
     }
     await db.executeTransaction(upsertUserPolicyTxn);
