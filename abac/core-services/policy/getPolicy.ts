@@ -10,6 +10,9 @@ export async function getPolicyIncludingActions(
         params: [policyName],
     };
     const results = await db.query<any>(query);
+    if (results.length === 0) {
+        return { data: {} };
+    }
     const actionsAssociated: string[] = [];
     for (const rows of results) {
         actionsAssociated.push(rows.actionName);

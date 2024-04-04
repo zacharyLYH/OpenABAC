@@ -99,7 +99,8 @@ export function GET_POLICY_ID_GIVEN_NAME(paramNumber: number) {
     return query;
 }
 
-export const GET_POLICY_AND_ACTION_VIA_POLICYNAME = `
+//doesn't work. if a policy has no action, this query will not even return the policy
+export const GET_POLICY_AND_ACTION_VIA_POLICYNAME = ` 
 SELECT P.id, P.policyName, P.policyDescription, P.allow, A.actionName
 FROM Policy P
 JOIN PolicyAction Pa on Pa.policyId = P.id
