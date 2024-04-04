@@ -95,5 +95,11 @@ SELECT P.id, P.policyName, P.policyDescription, P.allow, A.actionName
 FROM Policy P
 JOIN PolicyAction Pa on Pa.policyId = P.id
 JOIN Action A on A.id = Pa.actionId
-WHERE P.policyName = ?
+WHERE P.policyName = ?;
+`;
+
+export const UPDATE_QUERY_GIVEN_POLICYNAME = `
+UPDATE Policy
+SET policyName = ?, policyDescription = ?, allow = ?
+WHERE policyName = ?;
 `;

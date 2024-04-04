@@ -179,9 +179,9 @@ body.listOfPolicies: [
         -   `actionsAssociated`: list of `actionName`s
         -   `policy`: The entire policy object
 
-#### `PUT /api/abac/policy/editPolicy/:policyName`
+#### `PUT /api/abac/policy/updatePolicy/:policyName`
 
--   Updates the policy object, not the PolicyActionMapping (that comes later). Must provide all the fields of a policy, not just the one you want to patch.
+-   Updates the policy object, not the PolicyActionMapping (that comes later). Must provide all the fields of a policy, not just the one you want to patch. A precondition to updating is the requester of this endpoint must own the policy, which will be checked in the backend.
 -   Params:
     -   `policyName`: Name of the policy you want to update
 -   Body:

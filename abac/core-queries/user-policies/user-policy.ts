@@ -15,3 +15,10 @@ INSERT INTO UserPolicy (id, abacId, policyId) VALUES (UUID(), ?, ?);
 export const COUNT_NUMBER_OF_POLICY_USING_ABACID = `
 SELECT count(*) AS count from UserPolicy WHERE abacId = ?;
 `;
+
+export const CHECK_OWNER_OF_POLICY = `
+SELECT count(*) AS count 
+FROM UserPolicy U
+JOIN Policy P on P.id = U.policyId
+WHERE P.policyName = ? AND U.abacId = ?
+`;
