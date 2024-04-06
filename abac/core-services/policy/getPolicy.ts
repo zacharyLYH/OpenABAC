@@ -1,10 +1,30 @@
 import { GET_POLICY_AND_ACTION_VIA_POLICYNAME } from '@/abac/core-queries/policies/policies';
+import { CHECK_OWNER_OF_POLICY } from '@/abac/core-queries/user-policies/user-policy';
 import { db } from '@/abac/database';
-import { ABACRequestResponse, Policy, Query } from '@/abac/interface';
+import {
+    ABACRequestResponse,
+    Policy,
+    Query,
+    QueryCount,
+} from '@/abac/interface';
+import { getAndCheckAbacId } from '../core-services-utils';
 
 export async function getPolicyIncludingActions(
     policyName: string,
+    applicationUserId: string,
 ): Promise<ABACRequestResponse> {
+    const abacId = await getAndCheckAbacId(applicationUserId);
+    const checkOwnerOfPolicy: Query = {
+        sql: CHECK_OWNER_OF_POLICY,
+        params: [policyName, abacId],
+    };
+    const ownerOfPolicyQuery = await db.query<QueryCount[]>(checkOwnerOfPolicy);
+    if (ownerOfPolicyQuery[0].count !== 1) {
+        return {
+            success: false,
+            message: `This user doesn't own the ${policyName}.`,
+        };
+    }
     const query: Query = {
         sql: GET_POLICY_AND_ACTION_VIA_POLICYNAME,
         params: [policyName],

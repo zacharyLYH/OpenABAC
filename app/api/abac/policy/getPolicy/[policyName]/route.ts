@@ -3,7 +3,6 @@ import {
     catchStandardError,
     returnApplicationUserIdViaHeader,
 } from '@/app/api/_utils';
-import { getEntireUserObjProvidedApplicaionUserId } from '@/abac/core-services/user/getUser';
 import { getPolicyIncludingActions } from '@/abac/core-services/policy/getPolicy';
 
 export async function GET(
@@ -11,7 +10,11 @@ export async function GET(
     { params }: { params: { policyName: string } },
 ) {
     try {
-        const response = await getPolicyIncludingActions(params.policyName);
+        const userId = returnApplicationUserIdViaHeader();
+        const response = await getPolicyIncludingActions(
+            params.policyName,
+            userId,
+        );
         return NextResponse.json({ data: response.data }, { status: 200 });
     } catch (e) {
         return catchStandardError(e);
