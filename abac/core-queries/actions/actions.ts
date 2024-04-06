@@ -102,3 +102,10 @@ FROM
 WHERE
     a.actionName = ?;
 `;
+
+export function GET_ACTION_ID_GIVEN_NAME(paramNumber: number) {
+    const base = `SELECT id, actionName FROM Action WHERE actionName in `;
+    const placeholders = Array(paramNumber).fill('?').join(', ');
+    const query = `${base}(${placeholders})`;
+    return query;
+}

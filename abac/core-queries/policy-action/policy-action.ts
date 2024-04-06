@@ -1,5 +1,5 @@
 export const CREATE_POLICY_ACTION = `
-INSERT INTO PolicyAction (policyId, actionId) VALUES (?, ?);
+INSERT INTO PolicyAction (id, policyId, actionId) VALUES (UUID(), ?, ?);
 `;
 
 export const DELETE_POLICY_ACTION_GIVEN_POLICYID = `
