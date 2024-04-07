@@ -22,3 +22,7 @@ FROM UserPolicy U
 JOIN Policy P on P.id = U.policyId
 WHERE P.policyName = ? AND U.abacId = ?
 `;
+
+export const DELETE_USER_POLICY_GIVEN_POLICYID = `
+DELETE From UserPolicy WHERE policyId = ?;
+`;

@@ -1,18 +1,23 @@
-import { CHECK_OWNER_OF_POLICY } from '@/abac/core-queries/user-policies/user-policy';
+import {
+    CHECK_OWNER_OF_POLICY,
+    DELETE_USER_POLICY_GIVEN_POLICYID,
+} from '@/abac/core-queries/user-policies/user-policy';
 import { db } from '@/abac/database';
 import {
     ABACRequestResponse,
     Policy,
     Query,
     QueryCount,
-    User,
 } from '@/abac/interface';
 import { getAndCheckAbacId } from '../core-services-utils';
 import {
     DELETE_SINGLE_POLICY_GIVEN_NAME,
     GET_POLICY_GIVEN_POLICYNAME,
 } from '@/abac/core-queries/policies/policies';
-import { DOES_POLICY_HAVE_ANY_ACTION_ATTACHED } from '@/abac/core-queries/policy-action/policy-action';
+import {
+    DELETE_POLICY_ACTION_GIVEN_POLICYID,
+    DOES_POLICY_HAVE_ANY_ACTION_ATTACHED,
+} from '@/abac/core-queries/policy-action/policy-action';
 
 export async function deletePolicyObject(
     policyName: string,
@@ -53,7 +58,19 @@ export async function deletePolicyObject(
         sql: DELETE_SINGLE_POLICY_GIVEN_NAME,
         params: [policyName],
     };
-    await db.query(deletePolicyQuery);
+    const deleteUserPolicyQuery: Query = {
+        sql: DELETE_USER_POLICY_GIVEN_POLICYID,
+        params: [policyId],
+    };
+    const deleteActionPolicyQuery: Query = {
+        sql: DELETE_POLICY_ACTION_GIVEN_POLICYID,
+        params: [policyId],
+    };
+    await db.executeTransaction([
+        deletePolicyQuery,
+        deleteUserPolicyQuery,
+        deleteActionPolicyQuery,
+    ]);
     return {
         success: true,
     };
