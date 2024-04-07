@@ -21,3 +21,10 @@ SELECT count(*) as count
 FROM PolicyAction
 WHERE policyId = ?;
 `;
+
+export const GET_ACTIONS_GIVEN_POLICY_ID = `
+SELECT A.actionName
+FROM PolicyAction PA
+JOIN Action A on A.id = PA.actionId
+WHERE PA.policyId = ?
+`;
