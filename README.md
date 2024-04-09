@@ -237,7 +237,7 @@ body.listOfActions: [
 
 #### `GET /api/abac/action/getAction/:actionName`
 
--   Returns the action, policies associated with this action, and contexts associated with this action.
+-   Returns the action, policies associated with this action, and contexts associated with this action. The `applicationUserId` has to own this action otherwise it is unreadable.
 -   Params:
     -   `actionName`: Name of the action to read
 -   Returns
@@ -247,7 +247,7 @@ body.listOfActions: [
         -   `action`: The action object
         -   `contextList`: List of `contextName`
 
-#### `PUT /api/abac/action/editAction/:actionName`
+#### `PUT /api/abac/action/updateAction/:actionName`
 
 -   Updates an action object - not the action-context mappings nor the policy-action mappings. Provide the entire action object since this is a PUT request
 -   Params:
