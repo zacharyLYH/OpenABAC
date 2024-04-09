@@ -28,3 +28,10 @@ FROM PolicyAction PA
 JOIN Action A on A.id = PA.actionId
 WHERE PA.policyId = ?
 `;
+
+export const GET_POLICY_GIVEN_ACTION_ID = `
+SELECT P.policyName
+FROM PolicyAction PA
+JOIN Policy P on P.id = PA.policyId
+WHERE PA.actionId = ?
+`;

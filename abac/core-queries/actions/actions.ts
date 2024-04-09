@@ -91,7 +91,21 @@ FROM
         JOIN
     Action a ON pa.actionId = a.id
 WHERE
-    u.applicationUserId = ? AND p.allow = true AND a.actionName = ?;
+    u.applicationUserId = ? AND a.actionName = ?;
+`;
+
+export const CHECK_IF_USER_HAS_THIS_ACTION_USING_ABACID = `
+SELECT COUNT(DISTINCT a.id) AS count
+FROM
+    UserPolicy up
+        JOIN
+    Policy p ON up.policyId = p.id
+        JOIN
+    PolicyAction pa ON p.id = pa.policyId
+        JOIN
+    Action a ON pa.actionId = a.id
+WHERE
+    up.abacId = ? AND a.actionName = ?;
 `;
 
 export const AUTHORIZE_ACTIONS_SUDO = `
@@ -109,3 +123,20 @@ export function GET_ACTION_ID_GIVEN_NAME(paramNumber: number) {
     const query = `${base}(${placeholders})`;
     return query;
 }
+
+export function ARE_ACTIONNAMES_UNIQUE(paramNumber: number) {
+    let base = `
+SELECT COUNT(*) AS count
+FROM Action
+WHERE actionName in
+`;
+    const placeholders = Array(paramNumber).fill('?').join(', ');
+    const query = `${base}(${placeholders})`;
+    return query;
+}
+
+export const GET_ACTION_GIVEN_ACTIONNAME = `
+SELECT id, actionName, actionDescription
+FROM Action
+WHERE actionName = ?;
+`;
