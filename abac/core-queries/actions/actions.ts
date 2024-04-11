@@ -140,3 +140,13 @@ SELECT id, actionName, actionDescription
 FROM Action
 WHERE actionName = ?;
 `;
+
+export const UPDATE_ACTION_GIVEN_ACTIONNAME = `
+UPDATE Action Set actionName = ?, actionDescription = ?
+WHERE actionName = ?;
+`;
+
+export const DELETE_ACTION_GIVEN_ACTION_NAME = `
+DELETE FROM Action
+WHERE actionName = ?; 
+`;
