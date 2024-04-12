@@ -2,7 +2,7 @@
 
 OpenABAC is an open sourced [attribute based access control](https://www.okta.com/blog/2020/09/attribute-based-access-control-abac/) system that largely follows the industry standard definition of ABAC. Forking and deploying this repo, developers can get an ABAC system up and running quickly and easily. The stand out feature of OpenABAC is a non technical friendly dashboard, aimed to lower the skill ceiling for system administrators to manage their enterprise's fork.
 
-## Technical & Example
+## What is an ABAC & Example. ABAC vs RBAC?
 
 An attribute based access control (ABAC) is the granular cousin of the familiar and intuitive role based access control ([RBAC](https://www.digitalguardian.com/blog/what-role-based-access-control-rbac-examples-benefits-and-more)) system. Where RBAC defines access control at the role level, and then assigning each user type to a specific role/roles, ABAC systems define access control as **policies**, then associating policies to users. For further reading, here is a good [article](https://www.okta.com/identity-101/role-based-access-control-vs-attribute-based-access-control/) providing a comparison between these two authorization frameworks.
 
@@ -53,7 +53,7 @@ In the simplest implementation, when your user requests for some sensitive data 
 
 In advanced implementations, if your applciation runs on Typescript and you don't mind starting a MySQL data connection, you may copy the folder from `/abac`and all of its contents into your project. This folder contains all the logic for authorization. Doing so, your application will reduce some latency since you won't be making an authorization request from a separately hosted service.
 
-## OpenABAC concepts
+## OpenABAC specific concepts
 
 The authorization model in OpenABAC is simple. Whenever you need to know if a particular user of your application is allowed to perform a requested action, just send over the `actionName` and the `applicationUserId`. In the background, OpenABAC will efficiently lookup this `actionName` among all the possible actions this `applicationUserId` has a policy for, and if there's a match, an authorized message is sent back to the authorization caller (usually your apis).
 
@@ -214,6 +214,8 @@ body.listOfPolicies: [
 
 ### CRUD Action & ActionContext APIs
 
+> Actions are not specific to any particular user since they are meant to be primitives to be reused by many users. As such, an extension to OpenABAC could be to implement a `sudo` user as the authorized requester. However, from a security perspective this isn't strictly necessary because by sending in signed JWTs, we can be sure the request came from the application's servers. 
+
 #### `POST /api/abac/action/createAction`
 
 -   Creates actions. Commonly used when a new resource is created and provisioning some actions is required. This endpoint is a transaction behind the scenes. Meaning, either all your actions get created or none.
@@ -281,6 +283,8 @@ body.listOfActions: [
 
 ### CRUD Context APIs
 
+> Contexts are not specific to any particular user since they are meant to be primitives to be reused by many actions. As such, an extension to OpenABAC could be to implement a `sudo` user as the authorized requester. However, from a security perspective this isn't strictly necessary because by sending in signed JWTs, we can be sure the request came from the application's servers. 
+
 #### `POST /api/abac/context/createContext/:contextName`
 
 -   Creates ABAC `Context`. Usage pattern varies.
@@ -337,6 +341,16 @@ body.listOfActions: [
 -   Return
     -   `success`: Indication of successful update
     -   `message`: Additional message incase update fails
+
+## Optimizations and extendability. Technical design decisions.
+
+Ideally, the process of ABAC should be really quick, considering the frequency that it should theoretically be called in order to securely provide users ability to perform interaction with sensitive data. MySQL as the database of choice was a tradeoff between absolute performance and ease of development and maintenance. More enterprise scale databases such as Sql Server would've been a better choice from a performance and scalability standpoint, however to fit the requirement of being more accessible for development and maintenance, the open sourced MySQL database was a better choice. Ofcourse, it begs the question why not PosgtreSQL instead of MySQL, and it came down to the lack of need for added sophistication that PosgtreSQL offers.
+
+ABAC applications can be expected to perform read heavy workloads. If you were to perform any one optimization after setting up OpenABAC, it is to introduce caching. Caching allows you to speed up the read performance of data by temporarily storing some data into a specialized in memory database (as opposed to the traditional file-based database which is slower, ie MySQL) such as Redis. We recommend using the Read-Through caching technique and a short time to live (TTL) for safety. However, the algorithm to invalidate data points in the cache should be decided by your application's usage pattern and careful monitoring over time. 
+
+An extension discussed in the Action and Context API sections were about implementing a "sudo" user when performing any API in those namespaces. Actions and Contexts are the primitives upon which Policies are built on top of. As such, they aren't "owned" by any one user in the same sense as a User owning a Policy. However, this is optional. The Action and Context APIs still expect to read a validly signed JWT in its payload at request time, if we may assume the JWTs weren't stolen, then we can safely conclude that the request came from your application's server, a valid source. 
+
+Speaking of JWTs, as a safety measure, we recommend reducing the lifespan of JWTs to as small as possible without severely impacting the performance of your app. There are 2 approaches to designing JWT invalidation. The first option is to dynamically generate JWTs per OpenABAC API call, trading off more compute for better security. The second option is to extend the TTL of each JWT then keep JWTs in a cache, trading off less compute for less security. Decide based on performance tolerance, compliance requirements, and usage patterns. 
 
 ## Contribute
 
