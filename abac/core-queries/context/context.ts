@@ -44,3 +44,10 @@ SELECT contextDescription, operator, entity, textValue, timeValue1, timeValue2
 FROM Context
 JOIN ContextAction ca ON ca.actionId = ?
 `;
+
+export function GET_CONTEXT_ID_GIVEN_NAME(paramNumber: number) {
+    const base = `SELECT id, contextName FROM Context WHERE contextName in `;
+    const placeholders = Array(paramNumber).fill('?').join(', ');
+    const query = `${base}(${placeholders})`;
+    return query;
+}

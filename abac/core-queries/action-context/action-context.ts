@@ -1,5 +1,5 @@
 export const CREATE_ACTION_CONTEXT = `
-INSERT INTO ActionContext (actionId, contextId) VALUES (?, ?);
+INSERT INTO ActionContext (id, actionId, contextId) VALUES (UUID(), ?, ?);
 `;
 
 export const DELETE_ACTION_CONTEXT_GIVEN_ACTIONID = `
