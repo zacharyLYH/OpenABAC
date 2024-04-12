@@ -15,7 +15,7 @@ WHERE operator = ? AND entity = ? AND textValue = ? AND timeValue1 = ? AND timeV
 `;
 
 export const CREATE_CONTEXT = `
-INSERT INTO Context (id, contextDescription, operator, entity, textValue, timeValue1, timeValue2) VALUES (UUID(), ?, ?, ?, ?, ?, ?);
+INSERT INTO Context (id, contextName, contextDescription, operator, entity, textValue, timeValue1, timeValue2) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?);
 `;
 
 export const UPDATE_CONTEXT_GIVEN_ID = `
@@ -47,6 +47,17 @@ JOIN ContextAction ca ON ca.actionId = ?
 
 export function GET_CONTEXT_ID_GIVEN_NAME(paramNumber: number) {
     const base = `SELECT id, contextName FROM Context WHERE contextName in `;
+    const placeholders = Array(paramNumber).fill('?').join(', ');
+    const query = `${base}(${placeholders})`;
+    return query;
+}
+
+export function ARE_CONTEXTNAMES_UNIQUE(paramNumber: number) {
+    let base = `
+SELECT COUNT(*) AS count
+FROM Context
+WHERE contextName in
+`;
     const placeholders = Array(paramNumber).fill('?').join(', ');
     const query = `${base}(${placeholders})`;
     return query;
