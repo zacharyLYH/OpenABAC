@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import {
-    catchStandardError,
-} from '@/app/api/_utils';
+import { catchStandardError } from '@/app/api/_utils';
 import { actionContextMapping } from '@/abac/core-services/edit/ActionContextMapping';
 
 export async function PUT(request: Request) {
@@ -12,7 +10,11 @@ export async function PUT(request: Request) {
             req.contextNames,
         );
         return NextResponse.json(
-            { actions: response.data, success: response.success },
+            {
+                actions: response.data,
+                message: response.message,
+                success: response.success,
+            },
             { status: 200 },
         );
     } catch (e) {
