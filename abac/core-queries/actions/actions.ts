@@ -79,7 +79,7 @@ WHERE ID = ?;
 
 export const CHECK_IF_USER_HAS_THIS_ACTION = `
 SELECT 
-    a.actionName, a.actionDescription
+    a.id, a.actionName, a.actionDescription
 FROM
     User u
         JOIN
@@ -91,7 +91,7 @@ FROM
         JOIN
     Action a ON pa.actionId = a.id
 WHERE
-    u.applicationUserId = ? AND a.actionName = ?;
+    u.applicationUserId = ? AND a.actionName = ? AND p.allow = true;
 `;
 
 export const CHECK_IF_USER_HAS_THIS_ACTION_USING_ABACID = `
