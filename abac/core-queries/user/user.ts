@@ -57,3 +57,9 @@ SELECT id
 FROM User
 WHERE applicationUserId = ?;
 `;
+
+export const GET_JSON_COL_USING_APPLICATIONUSERID = `
+SELECT jsonCol
+FROM User
+WHERE applicationUserId = ?;
+`
