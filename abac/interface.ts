@@ -40,9 +40,9 @@ export interface Context {
     contextName: string;
     operator: string;
     entity: string;
-    textValue?: string | undefined;
-    timeValue1?: string | undefined;
-    timeValue2?: string | undefined;
+    textValue?: string | undefined | null;
+    timeValue1?: string | undefined | null;
+    timeValue2?: string | undefined | null;
     modifiedDate?: Date;
     createdDate?: Date;
 }

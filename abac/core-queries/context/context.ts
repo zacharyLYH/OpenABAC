@@ -18,10 +18,10 @@ export const CREATE_CONTEXT = `
 INSERT INTO Context (id, contextName, contextDescription, operator, entity, textValue, timeValue1, timeValue2) VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?);
 `;
 
-export const UPDATE_CONTEXT_GIVEN_ID = `
+export const UPDATE_CONTEXT_GIVEN_CONTEXTNAME = `
 UPDATE Context
-SET contextDescription = ?, operator = ?, entity = ?, textValue = ?, timeValue1 = ?, timeValue2 = ?
-WHERE id = ?;
+SET contextName = ?, contextDescription = ?, operator = ?, entity = ?, textValue = ?, timeValue1 = ?, timeValue2 = ?
+WHERE contextName = ?;
 `;
 
 export const GET_ALL_CONTEXT = `
