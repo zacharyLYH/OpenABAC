@@ -3,12 +3,12 @@ import { catchStandardError } from '@/app/api/_utils';
 import { updateActionObject } from '@/abac/core-services/action/updateAction';
 
 export async function PUT(
-    req: Request,
+    request: Request,
     { params }: { params: { actionName: string } },
 ) {
     try {
-        const res = await req.json();
-        if (!res.actionName || !res.actionDescription) {
+        const req = await request.json();
+        if (!req.actionName || !req.actionDescription) {
             return NextResponse.json(
                 {
                     dmessage:
@@ -19,8 +19,8 @@ export async function PUT(
         }
         const response = await updateActionObject(
             params.actionName,
-            res.actionName,
-            res.actionDescription,
+            req.actionName,
+            req.actionDescription,
         );
         return NextResponse.json(
             {

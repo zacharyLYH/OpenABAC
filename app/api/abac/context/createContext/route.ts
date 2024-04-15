@@ -4,8 +4,8 @@ import { createContextObject } from '@/abac/core-services/context/createContext'
 
 export async function POST(request: Request) {
     try {
-        const res = await request.json();
-        if (!res.listOfContexts) {
+        const req= await request.json();
+        if (!req.listOfContexts) {
             return NextResponse.json(
                 {
                     data: 'This endpoint requires listOfContexts',
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
                 { status: 400 },
             );
         }
-        const response = await createContextObject(res.listOfContexts);
+        const response = await createContextObject(req.listOfContexts);
         return NextResponse.json(
             { success: response.success, data: response.data, message: response.message },
             { status: 200 },

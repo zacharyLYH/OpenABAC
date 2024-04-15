@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
 import {
     catchStandardError,
-    returnApplicationUserIdViaHeader,
 } from '@/app/api/_utils';
 import { createUserObject } from '@/abac/core-services/user/createUser';
 
 export async function POST(request: Request) {
     try {
-        const res = await request.json();
-        if (!res.jsonCol || !res.applicationUserID) {
+        const req= await request.json();
+        if (!req.jsonCol || !req.applicationUserID) {
             return NextResponse.json(
                 {
                     data: 'This endpoint requires jsonCol and applicationUserId',
@@ -17,10 +16,9 @@ export async function POST(request: Request) {
                 { status: 400 },
             );
         }
-        const userId = returnApplicationUserIdViaHeader();
         const response = await createUserObject(
-            res.applicationUserID,
-            res.jsonCol,
+            req.applicationUserID,
+            req.jsonCol,
         );
         return NextResponse.json(
             { data: response.data, success: response.success },

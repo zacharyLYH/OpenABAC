@@ -4,8 +4,8 @@ import { createActionObject } from '@/abac/core-services/action/createAction';
 
 export async function POST(request: Request) {
     try {
-        const res = await request.json();
-        if (!res.listOfActions) {
+        const req= await request.json();
+        if (!req.listOfActions) {
             return NextResponse.json(
                 {
                     data: 'This endpoint requires listOfActions',
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
                 { status: 400 },
             );
         }
-        const response = await createActionObject(res.listOfActions);
+        const response = await createActionObject(req.listOfActions);
         return NextResponse.json(
             { success: response.success, message: response.message },
             { status: 200 },
