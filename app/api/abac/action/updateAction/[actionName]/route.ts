@@ -25,8 +25,8 @@ export async function PUT(
         return NextResponse.json(
             {
                 success: response.success,
-                data: response.data ?? '',
-                message: response.message ?? '',
+                data: response.data,
+                message: response.message,
             },
             { status: 200 },
         );
