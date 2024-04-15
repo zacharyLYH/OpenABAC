@@ -71,16 +71,17 @@ A Context is an additional parameter that needs to be cleared before authorizati
 
 A User is probably the simplest concepts there is in OpenABAC. The `applicationUserId` is the user id that you associate this user in your main business application. This field does not discriminate any of the methods of generating user ids, but each id has to be under 255 characters long. The `jsonCol` is a JSON object that you may use only with `Context`s discussed above. The `jsonCol` is a good place to provide some additional data about this user that should influence authorization of this user. However, keep in mind, since Contexts are further authorizations after Actions, it is erroneous to think that "authorization can come from `jsonCol`". The previous statement is only partly true. When thinking about setting up a good authorization scheme, do not focus on beefing up `jsonCol`s to start. Instead, think about `Action`s, and then any `Context`s that actions require, then if the context is a text based context, think about `jsonCol`s. However, as a general rule of thumb, do not treat the `jsonCol` as a "replica" of the data from your main application - keep it as lean and as general as possible.
 
-Contexts provide a rich mechanism to further validate a user's access to an action. In this section, we specify how each operator works and how they are evaluated in the backend. As briefly mentioned, there are 8 different operators available in OpenABAC and we provide an overview on how they work with the data fields like `timeValue1`, `timeValue2`, and `textValue`. 
+Contexts provide a rich mechanism to further validate a user's access to an action. In this section, we specify how each operator works and how they are evaluated in the backend. As briefly mentioned, there are 8 different operators available in OpenABAC and we provide an overview on how they work with the data fields like `timeValue1`, `timeValue2`, and `textValue`.
+
 -   BETWEEN
-    - Required: `timeValue1`, `timeValue2` in Javascript `Date` format.
-    - Is evaluated with the server's locale time. The server's locale time must be in between `timeValue1` and `timeValue2` for authorization to pass. This implies that the `timeValue1` and `timeValue2` must be relative to the timezone that the server will be using. 
--   >, <, >=, <=, ==, !=
-    - Required: `timeValue1` Javascript `Date` format OR `textValue`, but not both. Never `timeValue2`. 
-    - Evaluated as strings. The value from the jsonCol is operated on the context value. For example, lets say the jsonCol has a field `YOE: 5` and the context has `entity: YOE, textValue: 6, operator: <`, then during evaluation sequence is read as `5 < 6`, which means the authorization fails. Say the operator was `!=`, then the evaluattion sequence is read as `5 != 6` which would be true and authorization passes.
+    -   Required: `timeValue1`, `timeValue2` in Javascript `Date` format.
+    -   Is evaluated with the server's locale time. The server's locale time must be in between `timeValue1` and `timeValue2` for authorization to pass. This implies that the `timeValue1` and `timeValue2` must be relative to the timezone that the server will be using.
+-   > , <, >=, <=, ==, !=
+    -   Required: `timeValue1` Javascript `Date` format OR `textValue`, but not both. Never `timeValue2`.
+    -   Evaluated as strings. The value from the jsonCol is operated on the context value. For example, lets say the jsonCol has a field `YOE: 5` and the context has `entity: YOE, textValue: 6, operator: <`, then during evaluation sequence is read as `5 < 6`, which means the authorization fails. Say the operator was `!=`, then the evaluattion sequence is read as `5 != 6` which would be true and authorization passes.
 -   IN
-    - Required: Comma separated values in `textValue`; think array without square brackets. If only 1 value, omit trailing comma otherwise an empty space will be part of the entity values.
-    - If either one of the IN values matches the value from the jsonCol, this context is considered to pass. The evaluation is done using the `===` typescript evaluator. You may add a space between a comma and the next letter for readability - it will be handled during evaluation either way.
+    -   Required: Comma separated values in `textValue`; think array without square brackets. If only 1 value, omit trailing comma otherwise an empty space will be part of the entity values.
+    -   If either one of the IN values matches the value from the jsonCol, this context is considered to pass. The evaluation is done using the `===` typescript evaluator. You may add a space between a comma and the next letter for readability - it will be handled during evaluation either way.
 
 ## Features & APIs
 
@@ -227,7 +228,7 @@ body.listOfPolicies: [
 
 ### CRUD Action & ActionContext APIs
 
-> Actions are not specific to any particular user since they are meant to be primitives to be reused by many users. As such, an extension to OpenABAC could be to implement a `sudo` user as the authorized requester. However, from a security perspective this isn't strictly necessary because by sending in signed JWTs, we can be sure the request came from the application's servers. 
+> Actions are not specific to any particular user since they are meant to be primitives to be reused by many users. As such, an extension to OpenABAC could be to implement a `sudo` user as the authorized requester. However, from a security perspective this isn't strictly necessary because by sending in signed JWTs, we can be sure the request came from the application's servers.
 
 #### `POST /api/abac/action/createAction`
 
@@ -296,7 +297,7 @@ body.listOfActions: [
 
 ### CRUD Context APIs
 
-> Contexts are not specific to any particular user since they are meant to be primitives to be reused by many actions. As such, an extension to OpenABAC could be to implement a `sudo` user as the authorized requester. However, from a security perspective this isn't strictly necessary because by sending in signed JWTs, we can be sure the request came from the application's servers. 
+> Contexts are not specific to any particular user since they are meant to be primitives to be reused by many actions. As such, an extension to OpenABAC could be to implement a `sudo` user as the authorized requester. However, from a security perspective this isn't strictly necessary because by sending in signed JWTs, we can be sure the request came from the application's servers.
 
 #### `POST /api/abac/context/createContext/:contextName`
 
@@ -359,11 +360,11 @@ body.listOfActions: [
 
 Ideally, the process of ABAC should be really quick, considering the frequency that it should theoretically be called in order to securely provide users ability to perform interaction with sensitive data. MySQL as the database of choice was a tradeoff between absolute performance and ease of development and maintenance. More enterprise scale databases such as Sql Server would've been a better choice from a performance and scalability standpoint, however to fit the requirement of being more accessible for development and maintenance, the open sourced MySQL database was a better choice. Ofcourse, it begs the question why not PosgtreSQL instead of MySQL, and it came down to the lack of need for added sophistication that PosgtreSQL offers.
 
-ABAC applications can be expected to perform read heavy workloads. If you were to perform any one optimization after setting up OpenABAC, it is to introduce caching. Caching allows you to speed up the read performance of data by temporarily storing some data into a specialized in memory database (as opposed to the traditional file-based database which is slower, ie MySQL) such as Redis. We recommend using the Read-Through caching technique and a short time to live (TTL) for safety. However, the algorithm to invalidate data points in the cache should be decided by your application's usage pattern and careful monitoring over time. 
+ABAC applications can be expected to perform read heavy workloads. If you were to perform any one optimization after setting up OpenABAC, it is to introduce caching. Caching allows you to speed up the read performance of data by temporarily storing some data into a specialized in memory database (as opposed to the traditional file-based database which is slower, ie MySQL) such as Redis. We recommend using the Read-Through caching technique and a short time to live (TTL) for safety. However, the algorithm to invalidate data points in the cache should be decided by your application's usage pattern and careful monitoring over time.
 
-An extension discussed in the Action and Context API sections were about implementing a "sudo" user when performing any API in those namespaces. Actions and Contexts are the primitives upon which Policies are built on top of. As such, they aren't "owned" by any one user in the same sense as a User owning a Policy. However, this is optional. The Action and Context APIs still expect to read a validly signed JWT in its payload at request time, if we may assume the JWTs weren't stolen, then we can safely conclude that the request came from your application's server, a valid source. 
+An extension discussed in the Action and Context API sections were about implementing a "sudo" user when performing any API in those namespaces. Actions and Contexts are the primitives upon which Policies are built on top of. As such, they aren't "owned" by any one user in the same sense as a User owning a Policy. However, this is optional. The Action and Context APIs still expect to read a validly signed JWT in its payload at request time, if we may assume the JWTs weren't stolen, then we can safely conclude that the request came from your application's server, a valid source.
 
-Speaking of JWTs, as a safety measure, we recommend reducing the lifespan of JWTs to as small as possible without severely impacting the performance of your app. There are 2 approaches to designing JWT invalidation. The first option is to dynamically generate JWTs per OpenABAC API call, trading off more compute for better security. The second option is to extend the TTL of each JWT then keep JWTs in a cache, trading off less compute for less security. Decide based on performance tolerance, compliance requirements, and usage patterns. 
+Speaking of JWTs, as a safety measure, we recommend reducing the lifespan of JWTs to as small as possible without severely impacting the performance of your app. There are 2 approaches to designing JWT invalidation. The first option is to dynamically generate JWTs per OpenABAC API call, trading off more compute for better security. The second option is to extend the TTL of each JWT then keep JWTs in a cache, trading off less compute for less security. Decide based on performance tolerance, compliance requirements, and usage patterns.
 
 ## Contribute
 

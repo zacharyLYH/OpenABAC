@@ -4,7 +4,7 @@ import { createActionObject } from '@/abac/core-services/action/createAction';
 
 export async function POST(request: Request) {
     try {
-        const req= await request.json();
+        const req = await request.json();
         if (!req.listOfActions) {
             return NextResponse.json(
                 {

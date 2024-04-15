@@ -1,4 +1,7 @@
-import { ARE_CONTEXTNAMES_UNIQUE, CREATE_CONTEXT } from '@/abac/core-queries/context/context';
+import {
+    ARE_CONTEXTNAMES_UNIQUE,
+    CREATE_CONTEXT,
+} from '@/abac/core-queries/context/context';
 import { db } from '@/abac/database';
 import {
     ABACRequestResponse,
@@ -31,9 +34,9 @@ export async function createContextObject(
     }
     const createContextQuery: Query[] = [];
     for (const ctx of listOfContexts) {
-        const validContext = validateContext(ctx)
-        if(!validContext.success){
-            return validContext
+        const validContext = validateContext(ctx);
+        if (!validContext.success) {
+            return validContext;
         }
         createContextQuery.push({
             sql: CREATE_CONTEXT,
@@ -44,13 +47,13 @@ export async function createContextObject(
                 ctx.entity,
                 ctx.textValue ?? null,
                 ctx.timeValue1 ?? null,
-                ctx.timeValue2 ?? null
+                ctx.timeValue2 ?? null,
             ],
         });
     }
     await db.executeTransaction(createContextQuery);
     return {
         success: true,
-        data: listOfContexts
+        data: listOfContexts,
     };
 }

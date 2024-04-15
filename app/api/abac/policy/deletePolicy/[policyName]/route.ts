@@ -16,7 +16,7 @@ export async function DELETE(
             applicationUserId,
         );
         return NextResponse.json(
-            { success: response.success, message: response.message  },
+            { success: response.success, message: response.message },
             { status: 200 },
         );
     } catch (e) {

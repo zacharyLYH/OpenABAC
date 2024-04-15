@@ -1,9 +1,5 @@
 import { db } from '@/abac/database';
-import {
-    ABACRequestResponse,
-    Action,
-    Query,
-} from '@/abac/interface';
+import { ABACRequestResponse, Action, Query } from '@/abac/interface';
 import {
     GET_ACTION_GIVEN_ACTIONNAME,
     UPDATE_ACTION_GIVEN_ACTIONNAME,

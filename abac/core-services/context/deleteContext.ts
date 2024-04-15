@@ -9,7 +9,10 @@ import {
     CHECK_CONTEXTID_STILL_ATTACHED,
     DELETE_ACTIONCONTEXT_GIVEN_CONTEXTID,
 } from '@/abac/core-queries/action-context/action-context';
-import { DELETE_CONTEXT_GIVEN_ID, GET_CONTEXT_GIVEN_CONTEXTNAME } from '@/abac/core-queries/context/context';
+import {
+    DELETE_CONTEXT_GIVEN_ID,
+    GET_CONTEXT_GIVEN_CONTEXTNAME,
+} from '@/abac/core-queries/context/context';
 
 export async function deleteContextObject(
     contextName: string,
@@ -20,9 +23,10 @@ export async function deleteContextObject(
     };
     const contextResult = await db.query<Context[]>(contextQuery);
     if (contextResult.length === 0) {
-        return { 
+        return {
             success: false,
-            message: `${contextName} is not an existing context.` };
+            message: `${contextName} is not an existing context.`,
+        };
     }
     const checkAnyActionsAttached: Query = {
         sql: CHECK_CONTEXTID_STILL_ATTACHED,
@@ -45,10 +49,7 @@ export async function deleteContextObject(
         sql: DELETE_ACTIONCONTEXT_GIVEN_CONTEXTID,
         params: [contextResult[0].id],
     };
-    await db.executeTransaction([
-        deleteActionQuery,
-        deletePolicyActionQuery,
-    ]);
+    await db.executeTransaction([deleteActionQuery, deletePolicyActionQuery]);
     return {
         success: true,
     };

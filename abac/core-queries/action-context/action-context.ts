@@ -19,13 +19,12 @@ JOIN ActionContext AC ON AC.contextId = C.id
 WHERE AC.actionId = ?;
 `;
 
-
 export const CHECK_CONTEXTID_STILL_ATTACHED = `
 SELECT count(*) as count
 From ActionContext 
 WHERE ACTION_ID = ?;
-`
+`;
 
 export const DELETE_ACTIONCONTEXT_GIVEN_CONTEXTID = `
 DELETE FROM ActionContext WHERE contextId = ?;
-`
+`;

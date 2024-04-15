@@ -1,11 +1,9 @@
 import { db } from '@/abac/database';
+import { ABACRequestResponse, Action, Context, Query } from '@/abac/interface';
 import {
-    ABACRequestResponse,
-    Action,
-    Context,
-    Query,
-} from '@/abac/interface';
-import { GET_ALL_ACTION_GIVEN_CONTEXTID, GET_CONTEXT_GIVEN_CONTEXTNAME,  } from '@/abac/core-queries/context/context';
+    GET_ALL_ACTION_GIVEN_CONTEXTID,
+    GET_CONTEXT_GIVEN_CONTEXTNAME,
+} from '@/abac/core-queries/context/context';
 
 export async function getContextIncludingActions(
     contextName: string,

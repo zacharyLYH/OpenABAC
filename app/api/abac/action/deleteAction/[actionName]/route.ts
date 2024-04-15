@@ -9,7 +9,7 @@ export async function DELETE(
     try {
         const response = await deleteActionObject(params.actionName);
         return NextResponse.json(
-            { success: response.success, message: response.message  },
+            { success: response.success, message: response.message },
             { status: 200 },
         );
     } catch (e) {

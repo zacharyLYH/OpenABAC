@@ -66,10 +66,10 @@ WHERE contextName in
 export const GET_CONTEXT_GIVEN_CONTEXTNAME = `
 SELECT * FROM Context
 WHERE contextName = ?;
-`
+`;
 
 export const GET_ALL_ACTION_GIVEN_CONTEXTID = `
 SELECT actionName
 FROM Action
 JOIN ContextAction ca ON ca.contextId = ?
-`
+`;

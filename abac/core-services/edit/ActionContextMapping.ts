@@ -1,13 +1,11 @@
 import { db } from '@/abac/database';
-import {
-    ABACRequestResponse,
-    Action,
-    Context,
-    Query,
-} from '@/abac/interface';
-import { GET_ACTION_GIVEN_ACTIONNAME,  } from '@/abac/core-queries/actions/actions';
+import { ABACRequestResponse, Action, Context, Query } from '@/abac/interface';
+import { GET_ACTION_GIVEN_ACTIONNAME } from '@/abac/core-queries/actions/actions';
 import { GET_CONTEXT_ID_GIVEN_NAME } from '@/abac/core-queries/context/context';
-import { CREATE_ACTION_CONTEXT, DELETE_ACTION_CONTEXT_GIVEN_ACTIONID } from '@/abac/core-queries/action-context/action-context';
+import {
+    CREATE_ACTION_CONTEXT,
+    DELETE_ACTION_CONTEXT_GIVEN_ACTIONID,
+} from '@/abac/core-queries/action-context/action-context';
 
 export async function actionContextMapping(
     actionName: string,
@@ -39,7 +37,9 @@ export async function actionContextMapping(
         sql: GET_CONTEXT_ID_GIVEN_NAME(contextNames.length),
         params: contextNames,
     };
-    const checkAllContextQuery = await db.query<Context[]>(checkAllContextsExist);
+    const checkAllContextQuery = await db.query<Context[]>(
+        checkAllContextsExist,
+    );
     if (checkAllContextQuery.length !== contextNames.length) {
         return {
             success: false,
@@ -62,7 +62,10 @@ export async function actionContextMapping(
     for (const name of contextNames) {
         upsertActionContextTxn.push({
             sql: CREATE_ACTION_CONTEXT,
-            params: [checkActionExistsResults[0].id, contextNameToIdMap.get(name)],
+            params: [
+                checkActionExistsResults[0].id,
+                contextNameToIdMap.get(name),
+            ],
         });
     }
     await db.executeTransaction(upsertActionContextTxn);

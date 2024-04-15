@@ -1,14 +1,7 @@
 import { db } from '@/abac/database';
-import {
-    ABACRequestResponse,
-    Context,
-    Policy,
-    Query,
-} from '@/abac/interface';
+import { ABACRequestResponse, Context, Policy, Query } from '@/abac/interface';
 import { GET_POLICY_GIVEN_ACTION_ID } from '@/abac/core-queries/policy-action/policy-action';
-import {
-    GET_ACTION_GIVEN_ACTIONNAME,
-} from '@/abac/core-queries/actions/actions';
+import { GET_ACTION_GIVEN_ACTIONNAME } from '@/abac/core-queries/actions/actions';
 import { GET_CONTEXT_GIVEN_ID } from '@/abac/core-queries/context/context';
 
 export async function getActionIncludingPolicyAndContext(

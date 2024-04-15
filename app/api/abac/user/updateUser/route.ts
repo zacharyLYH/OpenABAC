@@ -7,7 +7,7 @@ import { updateUserObject } from '@/abac/core-services/user/updateUser';
 
 export async function PUT(request: Request) {
     try {
-        const req= await request.json();
+        const req = await request.json();
         if (!req.jsonCol || !req.applicationUserID) {
             return NextResponse.json(
                 {

@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
-import {
-    catchStandardError,
-} from '@/app/api/_utils';
+import { catchStandardError } from '@/app/api/_utils';
 import { createUserObject } from '@/abac/core-services/user/createUser';
 
 export async function POST(request: Request) {
     try {
-        const req= await request.json();
+        const req = await request.json();
         if (!req.jsonCol || !req.applicationUserID) {
             return NextResponse.json(
                 {

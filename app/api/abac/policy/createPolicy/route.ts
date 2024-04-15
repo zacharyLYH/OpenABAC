@@ -4,7 +4,7 @@ import { createPolicyObject } from '@/abac/core-services/policy/createPolicy';
 
 export async function POST(request: Request) {
     try {
-        const req= await request.json();
+        const req = await request.json();
         if (!req.listOfPolicies) {
             return NextResponse.json(
                 {

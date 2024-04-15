@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import {
-    catchStandardError,
-} from '@/app/api/_utils';
+import { catchStandardError } from '@/app/api/_utils';
 import { getActionIncludingPolicyAndContext } from '@/abac/core-services/action/getAction';
 
 export async function GET(
@@ -12,10 +10,7 @@ export async function GET(
         const response = await getActionIncludingPolicyAndContext(
             params.actionName,
         );
-        return NextResponse.json(
-            { data: response.data },
-            { status: 200 },
-        );
+        return NextResponse.json({ data: response.data }, { status: 200 });
     } catch (e) {
         return catchStandardError(e);
     }
