@@ -71,6 +71,17 @@ A Context is an additional parameter that needs to be cleared before authorizati
 
 A User is probably the simplest concepts there is in OpenABAC. The `applicationUserId` is the user id that you associate this user in your main business application. This field does not discriminate any of the methods of generating user ids, but each id has to be under 255 characters long. The `jsonCol` is a JSON object that you may use only with `Context`s discussed above. The `jsonCol` is a good place to provide some additional data about this user that should influence authorization of this user. However, keep in mind, since Contexts are further authorizations after Actions, it is erroneous to think that "authorization can come from `jsonCol`". The previous statement is only partly true. When thinking about setting up a good authorization scheme, do not focus on beefing up `jsonCol`s to start. Instead, think about `Action`s, and then any `Context`s that actions require, then if the context is a text based context, think about `jsonCol`s. However, as a general rule of thumb, do not treat the `jsonCol` as a "replica" of the data from your main application - keep it as lean and as general as possible.
 
+Contexts provide a rich mechanism to further validate a user's access to an action. In this section, we specify how each operator works and how they are evaluated in the backend. As briefly mentioned, there are 8 different operators available in OpenABAC and we provide an overview on how they work with the data fields like `timeValue1`, `timeValue2`, and `textValue`. 
+-   BETWEEN
+    - Required: `timeValue1`, `timeValue2` in Javascript `Date` format.
+    - Is evaluated with the server's locale time. The server's locale time must be in between `timeValue1` and `timeValue2` for authorization to pass. This implies that the `timeValue1` and `timeValue2` must be relative to the timezone that the server will be using. 
+-   >, <, >=, <=, ==, !=
+    - Required: `timeValue1` Javascript `Date` format OR `textValue`, but not both. Never `timeValue2`. 
+    - Evaluated as strings. The value from the jsonCol is operated on the context value. For example, lets say the jsonCol has a field `YOE: 5` and the context has `entity: YOE, textValue: 6, operator: <`, then during evaluation sequence is read as `5 < 6`, which means the authorization fails. Say the operator was `!=`, then the evaluattion sequence is read as `5 != 6` which would be true and authorization passes.
+-   IN
+    - Required: Comma separated values in `textValue`; think array without square brackets. If only 1 value, omit trailing comma otherwise an empty space will be part of the entity values.
+    - If either one of the IN values matches the value from the jsonCol, this context is considered to pass. The evaluation is done using the `===` typescript evaluator. You may add a space between a comma and the next letter for readability - it will be handled during evaluation either way.
+
 ## Features & APIs
 
 One of the out standing features of OpenABAC is the administrator UI. This UI allows less technical team members to avoid upskilling in OpenABAC's implementation and MySQL. In this section, we'll outline the various APIs available for consumption via your application. It will however not specify the APIs that are used within the UI.
@@ -82,6 +93,8 @@ As mentioned in Usage Pattern, authorization requests to OpenABAC requires a sig
 ### Authorization APIs
 
 #### `GET /api/abac/authorize/:actionName`
+
+> Context authorizations are done using the user's `jsonCol` object. If the user needs a certain action, it must also have the required contexts in the `jsonCol`. Check the OpenABAC concepts above to see how contexts work in detail.
 
 -   The main authorization API
 -   Params:
