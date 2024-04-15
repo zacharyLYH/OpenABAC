@@ -11,6 +11,13 @@ import {
 } from '@/abac/interface';
 import { validateContext } from '../context/contextValidator';
 
+/*
+Provide: applicationUserId, actionName
+1. Query the requested actionName with the applicationUserId to find a record that matches.
+2. If such a record exists, for this action, find all the associated contexts
+3. Get the jsonCol object from the user
+4. For each context, take the entity property and find it in jsonCol. If found, depending on the operator, perform checks.
+*/
 export async function authorizeActionNameGivenApplicationUserId(
     applicationUserId: string,
     actionName: string,
