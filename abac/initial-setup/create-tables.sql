@@ -66,7 +66,7 @@ CREATE TABLE ActionContext (
 -- Context Table
 CREATE TABLE Context (
     id CHAR(36) NOT NULL,
-    contextName VARCHAR(255), 
+    contextName VARCHAR(255) NOT NULL, 
     contextDescription VARCHAR(255),
     operator VARCHAR(255) NOT NULL,
     entity VARCHAR(255) NOT NULL,
