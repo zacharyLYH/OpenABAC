@@ -23,7 +23,7 @@ const components: { title: string; href: string; description: string }[] = [
             'A user of your application who requires authorization through ABAC.',
     },
     {
-        title: 'Action',
+        title: 'Actions',
         href: '/home/action',
         description: 'An operation that a User wants to perform on a resource.',
     },
